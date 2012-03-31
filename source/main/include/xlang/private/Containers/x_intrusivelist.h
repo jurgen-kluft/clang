@@ -106,7 +106,7 @@ namespace xlang
 
 			/// Returns the number of items currently in the list.
 			/// \return The number of items in the list.
-			inline uint32_t Size() const;
+			inline u32 Size() const;
 
 			/// Returns true if there are no items currently in the list.
 			inline bool Empty() const;
@@ -166,9 +166,9 @@ namespace xlang
 
 
 		template <class ItemType>
-		XLANG_FORCEINLINE uint32_t IntrusiveList<ItemType>::Size() const
+		XLANG_FORCEINLINE u32 IntrusiveList<ItemType>::Size() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 			ItemType *node(mHead);
 
 			while (node)

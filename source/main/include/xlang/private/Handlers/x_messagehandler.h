@@ -1,6 +1,11 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_MESSAGEHANDLER_H
 #define __XLANG_PRIVATE_HANDLERS_MESSAGEHANDLER_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
+#include "xbase\x_allocator.h"
 #include "xlang\private\Debug\x_Assert.h"
 #include "xlang\private\Handlers\x_IMessageHandler.h"
 #include "xlang\private\Messages\x_IMessage.h"
@@ -17,6 +22,8 @@ namespace xlang
 
 	namespace detail
 	{
+		struct MessageHandler_t { MessageHandler_t() : data1(0), data2(0){} u64 data1; u64 data2; };
+
 		/// Instantiable class template that remembers a message handler function and
 		/// the type of message it accepts. It is responsible for checking whether
 		/// incoming messages are of the type accepted by the handler, and executing the
@@ -56,9 +63,9 @@ namespace xlang
 			}
 
 			/// Returns the unique name of the message type handled by this handler.
-			inline virtual const char *GetMessageTypeName() const
+			inline virtual int GetMessageTypeId() const
 			{
-				return MessageTraits<ValueType>::TYPE_NAME;
+				return type2int<ValueType>::value();
 			}
 
 			/// Handles the given message, if it's of the type accepted by the handler.
@@ -86,14 +93,16 @@ namespace xlang
 				return false;
 			}
 
+			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
-
+			MessageHandler() : mHandlerFunction(NULL) {}
 			MessageHandler(const MessageHandler &other);
 			MessageHandler &operator=(const MessageHandler &other);
 
+			friend class Actor;
+
 			const HandlerFunction mHandlerFunction;     ///< Pointer to a handler member function on an actor.
 		};
-
 
 	} // namespace detail
 } // namespace xlang

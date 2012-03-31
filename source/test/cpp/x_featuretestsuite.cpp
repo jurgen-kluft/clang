@@ -1,13 +1,13 @@
 #define TESTS_TESTSUITES_FEATURETESTSUITE
 #ifdef TESTS_TESTSUITES_FEATURETESTSUITE
 
-#include <vector>
 #include <string>
 #include <queue>
 
 #include "xlang\private\Debug\x_Assert.h"
 #include "xlang\x_Actor.h"
 #include "xlang\x_ActorRef.h"
+#include "xlang\x_Address.h"
 #include "xlang\x_Framework.h"
 #include "xlang\x_Receiver.h"
 #include "xlang\x_Register.h"
@@ -55,8 +55,34 @@ const char *Sequencer<CountType>::GOOD = "good";
 template <class CountType>
 const char *Sequencer<CountType>::BAD = "bad";
 
-typedef std::vector<xlang::uint32_t> IntVectorMessage;
-XLANG_REGISTER_MESSAGE(IntVectorMessage);
+//typedef std::vector<xlang::u32> IntVectorMessage;
+struct IntVectorMessage
+{
+	xlang::u32		n;
+	xlang::u32		a;
+	xlang::u32		b;
+	xlang::u32		c;
+};
+//XLANG_REGISTER_MESSAGE(IntVectorMessage);
+
+struct CreateMessage { };
+struct DestroyMessage { };
+//XLANG_REGISTER_MESSAGE(CreateMessage);
+//XLANG_REGISTER_MESSAGE(DestroyMessage);
+//
+//XLANG_REGISTER_MESSAGE(Address);
+//XLANG_REGISTER_MESSAGE(ActorRef);
+//
+//XLANG_REGISTER_MESSAGE(bool);
+//XLANG_REGISTER_MESSAGE(float);
+//XLANG_REGISTER_MESSAGE(float*);
+//XLANG_REGISTER_MESSAGE(float const*);
+//XLANG_REGISTER_MESSAGE(char const*);
+//XLANG_REGISTER_MESSAGE(int);
+//XLANG_REGISTER_MESSAGE(unsigned int);
+//typedef std::vector<int> VectorMessage;
+//XLANG_REGISTER_MESSAGE(std::vector<int>);
+//XLANG_REGISTER_MESSAGE(std::string);
 
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 {
@@ -475,11 +501,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void BlindDefaultHandler(const void *const data, const xlang::uint32_t size, const xlang::Address from)
+			inline void BlindDefaultHandler(const void *const data, const xlang::u32 size, const xlang::Address from)
 			{
-				// We know the message is a uint32_t.
-				const xlang::uint32_t *const p(reinterpret_cast<const xlang::uint32_t *>(data));
-				const xlang::uint32_t value(*p);
+				// We know the message is a u32.
+				const xlang::u32 *const p(reinterpret_cast<const xlang::u32 *>(data));
+				const xlang::u32 value(*p);
 
 				Send(value, from);
 				Send(size, from);
@@ -584,9 +610,6 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 		public:
 
-			struct CreateMessage { };
-			struct DestroyMessage { };
-
 			inline Nestor()
 			{
 				RegisterHandler(this, &Nestor::Create);
@@ -659,17 +682,17 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			{
 			}
 
-			inline void Handle(const void *const data, const xlang::uint32_t size, const xlang::Address from)
+			inline void Handle(const void *const data, const xlang::u32 size, const xlang::Address from)
 			{
 				mData = data;
-				mValue = *reinterpret_cast<const xlang::uint32_t *>(data);
+				mValue = *reinterpret_cast<const xlang::u32 *>(data);
 				mSize = size;
 				mAddress = from;
 			}
 
 			const void *mData;
-			xlang::uint32_t mValue;
-			xlang::uint32_t mSize;
+			xlang::u32 mValue;
+			xlang::u32 mSize;
 			xlang::Address mAddress;
 		};
 
@@ -1087,6 +1110,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			CHECK_TRUE(catcher.mMessage == actorA.GetAddress());    // Wrong address");
 		}
 
+#if 1
 		UNITTEST_TEST(SendMessageToDefaultHandlerInFunction)
 		{
 			typedef DefaultReplier<float> FloatReplier;
@@ -1106,7 +1130,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 			CHECK_TRUE(catcher.mMessage == "hello");    // Default handler not executed");
 		}
-
+#endif
+#if 1
 		UNITTEST_TEST(RegisterHandlerFromHandler)
 		{
 			typedef Catcher<std::string> StringCatcher;
@@ -1178,6 +1203,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			CHECK_TRUE(receiver.Count() == 0);    // Received too many messages");
 		}
 
+
 		UNITTEST_TEST(CreateActorInDestructor)
 		{
 			xlang::Framework framework;
@@ -1217,15 +1243,15 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			xlang::Receiver receiver;
 			xlang::ActorRef actor(framework.CreateActor<Nestor>());
 
-			framework.Send(Nestor::CreateMessage(), receiver.GetAddress(), actor.GetAddress());
-			framework.Send(Nestor::DestroyMessage(), receiver.GetAddress(), actor.GetAddress());
+			framework.Send(CreateMessage(), receiver.GetAddress(), actor.GetAddress());
+			framework.Send(DestroyMessage(), receiver.GetAddress(), actor.GetAddress());
 
 			receiver.Wait();
 		}
 
 		UNITTEST_TEST(GetNumQueuedMessagesInHandler)
 		{
-			typedef Catcher<xlang::uint32_t> CountCatcher;
+			typedef Catcher<xlang::u32> CountCatcher;
 
 			xlang::Framework framework;
 			xlang::Receiver receiver;
@@ -1251,7 +1277,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		UNITTEST_TEST(GetNumQueuedMessagesInFunction)
 		{
 			typedef const char * StringMessage;
-			typedef Catcher<xlang::uint32_t> CountCatcher;
+			typedef Catcher<xlang::u32> CountCatcher;
 
 			xlang::Framework framework;
 			xlang::Receiver receiver;
@@ -1264,7 +1290,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			framework.Send(stringMessage, receiver.GetAddress(), actor.GetAddress());
 
 			// Race conditions decide how many messages are in the queue when we ask.
-			xlang::uint32_t numMessages(actor.GetNumQueuedMessages());
+			xlang::u32 numMessages(actor.GetNumQueuedMessages());
 			CHECK_TRUE(numMessages < 3);    // Bad count");
 
 			receiver.Wait();
@@ -1280,7 +1306,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(UseBlindDefaultHandler)
 		{
-			typedef Accumulator<xlang::uint32_t> UIntAccumulator;
+			typedef Accumulator<xlang::u32> UIntAccumulator;
 
 			xlang::Framework framework;
 			xlang::Receiver receiver;
@@ -1290,8 +1316,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 			xlang::ActorRef actor(framework.CreateActor<BlindActor>());
 
-			// Send the actor a uint32_t message, which is the type it secretly expects.
-			framework.Send(xlang::uint32_t(75), receiver.GetAddress(), actor.GetAddress());
+			// Send the actor a u32 message, which is the type it secretly expects.
+			framework.Send(xlang::u32(75), receiver.GetAddress(), actor.GetAddress());
 
 			// The actor sends back the value of the message data and the size.
 			receiver.Wait();
@@ -1314,7 +1340,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			xlang::ActorRef actor(framework.CreateActor<HandlerChecker>());
 			framework.Send(int(0), receiver.GetAddress(), actor.GetAddress());
 
-			xlang::uint32_t count(21);
+			xlang::u32 count(21);
 			while (count)
 			{
 				count -= receiver.Wait(count);
@@ -1359,8 +1385,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(SendMessagesToShortLivedActor)
 		{
-			typedef Accumulator<xlang::uint32_t> UIntAccumulator;
-			typedef Replier<xlang::uint32_t> UIntReplier;
+			typedef Accumulator<xlang::u32> UIntAccumulator;
+			typedef Replier<xlang::u32> UIntReplier;
 
 			xlang::Framework framework;
 			xlang::Receiver receiver;
@@ -1372,19 +1398,19 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				xlang::ActorRef actor(framework.CreateActor<UIntReplier>());
 
 				// Send the actor a series of messages.
-				framework.Send(xlang::uint32_t(0), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::uint32_t(1), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::uint32_t(2), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::uint32_t(3), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::uint32_t(4), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::uint32_t(5), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::uint32_t(6), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::uint32_t(7), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(0), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(1), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(2), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(3), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(4), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(5), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(6), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(xlang::u32(7), receiver.GetAddress(), actor.GetAddress());
 			}
 
 			// Check that we received the replies even though the actor became unreferenced.
 
-			xlang::uint32_t count(8);
+			xlang::u32 count(8);
 			while (count)
 			{
 				count -= receiver.Wait(8);
@@ -1471,7 +1497,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(HandleUnhandledMessageSentInFunction)
 		{
-			typedef Replier<xlang::uint32_t> UIntReplier;
+			typedef Replier<xlang::u32> UIntReplier;
 
 			xlang::Framework framework;
 			xlang::Receiver receiver;
@@ -1485,7 +1511,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 			// Send the replier an int and wait for the reply so we know both messages
 			// have been processed.
-			framework.Send(xlang::uint32_t(5), receiver.GetAddress(), replier.GetAddress());
+			framework.Send(xlang::u32(5), receiver.GetAddress(), replier.GetAddress());
 			receiver.Wait();
 
 			// Check that the unhandled message was handled by the registered fallback handler.
@@ -1512,12 +1538,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			receiver.Wait();
 
 			// Send a message to the stale address.
-			framework.Send(xlang::uint32_t(42), receiver.GetAddress(), lastGaspAddress);
+			framework.Send(xlang::u32(42), receiver.GetAddress(), lastGaspAddress);
 
 			// Check that the undelivered message was handled by the registered fallback handler.
 			CHECK_TRUE(fallbackHandler.mData != 0);    // Blind fallback handler failed");
 			CHECK_TRUE(fallbackHandler.mValue == 42);    // Blind fallback handler failed");
-			CHECK_TRUE(fallbackHandler.mSize == sizeof(xlang::uint32_t));    // Blind fallback handler failed");
+			CHECK_TRUE(fallbackHandler.mSize == sizeof(xlang::u32));    // Blind fallback handler failed");
 			CHECK_TRUE(fallbackHandler.mAddress == receiver.GetAddress());    // Blind fallback handler failed");
 		}
 
@@ -1534,18 +1560,21 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			xlang::ActorRef replier(framework.CreateActor<IntVectorReplier>());
 
 			IntVectorMessage message;
-			message.push_back(0);
-			message.push_back(1);
-			message.push_back(2);
+			message.a = (0);
+			message.b = (1);
+			message.c = (2);
+			message.n = (3);
 
 			framework.Send(message, receiver.GetAddress(), replier.GetAddress());
 			receiver.Wait();
 
-			CHECK_TRUE(catcher.mMessage.size() == 3);    // Bad reply message");
-			CHECK_TRUE(catcher.mMessage[0] == 0);    // Bad reply message");
-			CHECK_TRUE(catcher.mMessage[1] == 1);    // Bad reply message");
-			CHECK_TRUE(catcher.mMessage[2] == 2);    // Bad reply message");
+			CHECK_TRUE(catcher.mMessage.n == 3);    // Bad reply message");
+			CHECK_TRUE(catcher.mMessage.a == 0);    // Bad reply message");
+			CHECK_TRUE(catcher.mMessage.b == 1);    // Bad reply message");
+			CHECK_TRUE(catcher.mMessage.c == 2);    // Bad reply message");
 		}
+
+#endif
 	};
 }
 UNITTEST_SUITE_END

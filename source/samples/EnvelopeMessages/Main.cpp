@@ -1,6 +1,3 @@
-// Copyright (C) by Ashton Mason. See LICENSE.txt for licensing information.
-
-
 //
 // This sample demonstrates the use of 'envelope' (or 'proxy') messages that are
 // just lightweight references to owned objects. The message is copyable, but the
@@ -30,14 +27,13 @@
 // if they suit your application. The point of this example is to explain the concept.
 //
 
-
 #include <vector>
-#include <stdio.h>
 #include <assert.h>
 
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-#include <Theron/Actor.h>
+#include "xlang\x_Framework.h"
+#include "xlang\x_Receiver.h"
+#include "xlang\x_Actor.h"
+
 
 
 // An envelope message class template that acts as a lightweight reference to an owned object.
@@ -113,7 +109,7 @@ typedef EnvelopeMessage<IntegerVector> IntegerVectorEnvelope;
 
 
 // A simple actor that catches messages and prints out their contents.
-class Catcher : public Theron::Actor
+class Catcher : public xlang::Actor
 {
 public:
 
@@ -124,7 +120,7 @@ public:
 
 private:
 
-    inline void Handler(const IntegerVectorEnvelope &envelope, const Theron::Address from)
+    inline void Handler(const IntegerVectorEnvelope &envelope, const xlang::Address from)
     {
         assert(envelope.Valid());
         const IntegerVector &contents(envelope.Object());
@@ -149,8 +145,8 @@ private:
 
 int main()
 {
-    Theron::Framework framework;
-    Theron::ActorRef actor(framework.CreateActor<Catcher>());
+    xlang::Framework framework;
+    xlang::ActorRef actor(framework.CreateActor<Catcher>());
 
     // Create an envelope message and fill its owned vector with some values.
     IntegerVectorEnvelope envelope;
@@ -160,7 +156,7 @@ int main()
 
     // Send the message to the catcher, passing the address of a local receiver
     // as the 'from' address.
-    Theron::Receiver receiver;
+    xlang::Receiver receiver;
     framework.Send(envelope, receiver.GetAddress(), actor.GetAddress());
 
     // Note that the envelope owned by the sender no longer contains the 'letter';
@@ -174,3 +170,6 @@ int main()
     return 0;
 }
 
+// Expected output:
+// Sender no longer has access to sent object
+// Received message with 3 values: 4, 7, 2

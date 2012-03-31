@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_PAGEDPOOL_FREELIST_H
 #define __XLANG_PRIVATE_PAGEDPOOL_FREELIST_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -18,7 +22,7 @@ namespace xlang
 			}
 
 			/// Returns the number of entries currently on this free list.
-			XLANG_FORCEINLINE uint32_t Count() const
+			XLANG_FORCEINLINE u32 Count() const
 			{
 				return mCount;
 			}
@@ -66,7 +70,7 @@ namespace xlang
 			};
 
 			FreeNode *mHead;            ///< Pointer to the first in a singly-linked list of free entries.
-			uint32_t mCount;            ///< Number of entries on this free list.
+			u32 mCount;            ///< Number of entries on this free list.
 		};
 
 

@@ -12,7 +12,7 @@ namespace xlang
 
 		Address ReceiverDirectory::RegisterReceiver(Receiver *const receiver)
 		{
-			uint32_t index(0);
+			u32 index(0);
 			if (mReceiverPool.Allocate(index))
 			{
 				// Fill in the allocated entry with the pointer to the receiver.
@@ -34,7 +34,7 @@ namespace xlang
 		{
 			// Receiver addresses are flagged with a bit flag in the index fields.
 			XLANG_ASSERT(!Address::IsActorAddress(address));
-			const uint32_t index(address.GetIndex());
+			const u32 index(address.GetIndex());
 
 			if (mReceiverPool.Free(index))
 			{
@@ -49,7 +49,7 @@ namespace xlang
 		{
 			// Receiver addresses are flagged with a bit flag in the index fields.
 			XLANG_ASSERT(!Address::IsActorAddress(address));
-			const uint32_t index(address.GetIndex());
+			const u32 index(address.GetIndex());
 
 			// The entry in the receiver pool is memory for a receiver pointer.
 			void *const entry(mReceiverPool.GetEntry(index));

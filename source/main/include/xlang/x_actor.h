@@ -1,11 +1,9 @@
 #ifndef __XLANG_ACTOR_H
 #define __XLANG_ACTOR_H
-
-/**
-\file Actor.h
-Actor baseclass.
-*/
-#include <new>
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Containers\x_IntrusiveList.h"
@@ -25,6 +23,7 @@ Actor baseclass.
 #include "xlang\x_Address.h"
 #include "xlang\x_AllocatorManager.h"
 #include "xlang\x_Defines.h"
+#include "xlang\x_Register.h"
 
 /**
 Main namespace, containing all public API components.
@@ -67,9 +66,7 @@ namespace xlang
 	*/
 	class Actor
 	{
-
 	public:
-
 		friend class detail::ActorCore;
 		friend class detail::ActorCreator;
 		friend class detail::ActorDestroyer;
@@ -131,21 +128,21 @@ namespace xlang
 		{
 		public:
 
-		struct IdentifyMessage
-		{
-		};
+			struct IdentifyMessage
+			{
+			};
 
-		Actor()
-		{
-		RegisterHandler(this, &Actor::Identify);
-		}
+			Actor()
+			{
+			RegisterHandler(this, &Actor::Identify);
+			}
 
 		private:
 
-		inline void Identify(const IdentifyMessage &message, const xlang::Address from)
-		{
-		printf("Actor address is: %d\n", GetAddress().AsInteger());
-		}
+			inline void Identify(const IdentifyMessage &message, const xlang::Address from)
+			{
+				printf("Actor address is: %d\n", GetAddress().AsInteger());
+			}
 		};
 		\endcode
 
@@ -183,18 +180,16 @@ namespace xlang
 		class Car : public xlang::Actor
 		{
 		public:
-
-		Car()
-		{
-		mWheels[0] = GetFramework().CreateActor<Wheel>();
-		mWheels[1] = GetFramework().CreateActor<Wheel>();
-		mWheels[2] = GetFramework().CreateActor<Wheel>();
-		mWheels[3] = GetFramework().CreateActor<Wheel>();
-		}
+			Car()
+			{
+				mWheels[0] = GetFramework().CreateActor<Wheel>();
+				mWheels[1] = GetFramework().CreateActor<Wheel>();
+				mWheels[2] = GetFramework().CreateActor<Wheel>();
+				mWheels[3] = GetFramework().CreateActor<Wheel>();
+			}
 
 		private:
-
-		xlang::ActorRef mWheels[4];
+			xlang::ActorRef mWheels[4];
 		};
 		\endcode
 
@@ -214,7 +209,7 @@ namespace xlang
 		\note If called from a message handler function, the returned count doesn't
 		include the message whose receipt triggered the execution of the handler.
 		*/
-		inline uint32_t GetNumQueuedMessages() const;
+		inline u32 GetNumQueuedMessages() const;
 
 		/**
 		\brief Registers a handler for a specific message type.
@@ -233,19 +228,19 @@ namespace xlang
 		{
 		public:
 
-		struct HelloMessage { };
+			struct HelloMessage { };
 
-		HelloWorld()
-		{
-		RegisterHandler(this, &HelloWorld::Hello);
-		}
+			HelloWorld()
+			{
+				RegisterHandler(this, &HelloWorld::Hello);
+			}
 
 		private:
 
-		inline void Hello(const HelloMessage &message, const xlang::Address from)
-		{
-		printf("Hello world!\n");
-		}
+			inline void Hello(const HelloMessage &message, const xlang::Address from)
+			{
+				printf("Hello world!\n");
+			}
 		};
 		\endcode
 
@@ -267,27 +262,27 @@ namespace xlang
 		{
 		public:
 
-		struct HelloMessage { };
-		struct HowdyMessage : public HelloMessage { };
+			struct HelloMessage { };
+			struct HowdyMessage : public HelloMessage { };
 
-		HelloWorld()
-		{
-		RegisterHandler(this, &HelloWorld::Hello);
-		RegisterHandler(this, &HelloWorld::Howdy);
-		}
+			HelloWorld()
+			{
+				RegisterHandler(this, &HelloWorld::Hello);
+				RegisterHandler(this, &HelloWorld::Howdy);
+			}
 
 		private:
 
-		inline void Hello(const HelloMessage &message, const xlang::Address from)
-		{
-		printf("Hello world!\n");
-		}
+			inline void Hello(const HelloMessage &message, const xlang::Address from)
+			{
+				printf("Hello world!\n");
+			}
 
-		inline void Howdy(const HowdyMessage &message, const xlang::Address from)
-		{
-		Hello(message, from);
-		printf("How y'all doin?\n");
-		}
+			inline void Howdy(const HowdyMessage &message, const xlang::Address from)
+			{
+				Hello(message, from);
+				printf("How y'all doin?\n");
+			}
 		};
 		\endcode
 
@@ -300,25 +295,25 @@ namespace xlang
 		{
 		public:
 
-		struct HelloMessage { };
+			struct HelloMessage { };
 
-		HelloWorld()
-		{
-		RegisterHandler(this, &HelloWorld::HelloOne);
-		IsHandlerRegistered(this, &HelloWorld::HelloTwo);   // Returns true, if some optimized builds.
-		}
+			HelloWorld()
+			{
+				RegisterHandler(this, &HelloWorld::HelloOne);
+				IsHandlerRegistered(this, &HelloWorld::HelloTwo);   // Returns true, if some optimized builds.
+			}
 
 		private:
 
-		inline void HelloOne(const HelloMessage &message, const xlang::Address from)
-		{
-		printf("Hello world!\n");
-		}
+			inline void HelloOne(const HelloMessage &message, const xlang::Address from)
+			{
+				printf("Hello world!\n");
+			}
 
-		inline void HelloTwo(const HelloMessage &message, const xlang::Address from)
-		{
-		printf("Hello world!\n");
-		}
+			inline void HelloTwo(const HelloMessage &message, const xlang::Address from)
+			{
+				printf("Hello world!\n");
+			}
 		};
 		\endcode
 
@@ -332,9 +327,7 @@ namespace xlang
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=DynamicHandlerRegistration">Dynamic handler registration</a>
 		*/
 		template <class ActorType, class ValueType>
-		inline bool RegisterHandler(
-			ActorType *const actor,
-			void (ActorType::*handler)(const ValueType &message, const Address from));
+		inline bool RegisterHandler( ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 		/**
 		\brief Deregisters a previously registered message handler.
@@ -356,37 +349,37 @@ namespace xlang
 		{
 		public:
 
-		struct WakeMessage { };
-		struct SleepMessage { };
-		struct HelloMessage { };
+			struct WakeMessage { };
+			struct SleepMessage { };
+			struct HelloMessage { };
 
-		HelloWorld()
-		{
-		RegisterHandler(this, &HelloWorld::Wake);
-		}
+			HelloWorld()
+			{
+				RegisterHandler(this, &HelloWorld::Wake);
+			}
 
 		private:
 
-		inline void Wake(const WakeMessage &message, const xlang::Address from)
-		{
-		RegisterHandler(this, &HelloWorld::Hello);
+			inline void Wake(const WakeMessage &message, const xlang::Address from)
+			{
+				RegisterHandler(this, &HelloWorld::Hello);
 
-		DeregisterHandler(this, &HelloWorld::Wake);
-		RegisterHandler(this, &HelloWorld::Sleep);
-		}
+				DeregisterHandler(this, &HelloWorld::Wake);
+				RegisterHandler(this, &HelloWorld::Sleep);
+			}
 
-		inline void Sleep(const SleepMessage &message, const xlang::Address from)
-		{
-		DeregisterHandler(this, &HelloWorld::Hello);
+			inline void Sleep(const SleepMessage &message, const xlang::Address from)
+			{
+				DeregisterHandler(this, &HelloWorld::Hello);
 
-		DeregisterHandler(this, &HelloWorld::Sleep);
-		RegisterHandler(this, &HelloWorld::Wake);
-		}
+				DeregisterHandler(this, &HelloWorld::Sleep);
+				RegisterHandler(this, &HelloWorld::Wake);
+			}
 
-		inline void Hello(const HelloMessage &message, const xlang::Address from)
-		{
-		printf("Hello world!\n");
-		}
+			inline void Hello(const HelloMessage &message, const xlang::Address from)
+			{
+				printf("Hello world!\n");
+			}
 		};
 		\endcode
 
@@ -409,9 +402,7 @@ namespace xlang
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=DynamicHandlerRegistration">Dynamic handler registration</a>
 		*/
 		template <class ActorType, class ValueType>
-		inline bool DeregisterHandler(
-			ActorType *const actor,
-			void (ActorType::*handler)(const ValueType &message, const Address from));
+		inline bool DeregisterHandler(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 		/**
 		\brief Checks whether the given message handler is registered with the actor.
@@ -422,9 +413,7 @@ namespace xlang
 		of times it has been \ref DeregisterHandler "deregistered".
 		*/
 		template <class ActorType, class ValueType>
-		inline bool IsHandlerRegistered(
-			ActorType *const actor,
-			void (ActorType::*handler)(const ValueType &message, const Address from));
+		inline bool IsHandlerRegistered(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 		/**
 		\brief Sets the default message handler executed for unhandled messages.
@@ -437,17 +426,17 @@ namespace xlang
 		{
 		public:
 
-		Actor()
-		{
-		SetDefaultHandler(this, &Actor::DefaultHandler);
-		}
+			Actor()
+			{
+				SetDefaultHandler(this, &Actor::DefaultHandler);
+			}
 
 		private:
 
-		inline void DefaultHandler(const xlang::Address from)
-		{
-		printf("Actor received unknown message from address '%d'\n", from.AsInteger());
-		}
+			inline void DefaultHandler(const xlang::Address from)
+			{
+				printf("Actor received unknown message from address '%d'\n", from.AsInteger());
+			}
 		};
 		\endcode
 
@@ -464,9 +453,7 @@ namespace xlang
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=DefaultMessageHandler">Default message handlers</a>
 		*/
 		template <class ActorType>
-		inline bool SetDefaultHandler(
-			ActorType *const actor,
-			void (ActorType::*handler)(const Address from));
+		inline bool SetDefaultHandler(ActorType *const actor, void (ActorType::*handler)(const Address from));
 
 		/**
 		\brief Sets the default message handler executed for unhandled messages.
@@ -485,17 +472,17 @@ namespace xlang
 		{
 		public:
 
-		Actor()
-		{
-		SetDefaultHandler(this, &Actor::DefaultHandler);
-		}
+			Actor()
+			{
+				SetDefaultHandler(this, &Actor::DefaultHandler);
+			}
 
 		private:
 
-		inline void DefaultHandler(const void *const data, const xlang::uint32_t size, const xlang::Address from)
-		{
-		printf("Actor received unknown message of size %d from address '%d'\n", size, from.AsInteger());
-		}
+			inline void DefaultHandler(const void *const data, const xlang::u32 size, const xlang::Address from)
+			{
+				printf("Actor received unknown message of size %d from address '%d'\n", size, from.AsInteger());
+			}
 		};
 		\endcode
 
@@ -506,9 +493,7 @@ namespace xlang
 		\param handler Member function pointer identifying the message handler function.
 		*/
 		template <class ActorType>
-		inline bool SetDefaultHandler(
-			ActorType *const actor,
-			void (ActorType::*handler)(const void *const data, const uint32_t size, const Address from));
+		inline bool SetDefaultHandler(ActorType *const actor, void (ActorType::*handler)(const void *const data, const u32 size, const Address from));
 
 		/**
 		\brief Sends a message to the entity (actor or receiver) at the given address.
@@ -518,22 +503,22 @@ namespace xlang
 		{
 		public:
 
-		struct Message
-		{
-		};
+			struct Message
+			{
+			};
 
-		Responder()
-		{
-		RegisterHandler(this, &Responder::Respond);
-		}
+			Responder()
+			{
+				RegisterHandler(this, &Responder::Respond);
+			}
 
 		private:
 
-		inline void Respond(const Message &message, const xlang::Address from)
-		{
-		// Send the message back to the sender.
-		Send(message, from);
-		}
+			inline void Respond(const Message &message, const xlang::Address from)
+			{
+				// Send the message back to the sender.
+				Send(message, from);
+			}
 		};
 		\endcode
 
@@ -557,15 +542,15 @@ namespace xlang
 		class Actor : public xlang::Actor
 		{
 		public:
-		Actor()
-		{
-		Send("hello", someAddress);                 // C array; won't compile!
+			Actor()
+			{
+				Send("hello", someAddress);                 // C array; won't compile!
 
-		const char *const message("hello");
-		Send(message, someAddress);                 // Works and fast but use with care.
+				const char *const message("hello");
+				Send(message, someAddress);                 // Works and fast but use with care.
 
-		Send(std::string("hello"), someAddress);    // Safest but involves a copy.
-		}
+				Send(std::string("hello"), someAddress);    // Safest but involves a copy.
+			}
 		}
 		\endcode
 
@@ -630,21 +615,21 @@ namespace xlang
 		{
 		public:
 
-		Processor()
-		{
-		RegisterHandler(this, &Processor::Process);
-		}
+			Processor()
+			{
+				RegisterHandler(this, &Processor::Process);
+			}
 
 		private:
 
-		inline void Process(const int &message, const xlang::Address from)
-		{
-		// Do some compute-intensive processing using the message value
-		// ...
+			inline void Process(const int &message, const xlang::Address from)
+			{
+				// Do some compute-intensive processing using the message value
+				// ...
 
-		// Send the result as the last action using TailSend.
-		TailSend(result, from);
-		}
+				// Send the result as the last action using TailSend.
+				TailSend(result, from);
+			}
 		};
 		\endcode
 
@@ -668,9 +653,6 @@ namespace xlang
 		inline bool TailSend(const ValueType &value, const Address &address) const;
 
 	private:
-
-		typedef detail::IntrusiveList<detail::IMessageHandler> MessageHandlerList;
-
 		Actor(const Actor &other);
 		Actor &operator=(const Actor &other);
 
@@ -689,23 +671,24 @@ namespace xlang
 		/// Returns the default message handler, if one is set for this actor.
 		inline detail::IDefaultHandler *GetDefaultHandler() const;
 
-		/// Returns a reference to the list of handlers added since the actor was last processed.
-		inline MessageHandlerList &GetNewHandlerList();
-
-		Address mAddress;                                   ///< Unique address of this actor.
-		detail::ActorCore *mCore;                           ///< Pointer to the core implementation of the actor.
-		uint32_t mReferenceCount;                           ///< Counts how many ActorRef instances reference this actor.
-		detail::IDefaultHandler *mDefaultMessageHandler;    ///< Handler executed for unhandled messages.
-		MessageHandlerList mNewHandlerList;                 ///< Holds new message handlers until they're added the real handler list.
+		Address						mAddress;					///< Unique address of this actor.
+		detail::ActorCore*			mCore;						///< Pointer to the core implementation of the actor.
+		u32							mReferenceCount;			///< Counts how many ActorRef instances reference this actor.
+		detail::MessageHandler_t	mDefaultMessageHandler;		///< Handler executed for unhandled messages.
+		
+		u32							mNewMessageHandlersNum;
+		u32							mNewMessageHandlersMax;
+		detail::MessageHandler_t	mNewMessageHandlers[32];
 	};
 
+	const int SizeOfMessageHandler = sizeof(detail::MessageHandler_t);
 
-	XLANG_FORCEINLINE Actor::Actor() :
-	mAddress(Address::Null()),
-		mCore(0),
-		mReferenceCount(0),
-		mDefaultMessageHandler(0),
-		mNewHandlerList()
+	XLANG_FORCEINLINE Actor::Actor() 
+		: mAddress(Address::Null())
+		, mCore(0)
+		, mReferenceCount(0)
+		, mNewMessageHandlersNum(0)
+		, mNewMessageHandlersMax(32)
 	{
 		// Pick up the pointer to the referenced actor core object registered prior to construction.
 		// This is a hacky workaround for not being able to pass the core pointer as an Actor
@@ -716,23 +699,9 @@ namespace xlang
 		mCore = detail::ActorCreator::GetCoreAddress();
 	}
 
-
 	inline Actor::~Actor()
 	{
-		// Free all allocated handler objects in the new handler list.
-		while (detail::IMessageHandler *const handler = mNewHandlerList.Front())
-		{
-			mNewHandlerList.Remove(handler);
-			AllocatorManager::Instance().GetAllocator()->Free(handler);
-		}
-
-		// Free the default handler object, if one is set.
-		if (mDefaultMessageHandler)
-		{
-			AllocatorManager::Instance().GetAllocator()->Free(mDefaultMessageHandler);
-		}
 	}
-
 
 	XLANG_FORCEINLINE const Address &Actor::GetAddress() const
 	{
@@ -746,36 +715,36 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Actor::GetNumQueuedMessages() const
+	XLANG_FORCEINLINE u32 Actor::GetNumQueuedMessages() const
 	{
 		// We lock the core mutex to protect access to the message count.
-		// Messages may be received during the execution of a handler, changing the count.
+		// Messages may be received during the execution of a handler, 
+		// changing the count.
 		detail::Lock lock(mCore->GetMutex());
 		return mCore->GetNumQueuedMessages();
 	}
 
-
 	template <class ActorType, class ValueType>
-	inline bool Actor::RegisterHandler(
-		ActorType *const /*actor*/,
-		void (ActorType::*handler)(const ValueType &message, const Address from))
+	inline bool Actor::RegisterHandler(ActorType *const /*actor*/, void (ActorType::*handler)(const ValueType &message, const Address from))
 	{
 		typedef detail::MessageHandler<ActorType, ValueType> MessageHandlerType;
 
+		void *const memory = (void *)&mNewMessageHandlers[mNewMessageHandlersNum];
+
 		// Allocate memory for a message handler object.
-		void *const memory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(MessageHandlerType));
-		if (memory == 0)
-		{
-			return false;
-		}
+		//void *const memory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(MessageHandlerType));
+		//if (memory == 0)
+		//{
+		//	return false;
+		//}
 
 		// Construct a handler object to remember the function pointer and message value type.
 		MessageHandlerType *const messageHandler = new (memory) MessageHandlerType(handler);
 		XLANG_ASSERT(messageHandler);
 
-		// Add the handler to a list for adding later when we're sure no handlers are running.
-		// We don't need to lock this because only one thread can access it at a time.
-		mNewHandlerList.Insert(messageHandler);
+		// Increase the NewMessageHandlers count to indicate that we have added
+		// a new handler
+		mNewMessageHandlersNum++;
 
 		// Tell the core to update its handler list before processing the actor.
 		mCore->DirtyHandlers();
@@ -785,9 +754,7 @@ namespace xlang
 
 
 	template <class ActorType, class ValueType>
-	inline bool Actor::DeregisterHandler(
-		ActorType *const actor,
-		void (ActorType::*handler)(const ValueType &message, const Address from))
+	inline bool Actor::DeregisterHandler(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from))
 	{
 		// If the message value type has a valid (non-zero) type name defined for it,
 		// then we use explicit type names to match messages to handlers.
@@ -804,14 +771,10 @@ namespace xlang
 
 		// The handler wasn't in the registered list, maybe it's in the new handlers list.
 		// That can happen if the handler was only just registered prior to this in the same function.
-		// It's a bit weird to register a handler and the immediately deregister it, but legal.
-		typename MessageHandlerList::Iterator newHandlers(mNewHandlerList.Begin());
-		const typename MessageHandlerList::Iterator newHandlersEnd(mNewHandlerList.End());
-
-		while (newHandlers != newHandlersEnd)
+		// It's a bit weird to register a handler and then immediately deregister it, but legal.
+		for (u32 i=0; i<mNewMessageHandlersNum; ++i)
 		{
-			detail::IMessageHandler *const messageHandler(*newHandlers);
-
+			detail::IMessageHandler* messageHandler = (detail::IMessageHandler*)&mNewMessageHandlers[i];
 			// Try to convert this handler, of unknown type, to the target type.
 			const MessageHandlerType *const typedHandler = HandlerCaster:: template CastHandler<ValueType>(messageHandler);
 			if (typedHandler)
@@ -828,18 +791,13 @@ namespace xlang
 					return true;
 				}
 			}
-
-			++newHandlers;
 		}
-
 		return false;
 	}
 
 
 	template <class ActorType, class ValueType>
-	inline bool Actor::IsHandlerRegistered(
-		ActorType *const actor,
-		void (ActorType::*handler)(const ValueType &message, const Address from))
+	inline bool Actor::IsHandlerRegistered(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from))
 	{
 		// If the message value type has a valid (non-zero) type name defined for it,
 		// then we use explicit type names to match messages to handlers.
@@ -854,59 +812,40 @@ namespace xlang
 			return true;
 		}
 
-		// The handler wasn't in the registered list, maybe it's in the new handlers list.
-		typename MessageHandlerList::Iterator newHandlers(mNewHandlerList.Begin());
-		const typename MessageHandlerList::Iterator newHandlersEnd(mNewHandlerList.End());
-
-		while (newHandlers != newHandlersEnd)
+		for (u32 i=0; i<mNewMessageHandlersNum; ++i)
 		{
-			detail::IMessageHandler *const messageHandler(*newHandlers);
-
+			detail::IMessageHandler* messageHandler = (detail::IMessageHandler*)&mNewMessageHandlers[i];
 			// Try to convert this handler, of unknown type, to the target type.
 			const MessageHandlerType *const typedHandler = HandlerCaster:: template CastHandler<ValueType>(messageHandler);
 			if (typedHandler)
 			{
-				// Count as not registered if it's marked for deregistration.
-				// But it may be registered more than once, so keep looking.
+				// Don't count the handler if it's already marked for deregistration.
 				if (typedHandler->GetHandlerFunction() == handler && !typedHandler->IsMarked())
 				{
 					return true;
 				}
 			}
-
-			++newHandlers;
 		}
-
 		return false;
 	}
 
 
 	template <class ActorType>
-	inline bool Actor::SetDefaultHandler(
-		ActorType *const /*actor*/,
-		void (ActorType::*handler)(const Address from))
+	inline bool Actor::SetDefaultHandler(ActorType *const /*actor*/, void (ActorType::*handler)(const Address from))
 	{
 		typedef detail::DefaultHandler<ActorType> HandlerType;
 
 		// Destroy any previously set handler.
 		// We don't need to lock this because only one thread can access it at a time.
-		if (mDefaultMessageHandler)
-		{
-			AllocatorManager::Instance().GetAllocator()->Free(mDefaultMessageHandler);
-			mDefaultMessageHandler = 0;
-		}
+		mDefaultMessageHandler = detail::MessageHandler_t();
 
 		if (handler)
 		{
 			// Allocate memory for the handler object.
-			void *const memory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(HandlerType));
-			if (memory == 0)
-			{
-				return false;
-			}
+			void *const memory = (void*)&mDefaultMessageHandler;
 
 			// Construct the handler object to remember the function pointer.
-			mDefaultMessageHandler = new (memory) HandlerType(handler);
+			new (memory) HandlerType(handler);
 		}
 
 		return true;
@@ -914,46 +853,31 @@ namespace xlang
 
 
 	template <class ActorType>
-	inline bool Actor::SetDefaultHandler(
-		ActorType *const /*actor*/,
-		void (ActorType::*handler)(const void *const data, const uint32_t size, const Address from))
+	inline bool Actor::SetDefaultHandler(ActorType *const /*actor*/, void (ActorType::*handler)(const void *const data, const u32 size, const Address from))
 	{
 		typedef detail::BlindDefaultHandler<ActorType> HandlerType;
 
 		// Destroy any previously set handler.
-		// We don't need to lock this because only one thread can access it at a time.
-		if (mDefaultMessageHandler)
-		{
-			AllocatorManager::Instance().GetAllocator()->Free(mDefaultMessageHandler);
-			mDefaultMessageHandler = 0;
-		}
+		mDefaultMessageHandler = detail::MessageHandler_t();
 
 		if (handler)
 		{
 			// Allocate memory for the handler object.
-			void *const memory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(HandlerType));
-			if (memory == 0)
-			{
-				return false;
-			}
+			void *const memory = (void*)&mDefaultMessageHandler;
 
 			// Construct the handler object to remember the function pointer.
-			mDefaultMessageHandler = new (memory) HandlerType(handler);
+			new (memory) HandlerType(handler);
 		}
 
 		return true;
 	}
 
 
-	XLANG_FORCEINLINE detail::IDefaultHandler *Actor::GetDefaultHandler() const
+	XLANG_FORCEINLINE detail::IDefaultHandler* Actor::GetDefaultHandler() const
 	{
-		return mDefaultMessageHandler;
-	}
-
-
-	XLANG_FORCEINLINE Actor::MessageHandlerList &Actor::GetNewHandlerList()
-	{
-		return mNewHandlerList;
+		if (mDefaultMessageHandler.data1 == 0)
+			return NULL;
+		return (detail::IDefaultHandler*)&mDefaultMessageHandler;
 	}
 
 
@@ -1020,5 +944,5 @@ namespace xlang
 } // namespace xlang
 
 
-#endif // THERON_ACTOR_H
+#endif // XLANG_ACTOR_H
 

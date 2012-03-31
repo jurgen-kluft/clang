@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_MESSAGECACHE_POOL_H
 #define __XLANG_PRIVATE_MESSAGECACHE_POOL_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -33,7 +37,7 @@ namespace xlang
 
 			/// Retreives a memory block from the pool with the given alignment.
 			/// \return Zero if no suitable blocks in pool.
-			inline void *FetchAligned(const uint32_t alignment);
+			inline void *FetchAligned(const u32 alignment);
 
 			/// Retreives a memory block from the pool with any alignment.
 			/// \return Zero if no blocks in pool.
@@ -52,10 +56,10 @@ namespace xlang
 				Node *mNext;                        ///< Pointer to next node in a list.
 			};
 
-			static const uint32_t MAX_BLOCKS = 16;  ///< Maximum number of memory blocks stored per pool.
+			static const u32 MAX_BLOCKS = 16;  ///< Maximum number of memory blocks stored per pool.
 
 			Node mHead;                             ///< Dummy node at head of a linked list of nodes in the pool.
-			uint32_t mBlockCount;                   ///< Number of blocks currently cached in the pool.
+			u32 mBlockCount;                   ///< Number of blocks currently cached in the pool.
 		};
 
 
@@ -109,10 +113,10 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE void *Pool::FetchAligned(const uint32_t alignment)
+		XLANG_FORCEINLINE void *Pool::FetchAligned(const u32 alignment)
 		{
 			Node *previous(&mHead);
-			const uint32_t alignmentMask(alignment - 1);
+			const u32 alignmentMask(alignment - 1);
 
 			// Search the block list.
 			Node *node(mHead.mNext);
@@ -121,7 +125,7 @@ namespace xlang
 				// Prefetch.
 				Node *const next(node->mNext);
 
-				// This is THERON_ALIGNED with the alignment mask calculated outside the loop.
+				// This is XLANG_ALIGNED with the alignment mask calculated outside the loop.
 				if ((reinterpret_cast<uintptr_t>(node) & alignmentMask) == 0)
 				{
 					// Remove from list and return as block.

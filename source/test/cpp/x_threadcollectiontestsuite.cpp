@@ -9,8 +9,13 @@
 
 #include "xunittest\xunittest.h"
 
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
+
+
 static xlang::detail::Mutex	sMutex;
-static xlang::uint32_t		sHitCount = 0;
+static xlang::u32		sHitCount = 0;
 
 struct Context
 {
@@ -18,11 +23,11 @@ struct Context
 	{
 	}
 
-	inline Context(const xlang::uint32_t value) : mValue(value)
+	inline Context(const xlang::u32 value) : mValue(value)
 	{
 	}
 
-	xlang::uint32_t mValue;
+	xlang::u32 mValue;
 };
 
 static void StaticEntryPoint(void *const context)
@@ -89,13 +94,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_THREADCOLLECTIONTESTSUITE)
 		UNITTEST_TEST(TestThreadReuse)
 		{
 			xlang::detail::ThreadCollection threadCollection;
-			const xlang::uint32_t numThreads = 128;
+			const xlang::u32 numThreads = 128;
 
 			sHitCount = 0;
 			Context contexts[numThreads];
 
 			// Create n threads, each referencing a different context.
-			for (xlang::uint32_t index = 0; index < numThreads; ++index)
+			for (xlang::u32 index = 0; index < numThreads; ++index)
 			{
 				threadCollection.CreateThread(StaticEntryPoint, &contexts[index]);
 			}
@@ -104,7 +109,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_THREADCOLLECTIONTESTSUITE)
 			threadCollection.DestroyThreads();
 
 			CHECK_TRUE(sHitCount == numThreads);    // Thread function wasn't run");
-			for (xlang::uint32_t index = 0; index < numThreads; ++index)
+			for (xlang::u32 index = 0; index < numThreads; ++index)
 			{
 				CHECK_TRUE(contexts[index].mValue == 1);    // Thread function wasn't run");
 			}

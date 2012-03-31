@@ -1,5 +1,3 @@
-#include <new>
-
 #include "xlang\private\Debug\x_Assert.h"
 #include "xlang\private\Threading\x_Lock.h"
 #include "xlang\private\ThreadPool\x_ThreadCollection.h"
@@ -14,7 +12,7 @@ namespace xlang
 	{
 		void ThreadCollection::StaticEntryPoint(void *const context)
 		{
-			ThreadData *const threadData(reinterpret_cast<ThreadData *>(context));
+			ThreadInstance *const threadData(reinterpret_cast<ThreadInstance *>(context));
 			XLANG_ASSERT(threadData);
 
 			ThreadCollection *const threadCollection(threadData->mThreadCollection);
@@ -32,12 +30,32 @@ namespace xlang
 			threadCollection->Finished(threadData);
 		}
 
-
 		ThreadCollection::ThreadCollection() 
 			: mMutex()
-			, mThreads()
-			, mFinishedThreads()
+			, mNumThreads(0)
+			, mNumThreadsUsed(0)
+			, mNumThreadsFree(0)
+			, mThreads(NULL)
+			, mThreadsFree(NULL)
 		{
+		}
+
+		void	ThreadCollection::Reserve(u32 initialNumThreads) 
+		{
+			for (u32 i=0; i<initialNumThreads; ++i)
+			{
+				void *const dataMemory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(ThreadInstance));
+				ThreadInstance* threadData = new (dataMemory) ThreadInstance();
+				void *const threadMemory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(Thread));
+				Thread* thread = new (threadMemory) Thread();
+				threadData->mThread = thread;
+				threadData->mFreeNext = mThreadsFree;
+				mThreadsFree = threadData;
+				mNumThreadsFree++;
+				threadData->mUsedNext = mThreads;
+				mThreads = threadData;
+				mNumThreads++;
+			}
 		}
 
 
@@ -45,17 +63,20 @@ namespace xlang
 		{
 			XLANG_ASSERT(userEntryPoint);
 
-			Thread *thread(0);
-			ThreadData *threadData(0);
+			Thread			*thread(0);
+			ThreadInstance	*threadData(0);
 
 			// Reuse one of the previously created threads that has finished, if available.
 			{
 				Lock lock(mMutex);
 
-				if (!mFinishedThreads.Empty())
+				if (mThreadsFree != NULL)
 				{
-					threadData = mFinishedThreads.Front();
-					mFinishedThreads.Remove(threadData);
+					threadData = mThreadsFree;
+					mThreadsFree = mThreadsFree->mFreeNext;
+					threadData->mThreadCollection = this;
+					threadData->mFreeNext = NULL;
+					--mNumThreadsFree;
 				}
 			}
 
@@ -66,8 +87,8 @@ namespace xlang
 				// Join the finished thread and wait for it to terminate.
 				// Join should be called from the same thread that called Start,
 				// so we create and destroy all worker threads with the same manager thread.
-				XLANG_ASSERT(thread->Running());
-				thread->Join();
+				if (thread->Running())
+					thread->Join();
 
 				// Update the thread data with the new user entry point and user context.
 				threadData->mUserEntryPoint = userEntryPoint;
@@ -83,7 +104,7 @@ namespace xlang
 				}
 
 				// Allocate a thread data block.
-				void *const dataMemory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(ThreadData));
+				void *const dataMemory = AllocatorManager::Instance().GetAllocator()->Allocate(sizeof(ThreadInstance));
 				if (dataMemory == 0)
 				{
 					AllocatorManager::Instance().GetAllocator()->Free(threadMemory);
@@ -93,18 +114,17 @@ namespace xlang
 				// Construct the thread and its data, setting up the data with a pointer to the thread and its context.
 				// The thread pointer allows the thread function to be provided with a pointer to its thread object.
 				thread = new (threadMemory) Thread();
-				threadData = new (dataMemory) ThreadData(
-					this,
-					thread,
-					userEntryPoint,
-					userContext);
+				threadData = new (dataMemory) ThreadInstance(this,thread,userEntryPoint,userContext);
 
-				// Remember the threads we create in a list so we can eventually destroy them.
-				mThreads.Insert(threadData);
+				// Remember the added threads
+				threadData->mUsedNext = mThreads;
+				mThreads = threadData;
+				++mNumThreads;
 			}
 
 			// Start the thread, running it via our wrapper entry point.
 			// We call our own wrapper entry point, passing it data including the user entry point and context.
+			++mNumThreadsUsed;
 			thread->Start(StaticEntryPoint, threadData);
 		}
 
@@ -112,33 +132,43 @@ namespace xlang
 		void ThreadCollection::DestroyThreads()
 		{
 			// Wait for the worker threads to stop.
-			for (ThreadList::iterator it = mThreads.Begin(); it != mThreads.End(); ++it)
 			{
-				ThreadData *const threadData(*it);
-				Thread *const thread(threadData->mThread);
+				ThreadInstance* it = mThreads;
+				while(it != NULL)
+				{
+					ThreadInstance * threadData = it;
+					it = it->mUsedNext;
 
-				// Call Join on this thread; it shouldn't have been called yet.
-				// This waits until the thread finishes.
-				XLANG_ASSERT(thread->Running());
-				thread->Join();
+					Thread *const thread(threadData->mThread);
 
-				// Explicitly call the destructor, since we allocated using placement new.
-				thread->~Thread();
+					// Call Join on this thread; it shouldn't have been called yet.
+					// This waits until the thread finishes.
+					if(thread->Running())
+						thread->Join();
 
-				// Free the memory for the thread and the context block.
-				AllocatorManager::Instance().GetAllocator()->Free(threadData);
-				AllocatorManager::Instance().GetAllocator()->Free(thread);
+					// Explicitly call the destructor, since we allocated using placement new.
+					thread->~Thread();
+
+					// Free the memory for the thread and the context block.
+					AllocatorManager::Instance().GetAllocator()->Free(threadData);
+					AllocatorManager::Instance().GetAllocator()->Free(thread);
+				}
 			}
 
-			mThreads.Clear();
-			mFinishedThreads.Clear();
+			mThreads = NULL;
+			mNumThreads = 0;
+			mThreadsFree = NULL;
+			mNumThreadsFree = 0;
 		}
 
 
-		void ThreadCollection::Finished(ThreadData *const threadData)
+		void ThreadCollection::Finished(ThreadInstance *const threadData)
 		{
 			Lock lock(mMutex);
-			mFinishedThreads.Insert(threadData);
+			threadData->mFreeNext = mThreadsFree;
+			mThreadsFree = threadData;
+			++mNumThreadsFree;
+			--mNumThreadsUsed;
 		}
 
 

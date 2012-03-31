@@ -1,6 +1,11 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_RECEIVERHANDLER_H
 #define __XLANG_PRIVATE_HANDLERS_RECEIVERHANDLER_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
+#include "xbase\x_allocator.h"
 #include "xlang\private\Debug\x_Assert.h"
 #include "xlang\private\Handlers\x_IReceiverHandler.h"
 #include "xlang\private\Messages\x_IMessage.h"
@@ -39,9 +44,9 @@ namespace xlang
 			typedef void (ObjectType::*HandlerFunction)(const ValueType &message, const Address from);
 
 			/// Constructor.
-			inline ReceiverHandler(ObjectType *const object, HandlerFunction function) :
-			mObject(object),
-				mHandlerFunction(function)
+			inline ReceiverHandler(ObjectType *const object, HandlerFunction function)
+				: mObject(object)
+				, mHandlerFunction(function)
 			{
 			}
 
@@ -57,9 +62,9 @@ namespace xlang
 			}
 
 			/// Returns the unique name of the message type handled by this handler.
-			inline virtual const char *GetMessageTypeName() const
+			inline virtual int GetMessageTypeId() const
 			{
-				return MessageTraits<ValueType>::TYPE_NAME;
+				return type2int<ValueType>::value();
 			}
 
 			/// Handles the given message, if it's of the type accepted by the handler.
@@ -86,6 +91,7 @@ namespace xlang
 				return false;
 			}
 
+			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
 
 			ReceiverHandler(const ReceiverHandler &other);

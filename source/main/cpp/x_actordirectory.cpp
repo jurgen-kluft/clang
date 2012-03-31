@@ -1,11 +1,12 @@
-#include <new>
-
 #include "xlang\private\Directory\x_ActorDirectory.h"
 #include "xlang\private\Debug\x_Assert.h"
 
 #include "xlang\x_Actor.h"
 #include "xlang\x_Framework.h"
 
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
 
 namespace xlang
 {
@@ -15,7 +16,7 @@ namespace xlang
 
 		Address ActorDirectory::RegisterActor(Framework *const framework, Actor *const actor)
 		{
-			uint32_t index(0);
+			u32 index(0);
 			if (mActorPool.Allocate(index))
 			{
 				const Address address(Address::MakeActorAddress(index));
@@ -38,7 +39,7 @@ namespace xlang
 		bool ActorDirectory::DeregisterActor(const Address &address)
 		{
 			XLANG_ASSERT(Address::IsActorAddress(address));
-			const uint32_t index(address.GetIndex());
+			const u32 index(address.GetIndex());
 
 			// The entry in the actor pool is memory for an ActorCore object.
 			void *const entry(mActorPool.GetEntry(index));

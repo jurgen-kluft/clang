@@ -1,10 +1,16 @@
 #ifndef __XLANG_FRAMEWORK_H
 #define __XLANG_FRAMEWORK_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
-/**
-\file Framework.h
-Framework that hosts and executes actors.
-*/
+#include "xlang\x_Actor.h"
+#include "xlang\x_ActorRef.h"
+#include "xlang\x_Address.h"
+#include "xlang\x_AllocatorManager.h"
+#include "xlang\x_Defines.h"
+#include "xlang\x_Receiver.h"
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Core\x_ActorConstructor.h"
@@ -19,13 +25,6 @@ Framework that hosts and executes actors.
 #include "xlang\private\Messages\x_MessageSender.h"
 #include "xlang\private\Threading\x_Mutex.h"
 #include "xlang\private\ThreadPool\x_ThreadPool.h"
-
-#include "xlang\x_ActorRef.h"
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
-#include "xlang\x_Receiver.h"
-
 
 namespace xlang
 {
@@ -62,7 +61,7 @@ namespace xlang
 	objects. Different implementations of these threading objects are possible,
 	allowing xlang to be used in environments with different threading primitives.
 	Currently, implementations based on Win32 threads and Boost threads are
-	provided. Users can use the \ref THERON_USE_BOOST_THREADS define to enable
+	provided. Users can use the \ref XLANG_USE_BOOST_THREADS define to enable
 	or disable the use of Boost threads.
 
 	It's possible to create more than one Framework in an application. Actors created
@@ -174,7 +173,8 @@ namespace xlang
 		xlang::ActorRef actorTwo(frameworkTwo.CreateActor<MyActor>());
 		\endcode
 		*/
-		explicit Framework(const uint32_t numThreads);
+		explicit Framework(const u32 numThreads);
+		explicit Framework(const u32 numThreads, const u32 targetNumThreads);
 
 		/**
 		\brief Destructor.
@@ -237,15 +237,15 @@ namespace xlang
 		{
 		public:
 
-		typedef int Parameters;
+			typedef int Parameters;
 
-		MyActor(const Parameters &params) : mMember(params)
-		{
-		}
+			MyActor(const Parameters &params) : mMember(params)
+			{
+			}
 
 		private:
 
-		int mMember;
+			int mMember;
 		};
 
 		xlang::Framework framework;
@@ -351,7 +351,7 @@ namespace xlang
 		\see SetMinThreads
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=SettingTheThreadCount">Setting the thread count</a>
 		*/
-		inline void SetMaxThreads(const uint32_t count);
+		inline void SetMaxThreads(const u32 count);
 
 		/**
 		\brief Specifies a minimum limit on the number of worker threads enabled in this framework.
@@ -380,7 +380,7 @@ namespace xlang
 		\see SetMaxThreads
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=SettingTheThreadCount">Setting the thread count</a>
 		*/
-		inline void SetMinThreads(const uint32_t count);
+		inline void SetMinThreads(const u32 count);
 
 		/**
 		\brief Returns the current maximum limit on the number of worker threads in this framework.
@@ -397,7 +397,7 @@ namespace xlang
 		\see GetMinThreads
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=SettingTheThreadCount">Setting the thread count</a>
 		*/
-		inline uint32_t GetMaxThreads() const;
+		inline u32 GetMaxThreads() const;
 
 		/**
 		\brief Returns the current minimum limit on the number of worker threads in this framework.
@@ -410,7 +410,7 @@ namespace xlang
 		\see GetMaxThreads
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=SettingTheThreadCount">Setting the thread count</a>
 		*/
-		inline uint32_t GetMinThreads() const;
+		inline u32 GetMinThreads() const;
 
 		/**
 		\brief Gets the actual number of worker threads currently in this framework.
@@ -428,7 +428,7 @@ namespace xlang
 		\see GetPeakThreads
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=SettingTheThreadCount">Setting the thread count</a>
 		*/
-		inline uint32_t GetNumThreads() const;
+		inline u32 GetNumThreads() const;
 
 		/**
 		\brief Gets the peak number of worker threads ever active in the framework.
@@ -444,7 +444,7 @@ namespace xlang
 
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=SettingTheThreadCount">Setting the thread count</a>
 		*/
-		inline uint32_t GetPeakThreads() const;
+		inline u32 GetPeakThreads() const;
 
 		/**
 		\brief Resets the \ref Counter "internal event counters" that track reported events for threadpool management.
@@ -467,7 +467,7 @@ namespace xlang
 		\see ResetCounters
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=MeasuringThreadUtilization">Measuring thread utilization</a>
 		*/
-		inline uint32_t GetCounterValue(const Counter counter) const;
+		inline u32 GetCounterValue(const Counter counter) const;
 
 		/**
 		\brief Sets the fallback message handler executed for unhandled messages.
@@ -495,10 +495,10 @@ namespace xlang
 		{
 		public:
 
-		inline void Handle(const xlang::Address from)
-		{
-		printf("Caught undelivered or unhandled message sent from address '%d'\n", from.AsInteger());
-		}
+			inline void Handle(const xlang::Address from)
+			{
+				printf("Caught undelivered or unhandled message sent from address '%d'\n", from.AsInteger());
+			}
 		};
 
 		xlang::Framework framework;
@@ -516,9 +516,7 @@ namespace xlang
 		\param handler Member function pointer identifying the fallback handler function.
 		*/
 		template <class ObjectType>
-		inline bool SetFallbackHandler(
-			ObjectType *const actor,
-			void (ObjectType::*handler)(const Address from));
+		inline bool SetFallbackHandler(ObjectType *const actor, void (ObjectType::*handler)(const Address from));
 
 		/**
 		\brief Sets the fallback message handler executed for unhandled messages.
@@ -548,10 +546,10 @@ namespace xlang
 		{
 		public:
 
-		inline void Handle(const void *const data, const xlang::uint32_t size, const xlang::Address from)
-		{
-		printf("Caught undelivered or unhandled message of size %d sent from address '%d'\n", size, from.AsInteger());
-		}
+			inline void Handle(const void *const data, const xlang::u32 size, const xlang::Address from)
+			{
+				printf("Caught undelivered or unhandled message of size %d sent from address '%d'\n", size, from.AsInteger());
+			}
 		};
 
 		xlang::Framework framework;
@@ -569,9 +567,7 @@ namespace xlang
 		\param handler Member function pointer identifying the fallback handler function.
 		*/
 		template <class ObjectType>
-		inline bool SetFallbackHandler(
-			ObjectType *const actor,
-			void (ObjectType::*handler)(const void *const data, const uint32_t size, const Address from));
+		inline bool SetFallbackHandler(ObjectType *const actor, void (ObjectType::*handler)(const void *const data, const u32 size, const Address from));
 
 	private:
 
@@ -579,7 +575,7 @@ namespace xlang
 		Framework &operator=(const Framework &other);
 
 		/// Initializes a Framework object on construction.
-		inline void Initialize(const uint32_t numThreads);
+		inline void Initialize(const u32 numThreads, const u32 targetNumThreads);
 
 		/// Gets a reference to the core message processing mutex.
 		inline detail::Mutex &GetMutex() const;
@@ -602,18 +598,17 @@ namespace xlang
 	};
 
 
-	XLANG_FORCEINLINE void Framework::Initialize(const uint32_t numThreads)
+	XLANG_FORCEINLINE void Framework::Initialize(const u32 numThreads, const u32 targetNumThreads)
 	{
 		// Reference the global free list to ensure it's created.
 		detail::MessageCache::Instance().Reference();
 
 		XLANG_ASSERT_MSG(numThreads > 0, "numThreads must be greater than zero");
-		mThreadPool.Start(numThreads);
+		mThreadPool.Start(numThreads, targetNumThreads);
 
 		// Register the default fallback handler initially.
 		SetFallbackHandler(&mDefaultFallbackHandler, &detail::DefaultFallbackHandler::Handle);
 	}
-
 
 	template <class ActorType>
 	inline ActorRef Framework::CreateActor()
@@ -627,7 +622,6 @@ namespace xlang
 		return ActorRef(actor);
 	}
 
-
 	template <class ActorType>
 	inline ActorRef Framework::CreateActor(const typename ActorType::Parameters &params)
 	{
@@ -640,22 +634,15 @@ namespace xlang
 		return ActorRef(actor);
 	}
 
-
 	template <class ValueType>
 	XLANG_FORCEINLINE bool Framework::Send(const ValueType &value, const Address &from, const Address &to) const
 	{
-		return detail::MessageSender::Send(
-			this,
-			value,
-			from,
-			to);
+		return detail::MessageSender::Send(this,value,from,to);
 	}
 
 
 	template <class ObjectType>
-	inline bool Framework::SetFallbackHandler(
-		ObjectType *const handlerObject,
-		void (ObjectType::*handler)(const Address from))
+	inline bool Framework::SetFallbackHandler(ObjectType *const handlerObject, void (ObjectType::*handler)(const Address from))
 	{
 		typedef detail::FallbackHandler<ObjectType> HandlerType;
 
@@ -684,9 +671,7 @@ namespace xlang
 
 
 	template <class ObjectType>
-	inline bool Framework::SetFallbackHandler(
-		ObjectType *const handlerObject,
-		void (ObjectType::*handler)(const void *const data, const uint32_t size, const Address from))
+	inline bool Framework::SetFallbackHandler(ObjectType *const handlerObject, void (ObjectType::*handler)(const void *const data, const u32 size, const Address from))
 	{
 		typedef detail::BlindFallbackHandler<ObjectType> HandlerType;
 
@@ -714,37 +699,37 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE void Framework::SetMaxThreads(const uint32_t count)
+	XLANG_FORCEINLINE void Framework::SetMaxThreads(const u32 count)
 	{
 		mThreadPool.SetMaxThreads(count);
 	}
 
 
-	XLANG_FORCEINLINE void Framework::SetMinThreads(const uint32_t count)
+	XLANG_FORCEINLINE void Framework::SetMinThreads(const u32 count)
 	{
 		mThreadPool.SetMinThreads(count);
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Framework::GetMaxThreads() const
+	XLANG_FORCEINLINE u32 Framework::GetMaxThreads() const
 	{
 		return mThreadPool.GetMaxThreads();
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Framework::GetMinThreads() const
+	XLANG_FORCEINLINE u32 Framework::GetMinThreads() const
 	{
 		return mThreadPool.GetMinThreads();
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Framework::GetNumThreads() const
+	XLANG_FORCEINLINE u32 Framework::GetNumThreads() const
 	{
 		return mThreadPool.GetNumThreads();
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Framework::GetPeakThreads() const
+	XLANG_FORCEINLINE u32 Framework::GetPeakThreads() const
 	{
 		return mThreadPool.GetPeakThreads();
 	}
@@ -756,9 +741,9 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Framework::GetCounterValue(const Counter counter) const
+	XLANG_FORCEINLINE u32 Framework::GetCounterValue(const Counter counter) const
 	{
-		uint32_t count(0);
+		u32 count(0);
 
 		switch (counter)
 		{
@@ -826,5 +811,5 @@ namespace xlang
 } // namespace xlang
 
 
-#endif // THERON_FRAMEWORK_H
+#endif // XLANG_FRAMEWORK_H
 

@@ -36,34 +36,22 @@ namespace xlang
 
 			/// Constructor.
 			/// \note Actor cores can't be constructed directly in user code.
-			ActorCore(const uint32_t sequence, Framework *const framework, Actor *const actor);
+			ActorCore(const u32 sequence, Framework *const framework, Actor *const actor);
 
 			/// Destructor.
 			~ActorCore();
 
 			/// Sets the pointer to the next actor in a queue of actors.
-			XLANG_FORCEINLINE void SetNext(ActorCore *const next)
-			{
-				mNext = next;
-			}
+			XLANG_FORCEINLINE void SetNext(ActorCore *const next)	{ mNext = next; }
 
 			/// Gets the pointer to the next actor in a queue of actors.
-			XLANG_FORCEINLINE ActorCore *GetNext() const
-			{
-				return mNext;
-			}
+			XLANG_FORCEINLINE ActorCore *GetNext() const			{ return mNext; }
 
 			/// Sets the sequence number of the actor.
-			XLANG_FORCEINLINE void SetSequence(const uint32_t sequence)
-			{
-				mSequence = sequence;
-			}
+			XLANG_FORCEINLINE void SetSequence(const u32 sequence)	{ mSequence = sequence; }
 
 			/// Gets the sequence number of the actor.
-			XLANG_FORCEINLINE uint32_t GetSequence() const
-			{
-				return mSequence;
-			}
+			XLANG_FORCEINLINE u32 GetSequence() const				{ return mSequence; }
 
 			/// Pushes a message into the actor.
 			XLANG_FORCEINLINE void Push(IMessage *const message)
@@ -79,165 +67,123 @@ namespace xlang
 			}
 
 			/// Returns a pointer to the actor that contains this core.
-			XLANG_FORCEINLINE Actor *GetParent() const
-			{
-				return mParent;
-			}
+			XLANG_FORCEINLINE Actor *GetParent() const				{ return mParent; }
 
 			/// Gets the framework to which this actor belongs. Provides derived actor class
 			/// implementations with access the owning framework.
 			/// \return A pointer to the framework to which the actor belongs.
-			XLANG_FORCEINLINE Framework *GetFramework() const
-			{
-				XLANG_ASSERT(mFramework);
-				return mFramework;
-			}
+			XLANG_FORCEINLINE Framework *GetFramework() const		{ XLANG_ASSERT(mFramework); return mFramework; }
 
 			/// Gets a reference to the mutex that protects the actor.
 			Mutex &GetMutex() const;
 
 			/// Returns true if the actor is marked as referenced by at least one ActorRef.
-			XLANG_FORCEINLINE bool IsReferenced() const
-			{
-				return ((mState & STATE_REFERENCED) != 0);
-			}
+			XLANG_FORCEINLINE bool IsReferenced() const				{ return ((mState & STATE_REFERENCED) != 0); }
 
 			/// Marks the actor as unreferenced and so ready for garbage collection.
 			void Unreference();
 
 			/// Returns true if the actor is being processed, or is scheduled for processing.
-			XLANG_FORCEINLINE bool IsScheduled() const
-			{
-				return ((mState & STATE_BUSY) != 0);
-			}
+			XLANG_FORCEINLINE bool IsScheduled() const				{ return ((mState & STATE_BUSY) != 0); }
 
 			/// Marks the actor as either being processed, or scheduled for processing.
-			XLANG_FORCEINLINE void Schedule()
-			{
-				mState |= STATE_BUSY;
-			}
+			XLANG_FORCEINLINE void Schedule()						{ mState |= STATE_BUSY; }
 
 			/// Marks the actor as neither being processed nor scheduled for processing.
-			XLANG_FORCEINLINE void Unschedule()
-			{
-				mState &= STATE_BUSY;
-			}
+			XLANG_FORCEINLINE void Unschedule()						{ mState &= STATE_BUSY; }
 
 			/// Returns true if the actor is marked as in need of processing.
-			XLANG_FORCEINLINE bool IsDirty() const
-			{
-				return ((mState & STATE_DIRTY) != 0);
-			}
+			XLANG_FORCEINLINE bool IsDirty() const					{ return ((mState & STATE_DIRTY) != 0); }
 
 			/// Marks the actor as in need of processing, causing it to be scheduled.
-			XLANG_FORCEINLINE void Dirty()
-			{
-				mState |= STATE_DIRTY;
-			}
+			XLANG_FORCEINLINE void Dirty()							{ mState |= STATE_DIRTY; }
 
 			/// Marks the actor as not in need of processing.
-			XLANG_FORCEINLINE void Clean()
-			{
-				mState &= ~STATE_DIRTY;
-			}
+			XLANG_FORCEINLINE void Clean()							{ mState &= ~STATE_DIRTY; }
 
 			/// Marks the actor as being processed but not yet in need of further processing.
 			XLANG_FORCEINLINE void CleanAndSchedule()
 			{
-				uint32_t state(mState);
+				u32 state(mState);
 				state &= ~STATE_DIRTY;
 				state |= STATE_BUSY;
 				mState = state;
 			}
 
 			/// Marks the actor as neither being processed nor in need of processing.
-			XLANG_FORCEINLINE void CleanAndUnschedule()
-			{
-				mState &= ~(STATE_DIRTY | STATE_BUSY);
-			}
+			XLANG_FORCEINLINE void CleanAndUnschedule()				{ mState &= ~(STATE_DIRTY | STATE_BUSY); }
 
 			/// Returns true if the actor has been notified that its handlers need updating.
-			XLANG_FORCEINLINE bool AreHandlersDirty() const
-			{
-				return ((mState & STATE_HANDLERS_DIRTY) != 0);
-			}
+			XLANG_FORCEINLINE bool AreHandlersDirty() const			{ return ((mState & STATE_HANDLERS_DIRTY) != 0); }
 
 			/// Marks that the actor's handler list has changed since it was last processed.
-			XLANG_FORCEINLINE void DirtyHandlers()
-			{
-				mState |= STATE_HANDLERS_DIRTY;
-			}
+			XLANG_FORCEINLINE void DirtyHandlers()					{ mState |= STATE_HANDLERS_DIRTY; }
 
 			/// Deregisters a previously registered handler.
 			template <class ActorType, class ValueType>
-			inline bool DeregisterHandler(
-				ActorType *const actor,
-				void (ActorType::*handler)(const ValueType &message, const Address from));
+			inline bool			DeregisterHandler(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 			/// Checks whether the given message handler is registered.
 			template <class ActorType, class ValueType>
-			inline bool IsHandlerRegistered(
-				ActorType *const actor,
-				void (ActorType::*handler)(const ValueType &message, const Address from));
+			inline bool			IsHandlerRegistered(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
 
 			/// Removes any handlers marked for removal and adds any scheduled for adding.
-			inline void ValidateHandlers();
+			inline void			ValidateHandlers();
 
 			/// Gets the number of messages queued at this actor, awaiting processing.
-			inline uint32_t GetNumQueuedMessages() const;
+			inline u32			GetNumQueuedMessages() const;
 
 			/// Checks whether the actor has any queued messages awaiting processing.
-			inline bool HasQueuedMessage() const;
+			inline bool			HasQueuedMessage() const;
 
 			/// Gets the first message from the message queue, if any.
-			inline IMessage *GetQueuedMessage();
+			inline IMessage*	GetQueuedMessage();
 
 			/// Presents the actor with one of its queued messages, if any,
 			/// and calls the associated handler.
-			inline void ProcessMessage(IMessage *const message);
+			inline void			ProcessMessage(IMessage *const message);
 
 		private:
 
 			/// Flags describing the execution state of an actor.
 			enum
 			{ 
-				STATE_BUSY = (1 << 0),                  ///< Being processed (in the work queue or being executed).
-				STATE_DIRTY = (1 << 1),                 ///< In need of more processing after current execution.
-				STATE_HANDLERS_DIRTY = (1 << 2),        ///< One or more message handlers added or removed since last run.
-				STATE_REFERENCED = (1 << 3),            ///< Actor is referenced by one or more ActorRefs so can't be garbage collected.
-				STATE_FORCESIZEINT = 0xFFFFFFFF         ///< Ensures the enum is an integer.
+				STATE_BUSY = (1 << 0),								///< Being processed (in the work queue or being executed).
+				STATE_DIRTY = (1 << 1),								///< In need of more processing after current execution.
+				STATE_HANDLERS_DIRTY = (1 << 2),					///< One or more message handlers added or removed since last run.
+				STATE_REFERENCED = (1 << 3),						///< Actor is referenced by one or more ActorRefs so can't be garbage collected.
+				STATE_FORCESIZEINT = 0xFFFFFFFF						///< Ensures the enum is an integer.
 			};
 
 			typedef IntrusiveQueue<IMessage> MessageQueue;
-			typedef IntrusiveList<IMessageHandler> MessageHandlerList;
 
-			ActorCore(const ActorCore &other);
-			ActorCore &operator=(const ActorCore &other);
+							ActorCore(const ActorCore &other);
+							ActorCore &operator=(const ActorCore &other);
 
 			/// Updates the core's registered handler list with any changes from the actor.
-			void UpdateHandlers();
+			void			UpdateHandlers();
 
 			/// Executes the core's default handler, if any, for an unhandled message.
-			bool ExecuteDefaultHandler(IMessage *const message);
+			bool			ExecuteDefaultHandler(IMessage *const message);
 
 			/// Executes the framework's fallback handler, if any, for an unhandled message.
-			bool ExecuteFallbackHandler(IMessage *const message);
+			bool			ExecuteFallbackHandler(IMessage *const message);
 
-			ActorCore *mNext;                           ///< Pointer to the next actor in a queue of actors.
-			Actor *mParent;                             ///< Address of the actor instance containing this core.
-			Framework *mFramework;                      ///< The framework instance that owns this actor.
-			uint32_t mSequence;                         ///< Sequence number of the actor (half of its unique address).
-			uint32_t mMessageCount;						///< Number of messages in the message queue.
-			MessageQueue mMessageQueue;                 ///< Queue of messages awaiting processing.
-			MessageHandlerList mMessageHandlers;        ///< List of registered message handlers.
-			uint32_t mState;                            ///< Execution state (idle, busy, dirty).
+			ActorCore					*mNext;						///< Pointer to the next actor in a queue of actors.
+			Actor						*mParent;					///< Address of the actor instance containing this core.
+			Framework					*mFramework;				///< The framework instance that owns this actor.
+			u32							mSequence;					///< Sequence number of the actor (half of its unique address).
+			u32							mMessageCount;				///< Number of messages in the message queue.
+			MessageQueue				mMessageQueue;				///< Queue of messages awaiting processing.
+			u32							mNumMessageHandlers;
+			u32							mMaxMessageHandlers;
+			detail::MessageHandler_t	mMessageHandlers[32];
+			u32							mState;						///< Execution state (idle, busy, dirty).
 		};
 
 
 		template <class ActorType, class ValueType>
-		inline bool ActorCore::DeregisterHandler(
-			ActorType *const /*actor*/,
-			void (ActorType::*handler)(const ValueType &message, const Address from))
+		inline bool ActorCore::DeregisterHandler(ActorType *const /*actor*/, void (ActorType::*handler)(const ValueType &message, const Address from))
 		{
 			// If the message value type has a valid (non-zero) type name defined for it,
 			// then we use explicit type names to match messages to handlers.
@@ -248,13 +194,9 @@ namespace xlang
 
 			// We don't need to lock this because only one thread can access it at a time.
 			// Find the handler in the registered handler list.
-			typename MessageHandlerList::Iterator handlers(mMessageHandlers.Begin());
-			const typename MessageHandlerList::Iterator handlersEnd(mMessageHandlers.End());
-
-			while (handlers != handlersEnd)
+			for (u32 i=0; i<mNumMessageHandlers; ++i)
 			{
-				IMessageHandler *const messageHandler(*handlers);
-
+				IMessageHandler* messageHandler = (IMessageHandler*)&mMessageHandlers[i];
 				// Try to convert this handler, of unknown type, to the target type.
 				const MessageHandlerType *const typedHandler = HandlerCaster:: template CastHandler<ValueType>(messageHandler);
 				if (typedHandler)
@@ -274,50 +216,43 @@ namespace xlang
 						return true;
 					}
 				}
-
-				++handlers;
 			}
-
 			return false;
 		}
 
 
 		template <class ActorType, class ValueType>
-		inline bool ActorCore::IsHandlerRegistered(
-			ActorType *const /*actor*/,
-			void (ActorType::*handler)(const ValueType &message, const Address from))
+		inline bool ActorCore::IsHandlerRegistered(ActorType *const /*actor*/, void (ActorType::*handler)(const ValueType &message, const Address from))
 		{
+			// If the message value type has a valid (non-zero) type name defined for it,
+			// then we use explicit type names to match messages to handlers.
+			// The default value of zero indicates that no type name has been defined,
+			// in which case we rely on compiler-generated RTTI to identify message types.
 			typedef MessageHandler<ActorType, ValueType> MessageHandlerType;
 			typedef MessageHandlerCast<ActorType, MessageTraits<ValueType>::HAS_TYPE_NAME> HandlerCaster;
 
-			// Search for the handler in the registered handler list.
-			typename MessageHandlerList::Iterator handlers(mMessageHandlers.Begin());
-			const typename MessageHandlerList::Iterator handlersEnd(mMessageHandlers.End());
-
-			while (handlers != handlersEnd)
+			// We don't need to lock this because only one thread can access it at a time.
+			// Find the handler in the registered handler list.
+			for (u32 i=0; i<mNumMessageHandlers; ++i)
 			{
-				IMessageHandler *const messageHandler(*handlers);
-
+				IMessageHandler* messageHandler = (IMessageHandler*)&mMessageHandlers[i];
 				// Try to convert this handler, of unknown type, to the target type.
 				const MessageHandlerType *const typedHandler = HandlerCaster:: template CastHandler<ValueType>(messageHandler);
 				if (typedHandler)
 				{
-					// Count as not registered if it's marked for deregistration.
-					// But it may be registered more than once, so keep looking.
+					// Don't count the handler if it's already marked for deregistration.
 					if (typedHandler->GetHandlerFunction() == handler && !typedHandler->IsMarked())
 					{
 						return true;
 					}
 				}
-
-				++handlers;
 			}
-
 			return false;
+
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ActorCore::GetNumQueuedMessages() const
+		XLANG_FORCEINLINE u32 ActorCore::GetNumQueuedMessages() const
 		{
 			return mMessageCount;
 		}
@@ -334,7 +269,7 @@ namespace xlang
 			// This exploits the fact that bools are either 0 or 1 to avoid a branch.
 			IMessage *const message(mMessageQueue.Pop());
 			const bool gotMessage(message != 0);
-			const uint32_t messageDecrement(static_cast<uint32_t>(gotMessage));
+			const u32 messageDecrement(static_cast<u32>(gotMessage));
 
 			XLANG_ASSERT(messageDecrement <= 1);
 			XLANG_ASSERT(mMessageCount >= messageDecrement);
@@ -361,27 +296,27 @@ namespace xlang
 			// Give each registered handler a chance to handle this message.
 			bool handled(false);
 
-			MessageHandlerList::Iterator handlersIt(mMessageHandlers.Begin());
-			const MessageHandlerList::Iterator handlersEnd(mMessageHandlers.End());
+			// Use the message type name as the key
+			int const msg_typeid = message->TypeId();
 
-			while (handlersIt != handlersEnd)
+			// @TODO: Binary search!
+			// Currently a linear search
+			for (u32 i=0; i<mNumMessageHandlers; ++i)
 			{
-				const IMessageHandler *const handler(*handlersIt);
-				handled |= handler->Handle(mParent, message);
-
-				++handlersIt;
+				IMessageHandler* handler = (IMessageHandler*)&mMessageHandlers[i];
+				if (handler->GetMessageTypeId() == msg_typeid)
+				{
+					handled = handler->Handle(mParent, message);
+					XLANG_ASSERT(handled);
+				}
 			}
 
 			if (handled)
-			{
 				return;
-			}
 
 			// If no registered handler handled the message, execute the default handler instead.
 			if (ExecuteDefaultHandler(message))
-			{
 				return;
-			}
 
 			// Finally if the actor has no default handler then run the framework's fallback handler.
 			ExecuteFallbackHandler(message);

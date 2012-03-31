@@ -1,10 +1,9 @@
 #ifndef __XLANG_ADDRESS_H
 #define __XLANG_ADDRESS_H
-
-/**
-\file Address.h
-Address object, the unique name of an actor.
-*/
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Threading\x_Mutex.h"
@@ -162,7 +161,7 @@ namespace xlang
 		printf("Actor has address %d\n", actor.GetAddress().AsInteger());
 		\endcode
 		*/
-		XLANG_FORCEINLINE uint32_t AsInteger() const
+		XLANG_FORCEINLINE u32 AsInteger() const
 		{
 			return mSequence;
 		}
@@ -219,13 +218,13 @@ namespace xlang
 
 	private:
 
-		static const uint32_t RECEIVER_FLAG = (1UL << 31);
+		static const u32 RECEIVER_FLAG = (1UL << 31);
 
 		static detail::Mutex smMutex;       ///< Mutex that protects access to the static 'next value' member.
-		static uint32_t smNextValue;        ///< Static member that remembers the next unique address value.
+		static u32 smNextValue;        ///< Static member that remembers the next unique address value.
 
 		/// \brief Returns the next unique address in sequence.
-		inline static uint32_t GetNextSequenceNumber()
+		inline static u32 GetNextSequenceNumber()
 		{
 			detail::Lock lock(smMutex);
 
@@ -239,41 +238,41 @@ namespace xlang
 			return 1;
 		}
 
-		XLANG_FORCEINLINE static Address MakeActorAddress(const uint32_t index)
+		XLANG_FORCEINLINE static Address MakeActorAddress(const u32 index)
 		{
-			const uint32_t sequence(GetNextSequenceNumber());
+			const u32 sequence(GetNextSequenceNumber());
 			return Address(sequence, index);
 		}
 
-		XLANG_FORCEINLINE static Address MakeReceiverAddress(const uint32_t index)
+		XLANG_FORCEINLINE static Address MakeReceiverAddress(const u32 index)
 		{
-			const uint32_t sequence(GetNextSequenceNumber());
+			const u32 sequence(GetNextSequenceNumber());
 			return Address(sequence, index | Address::RECEIVER_FLAG);
 		}
 
 		/// Constructor that accepts a specific value for the address.
 		/// \param value The value for the newly constructed address.
-		XLANG_FORCEINLINE Address(const uint32_t sequence, const uint32_t index) : mSequence(sequence), mIndex(index)
+		XLANG_FORCEINLINE Address(const u32 sequence, const u32 index) : mSequence(sequence), mIndex(index)
 		{
 		}
 
-		XLANG_FORCEINLINE uint32_t GetSequence() const
+		XLANG_FORCEINLINE u32 GetSequence() const
 		{
 			return mSequence;
 		}
 
-		XLANG_FORCEINLINE uint32_t GetIndex() const
+		XLANG_FORCEINLINE u32 GetIndex() const
 		{
 			return (mIndex & (~RECEIVER_FLAG));
 		}
 
-		uint32_t mSequence;                 ///< Unique sequence number.
-		uint32_t mIndex;                    ///< Pool index at which the addressed entity is registered.
+		u32 mSequence;                 ///< Unique sequence number.
+		u32 mIndex;                    ///< Pool index at which the addressed entity is registered.
 	};
 
 
 } // namespace xlang
 
 
-#endif // THERON_ADDRESS_H
+#endif // XLANG_ADDRESS_H
 

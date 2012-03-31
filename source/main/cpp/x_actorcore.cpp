@@ -21,38 +21,34 @@ namespace xlang
 			, mSequence(0)
 			, mMessageCount(0)
 			, mMessageQueue()
-			, mMessageHandlers()
+			, mNumMessageHandlers(0)
+			, mMaxMessageHandlers(32)
 			, mState(0)
 		{
 			// Actor cores shouldn't be default-constructed.
 			XLANG_FAIL();
 		}
 
-
-		ActorCore::ActorCore(const uint32_t sequence, Framework *const framework, Actor *const actor)
+		ActorCore::ActorCore(const u32 sequence, Framework *const framework, Actor *const actor)
 			: mNext(0)
 			, mParent(actor)
 			, mFramework(framework)
 			, mSequence(sequence)
 			, mMessageCount(0)
 			, mMessageQueue()
-			, mMessageHandlers()
+			, mNumMessageHandlers(0)
+			, mMaxMessageHandlers(32)
 			, mState(STATE_REFERENCED)
 		{
 			XLANG_ASSERT(GetSequence() != 0);
 			XLANG_ASSERT(mFramework != 0);
 		}
 
-
 		ActorCore::~ActorCore()
 		{
 			// We don't need to lock this because only one thread can access it at a time.
 			// Free all currently allocated handler objects.
-			while (IMessageHandler *const handler = mMessageHandlers.Front())
-			{
-				mMessageHandlers.Remove(handler);
-				AllocatorManager::Instance().GetAllocator()->Free(handler);
-			}
+			mNumMessageHandlers = 0;
 
 			{
 				// The directory lock is used to protect the global free list.
@@ -72,48 +68,57 @@ namespace xlang
 			}
 		}
 
-
 		Mutex &ActorCore::GetMutex() const
 		{
 			// We reuse the main message loop mutex to avoid locking an additional mutex.
 			return mFramework->GetMutex();
 		}
 
-
 		void ActorCore::UpdateHandlers()
 		{
-			MessageHandlerList &newHandlerList(mParent->GetNewHandlerList());
-
-			// Add any new handlers. We do this first in case any are already marked for deletion.
-			// The handler class contains the next pointer, so handlers can only be in one list at a time.
-			while (IMessageHandler *const handler = newHandlerList.Front())
+			// Filter any handlers marked for deletion
+			for (u32 i=0; i<mNumMessageHandlers; ++i)
 			{
-				newHandlerList.Remove(handler);
-				mMessageHandlers.Insert(handler);
-			}
-
-			// Transfer all handlers to the new handler list, omitting any which are marked for deletion.    
-			while (IMessageHandler *const handler = mMessageHandlers.Front())
-			{
-				mMessageHandlers.Remove(handler);
+				IMessageHandler* handler = (IMessageHandler*)&mMessageHandlers[i];
 				if (handler->IsMarked())
 				{
-					AllocatorManager::Instance().GetAllocator()->Free(handler);
-				}
-				else
-				{
-					newHandlerList.Insert(handler);
+					for (u32 j=i+1; j<mNumMessageHandlers; ++j)
+						mMessageHandlers[i] = mMessageHandlers[j];
+					--mNumMessageHandlers;
 				}
 			}
 
-			// Finally transfer the filtered handlers back in the actual list.
-			while (IMessageHandler *const handler = newHandlerList.Front())
+			if (mParent->mNewMessageHandlersNum!=0)
 			{
-				newHandlerList.Remove(handler);
-				mMessageHandlers.Insert(handler);
+				// Sorted-Insert of the new handlers
+				for (u32 i=0; i<mParent->mNewMessageHandlersNum; ++i)
+				{
+					IMessageHandler* new_handler = (IMessageHandler*)&mParent->mNewMessageHandlers[i];
+					if (new_handler->IsMarked())
+						continue;
+
+					// Search for a place
+					s32 ins = 0;
+					for (; ins<(s32)mNumMessageHandlers; ++ins)
+					{
+						IMessageHandler* handler = (IMessageHandler*)&mMessageHandlers[ins];
+						if ((xbyte*)new_handler->GetMessageTypeId() < (xbyte*)handler->GetMessageTypeId())
+							break;
+					}
+
+					// Insert
+					// First, Move all entries up
+					//for (u32 k=ins+1; k<mNumMessageHandlers; ++k)
+					for (s32 k=mNumMessageHandlers-1; k>=ins; --k)
+						mMessageHandlers[k+1] = mMessageHandlers[k];
+					
+					// Then, Data copy the new handler at the insert position
+					mMessageHandlers[ins] = mParent->mNewMessageHandlers[i];
+					mNumMessageHandlers++;
+				}
+				mParent->mNewMessageHandlersNum = 0;
 			}
 		}
-
 
 		bool ActorCore::ExecuteDefaultHandler(IMessage *const message)
 		{
@@ -132,7 +137,6 @@ namespace xlang
 		{
 			return mFramework->ExecuteFallbackHandler(message);
 		}
-
 
 		void ActorCore::Unreference()
 		{

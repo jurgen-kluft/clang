@@ -24,13 +24,13 @@ namespace xlang
 		{
 		public:
 
-			inline void Handle(const void *const data, const uint32_t size, const Address from);
+			inline void Handle(const void *const data, const u32 size, const Address from);
 		};
 
 
 		inline void DefaultFallbackHandler::Handle(
 			const void *const XLANG_FALLBACK_HANDLER_ARG(data),
-			const uint32_t XLANG_FALLBACK_HANDLER_ARG(size),
+			const u32 XLANG_FALLBACK_HANDLER_ARG(size),
 			const Address XLANG_FALLBACK_HANDLER_ARG(from))
 		{
 #if XLANG_ENABLE_UNHANDLED_MESSAGE_CHECKS

@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_THREADPOOL_THREADPOOL_H
 #define __XLANG_PRIVATE_THREADPOOL_THREADPOOL_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Containers\x_IntrusiveQueue.h"
@@ -43,46 +47,46 @@ namespace xlang
 			ThreadPool();
 
 			/// Starts the pool, starting the given number of worker threads.
-			void Start(const uint32_t count);
+			void Start(u32 count, u32 target_count);
 
 			/// Stops the pool, terminating all worker threads.
 			void Stop();
 
 			/// Requests that there be at most \ref count worker threads in the pool.
 			/// \note If the current number is higher, threads are terminated until the maximum is reached.
-			void SetMaxThreads(const uint32_t count);
+			void SetMaxThreads(const u32 count);
 
 			/// Requests that there be at least \ref count worker threads in the pool.
 			/// \note If the current number is lower, new threads are spawned until the maximum is reached.
-			void SetMinThreads(const uint32_t count);
+			void SetMinThreads(const u32 count);
 
 			/// Returns the current maximum permitted number of worker threads in this pool.
-			inline uint32_t GetMaxThreads() const;
+			inline u32 GetMaxThreads() const;
 
 			/// Returns the current minimum permitted number of worker threads in this pool.
-			inline uint32_t GetMinThreads() const;
+			inline u32 GetMinThreads() const;
 
 			/// Gets the actual number of worker threads currently in the pool.
-			inline uint32_t GetNumThreads() const;
+			inline u32 GetNumThreads() const;
 
 			/// Gets the peak number of worker threads ever in the pool.
 			/// \note This includes any threads which were created but later terminated.
-			inline uint32_t GetPeakThreads() const;
+			inline u32 GetPeakThreads() const;
 
 			/// Resets internal counters that track reported events for thread pool management.
 			inline void ResetCounters() const;
 
 			/// Returns the number of messages processed within this pool.
 			/// The count is incremented automatically and can be reset using ResetCounters.
-			inline uint32_t GetNumMessagesProcessed() const;
+			inline u32 GetNumMessagesProcessed() const;
 
 			/// Returns the number of thread pulse events made in response to arriving messages.
 			/// The count is incremented automatically and can be reset using ResetCounters.
-			inline uint32_t GetNumThreadsPulsed() const;
+			inline u32 GetNumThreadsPulsed() const;
 
 			/// Returns the number of threads woken by pulse events in response to arriving messages.
 			/// The count is incremented automatically and can be reset using ResetCounters.
-			inline uint32_t GetNumThreadsWoken() const;
+			inline u32 GetNumThreadsWoken() const;
 
 			/// Gets a reference to the core message processing mutex.
 			inline Mutex &GetMutex() const;
@@ -100,7 +104,7 @@ namespace xlang
 			typedef IntrusiveQueue<ActorCore> WorkQueue;
 
 			/// Clamps a given thread count to a legal range.
-			inline static uint32_t ClampThreadCount(const uint32_t count);
+			inline static u32 ClampThreadCount(const u32 count);
 
 			ThreadPool(const ThreadPool &other);
 			ThreadPool &operator=(const ThreadPool &other);
@@ -115,14 +119,14 @@ namespace xlang
 			inline void ProcessActorCore(Lock &lock, ActorCore *const actorCore);
 
 			// Accessed in the main loop.
-			uint32_t mNumThreads;                       ///< Counts the number of threads running.
-			uint32_t mTargetThreads;                    ///< The number of threads currently desired.
+			u32 mNumThreads;                       ///< Counts the number of threads running.
+			u32 mTargetThreads;                    ///< The number of threads currently desired.
 			WorkQueue mWorkQueue;                       ///< Threadsafe queue of actors waiting to be processed.
 			mutable Monitor mWorkQueueMonitor;          ///< Synchronizes access to the work queue.
 			mutable Monitor mManagerMonitor;            ///< Locking event that wakes the manager thread.
-			mutable uint32_t mNumMessagesProcessed;     ///< Counter used to count processed messages.
-			mutable uint32_t mNumThreadsPulsed;         ///< Counts the number of times we signaled a worker thread to wake.
-			mutable uint32_t mNumThreadsWoken;          ///< Counter used to count woken threads.
+			mutable u32 mNumMessagesProcessed;     ///< Counter used to count processed messages.
+			mutable u32 mNumThreadsPulsed;         ///< Counts the number of times we signaled a worker thread to wake.
+			mutable u32 mNumThreadsWoken;          ///< Counter used to count woken threads.
 
 			// Accessed infrequently.
 			ThreadCollection mWorkerThreads;            ///< Owned collection of worker threads.
@@ -130,9 +134,9 @@ namespace xlang
 		};
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::GetMaxThreads() const
+		XLANG_FORCEINLINE u32 ThreadPool::GetMaxThreads() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 
 			{
 				Lock lock(mManagerMonitor.GetMutex());
@@ -143,9 +147,9 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::GetMinThreads() const
+		XLANG_FORCEINLINE u32 ThreadPool::GetMinThreads() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 
 			{
 				Lock lock(mManagerMonitor.GetMutex());
@@ -156,9 +160,9 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::GetNumThreads() const
+		XLANG_FORCEINLINE u32 ThreadPool::GetNumThreads() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 
 			{
 				Lock lock(mManagerMonitor.GetMutex());
@@ -169,9 +173,9 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::GetPeakThreads() const
+		XLANG_FORCEINLINE u32 ThreadPool::GetPeakThreads() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 
 			{
 				Lock lock(mManagerMonitor.GetMutex());
@@ -192,9 +196,9 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::GetNumMessagesProcessed() const
+		XLANG_FORCEINLINE u32 ThreadPool::GetNumMessagesProcessed() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 
 			{
 				Lock lock(mWorkQueueMonitor.GetMutex());
@@ -205,9 +209,9 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::GetNumThreadsPulsed() const
+		XLANG_FORCEINLINE u32 ThreadPool::GetNumThreadsPulsed() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 
 			{
 				Lock lock(mWorkQueueMonitor.GetMutex());
@@ -218,9 +222,9 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::GetNumThreadsWoken() const
+		XLANG_FORCEINLINE u32 ThreadPool::GetNumThreadsWoken() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 
 			{
 				Lock lock(mWorkQueueMonitor.GetMutex());
@@ -231,7 +235,7 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ThreadPool::ClampThreadCount(const uint32_t count)
+		XLANG_FORCEINLINE u32 ThreadPool::ClampThreadCount(const u32 count)
 		{
 			if (count == 0)
 			{
@@ -311,8 +315,8 @@ namespace xlang
 			// Increment the message processing counter if we'll process a message.
 			// We do this while still holding the lock to ensure the counter can't be cleared
 			// just before we increment it. We exploit the fact that bools are 0 or 1 to avoid branches.
-			const uint32_t messageValid(message != 0);
-			const uint32_t actorReferenced(referenced);
+			const u32 messageValid(message != 0);
+			const u32 actorReferenced(referenced);
 			mNumMessagesProcessed += (messageValid & actorReferenced);
 
 			lock.Unlock();
@@ -355,8 +359,10 @@ namespace xlang
 					mWorkQueue.Push(actorCore);
 					return;
 				}
-
-				actorCore->CleanAndUnschedule();
+				else
+				{
+					actorCore->CleanAndUnschedule();
+				}
 			}
 		}
 

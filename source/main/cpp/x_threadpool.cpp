@@ -25,12 +25,15 @@ namespace xlang
 		}
 
 
-		void ThreadPool::Start(const uint32_t count)
+		void ThreadPool::Start(u32 count, u32 target_count)
 		{
 			XLANG_ASSERT(count > 0);
 
 			mNumThreads = 0;
 			mTargetThreads = 0;
+
+			// Reserve N number of threads from the start
+			mWorkerThreads.Reserve(target_count);
 
 			// Set the target thread count, waking the manager thread and
 			// causing it to create the initial set of worker threads.
@@ -75,9 +78,9 @@ namespace xlang
 		}
 
 
-		void ThreadPool::SetMaxThreads(const uint32_t count)
+		void ThreadPool::SetMaxThreads(const u32 count)
 		{
-			const uint32_t maxThreads(ClampThreadCount(count));
+			const u32 maxThreads(ClampThreadCount(count));
 			Lock lock(mManagerMonitor.GetMutex());
 
 			// Reduce the target thread count but don't increase it.
@@ -91,9 +94,9 @@ namespace xlang
 		}
 
 
-		void ThreadPool::SetMinThreads(const uint32_t count)
+		void ThreadPool::SetMinThreads(const u32 count)
 		{
-			const uint32_t minThreads(ClampThreadCount(count));
+			const u32 minThreads(ClampThreadCount(count));
 			Lock lock(mManagerMonitor.GetMutex());
 
 			// Increase the target thread count but don't reduce it.

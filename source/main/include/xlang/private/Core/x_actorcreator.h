@@ -97,8 +97,8 @@ namespace xlang
 			ActorCore *actorCore(0);
 
 			// Allocate a separate, aligned memory block for the actor itself.
-			const uint32_t size(sizeof(ActorType));
-			const uint32_t alignment(ActorAlignment<ActorType>::ALIGNMENT);
+			const u32 size(sizeof(ActorType));
+			const u32 alignment(ActorAlignment<ActorType>::ALIGNMENT);
 
 			void *const actorMemory = allocator->AllocateAligned(size, alignment);
 			if (actorMemory)

@@ -1,41 +1,20 @@
-// Copyright (C) by Ashton Mason. See LICENSE.txt for licensing information.
-
-
 //
 // This sample shows how to register a default handler for messages of unhandled types.
 //
+#include "xlang\x_Actor.h"
+#include "xlang\x_Framework.h"
+#include "xlang\x_Receiver.h"
 
 
-#include <stdio.h>
-
-#include <Theron/Actor.h>
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-
-
-// A simple message type.
-class MessageA
-{
-};
-
-
-// A second, different, message type.
-class MessageB
-{
-};
-
-
-// An user-defined error message type.
-class ErrorMessage
-{
-};
+// Placement new/delete
+void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+void	operator delete(void* mem, void* )							{ }
 
 
 // A simple actor with a default message handler.
-class SimpleActor : public Theron::Actor
+class SimpleActor : public xlang::Actor
 {
 public:
-
     inline SimpleActor()
     {
         // We only have a handler for messages of type MessageA.
@@ -46,10 +25,27 @@ public:
         SetDefaultHandler(this, &SimpleActor::DefaultHandler);
     }
 
+	// A simple message type.
+	class MessageA
+	{
+	};
+
+
+	// A second, different, message type.
+	class MessageB
+	{
+	};
+
+
+	// An user-defined error message type.
+	class ErrorMessage
+	{
+	};
+
 private:
 
     // Handler for messages of type MessageA.
-    inline void MessageAHandler(const MessageA &message, const Theron::Address from)
+    inline void MessageAHandler(const MessageA &message, const xlang::Address from)
     {
         printf("MessageAHandler received message of type MessageA\n");
         Send(message, from);
@@ -61,7 +57,7 @@ private:
     // Note that unlike a conventional handler, the default handler
     // only accepts a 'from' address and not a message value. That's
     // because the type of the message isn't known to us.
-    inline void DefaultHandler(const Theron::Address from)
+    inline void DefaultHandler(const xlang::Address from)
     {
         printf("DefaultHandler received unknown message from address '%d'\n", from.AsInteger());
         
@@ -74,15 +70,15 @@ private:
 
 int main()
 {
-    Theron::Framework framework;
-    Theron::ActorRef actor(framework.CreateActor<SimpleActor>());
+    xlang::Framework framework;
+    xlang::ActorRef actor(framework.CreateActor<SimpleActor>());
 
-    Theron::Receiver receiver;
+    xlang::Receiver receiver;
     
     // Push a message of type MessageA to the actor.
     // The message type is handled by the actor and will be returned.
-    Theron::Address fromAddress(receiver.GetAddress());
-    if (!actor.Push(MessageA(), fromAddress))
+    xlang::Address fromAddress(receiver.GetAddress());
+    if (!actor.Push(SimpleActor::MessageA(), fromAddress))
     {
         printf("Failed to push message of type MessageA\n");
     }
@@ -98,7 +94,7 @@ int main()
     // Push() method still returns true, indicating success, because the
     // message was successfully *delivered* to the recipient - even if it
     // was just subsequently ignored or default handled.
-    if (!actor.Push(MessageB(), fromAddress))
+    if (!actor.Push(SimpleActor::MessageB(), fromAddress))
     {
         printf("Failed to push message of type MessageB\n");
     }

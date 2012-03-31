@@ -1,5 +1,9 @@
 #ifndef __XLANG_ALIGN_H
 #define __XLANG_ALIGN_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Core\x_ActorAlignment.h"
@@ -59,7 +63,7 @@ supports aligned allocations. The DefaultAllocator, used by default, supports al
 	template <>                                                                 \
 struct ActorAlignment<ActorType>                                            \
 {                                                                           \
-	static const uint32_t ALIGNMENT = (alignment);                          \
+	static const u32 ALIGNMENT = (alignment);                          \
 };                                                                          \
 }                                                                           \
 }
@@ -110,7 +114,7 @@ supports aligned allocations. The DefaultAllocator, used by default, supports al
 			template <>                                                    \
 			struct MessageAlignment<MessageType>                           \
 			{                                                              \
-				static const uint32_t ALIGNMENT = (alignment);             \
+				static const u32 ALIGNMENT = (alignment);             \
 			};                                                             \
 		}                                                                  \
 	}
@@ -138,11 +142,11 @@ variables within user functions).
 #endif // _MSC_VER
 
 // A message type that requires alignment.
-struct THERON_PREALIGN(128) AlignedMessage
+struct XLANG_PREALIGN(128) AlignedMessage
 {
 int mValue;
 
-} THERON_POSTALIGN(128);
+} XLANG_POSTALIGN(128);
 
 int main()
 {
@@ -153,13 +157,13 @@ The reason for using two macros is for portability: GCC and Visual C++
 differ on whether the alignment decoration comes before or after the
 type definition.
 
-The THERON_PREALIGN and THERON_POSTALIGN macros don't actually affect
+The XLANG_PREALIGN and XLANG_POSTALIGN macros don't actually affect
 xlang at all, because xlang never allocates user message types on the
 stack. They are provided only for user convenience. Users with
 types that require alignment can use these macros to cause those types
 to be aligned correctly when used on the stack in their own code. Many
 users with aligned types will of course already have their own similar
-mechanism, and if so they can ignore THERON_PREALIGN and THERON_POSTALIGN.
+mechanism, and if so they can ignore XLANG_PREALIGN and XLANG_POSTALIGN.
 
 In any event users with aligned actor and message types should remember
 to also use the \ref XLANG_ALIGN_ACTOR and \ref XLANG_ALIGN_MESSAGE
@@ -171,14 +175,14 @@ a different compiler, by defining it in a local header included in user
 code before any xlang headers.
 
 \note You may need to disable warning C4324 in Visual C++ builds when using this macro.
-\note If you use this macro, you should also use \ref THERON_POSTALIGN for portability.
+\note If you use this macro, you should also use \ref XLANG_POSTALIGN for portability.
 
-\see THERON_POSTALIGN
+\see XLANG_POSTALIGN
 \see <a href="http://www.theron-library.com/index.php?t=page&p=AligningMessages">Aligning messages</a>
 */
 #define XLANG_PREALIGN(alignment)
 #endif
-#endif // THERON_PREALIGN
+#endif // XLANG_PREALIGN
 
 
 #ifndef XLANG_POSTALIGN
@@ -191,14 +195,14 @@ code before any xlang headers.
 \brief Informs the compiler of the stack alignment requirements of a type.
 Declares an aligned type. Second of two parts, used after the type definition.
 
-\note If you use this macro, you should also use \ref THERON_PREALIGN.
+\note If you use this macro, you should also use \ref XLANG_PREALIGN.
 
-\see THERON_PREALIGN
+\see XLANG_PREALIGN
 \see <a href="http://www.theron-library.com/index.php?t=page&p=AligningMessages">Aligning messages</a>
 */
 #define XLANG_POSTALIGN(alignment)
 #endif
-#endif // THERON_POSTALIGN
+#endif // XLANG_POSTALIGN
 
 
 #ifndef XLANG_ALIGNOF
@@ -238,7 +242,7 @@ code before any xlang headers.
 \note Alignment values are expected to be powers of two.
 */
 #define XLANG_ALIGNED(pointer, alignment) ((reinterpret_cast<uintptr_t>(pointer) & (alignment - 1)) == 0)
-#endif // THERON_ALIGNED
+#endif // XLANG_ALIGNED
 
 
 namespace xlang
@@ -246,7 +250,7 @@ namespace xlang
 	namespace detail
 	{
 		template <class Type>
-		XLANG_FORCEINLINE void AlignPointer(Type *& pointer, const uint32_t alignment)
+		XLANG_FORCEINLINE void AlignPointer(Type *& pointer, const u32 alignment)
 		{
 			// The uintptr_t type is an integer wide enough to store the value of a pointer.
 			// It isn't defined in traditional C++, but is introduced via BasicTypes.h included above.
@@ -259,5 +263,5 @@ namespace xlang
 } // namespace xlang
 
 
-#endif // THERON_ALIGN_H
+#endif // XLANG_ALIGN_H
 

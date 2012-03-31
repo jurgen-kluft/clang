@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_ALLOCATORS_DEFAULTALLOCATOR_H
 #define __XLANG_PRIVATE_ALLOCATORS_DEFAULTALLOCATOR_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 /**
 \file DefaultAllocator.h
@@ -66,7 +70,7 @@ namespace xlang
 	{
 	public:
 
-		static const uint32_t GUARD_VALUE = 0xdddddddd;
+		static const u32 GUARD_VALUE = 0xdddddddd;
 
 		/**
 		\brief Default constructor
@@ -130,9 +134,9 @@ namespace xlang
 		Where:
 		- The \em caller \em  block starts at an aligned address.
 		- \em padding is a padding field of variable size used to ensure that \em caller \em block is aligned.
-		- \em offset is a uint32_t recording the offset in bytes of \em caller \em block within the block.
-		- \em size is a uint32_t recording the size of \em caller \em block.
-		- \em guard is a uint32_t marker word with known value of <code>0xdddddddd</code>.
+		- \em offset is a u32 recording the offset in bytes of \em caller \em block within the block.
+		- \em size is a u32 recording the size of \em caller \em block.
+		- \em guard is a u32 marker word with known value of <code>0xdddddddd</code>.
 		- \em waste is an unused field of variable size left over within the block after offsetting of the \em caller \em block.
 
 		\param size The size of the memory block to allocate, in bytes, which must be a non-zero multiple of four bytes.
@@ -181,7 +185,7 @@ namespace xlang
 
 		\see GetPeakBytesAllocated
 		*/
-		inline uint32_t GetBytesAllocated() const;
+		inline u32 GetBytesAllocated() const;
 
 		/**
 		\brief Gets the peak number of bytes ever allocated by the allocator at one time.
@@ -209,7 +213,7 @@ namespace xlang
 
 		\see GetBytesAllocated
 		*/
-		inline uint32_t GetPeakBytesAllocated() const;
+		inline u32 GetPeakBytesAllocated() const;
 
 	private:
 
@@ -221,8 +225,8 @@ namespace xlang
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 		detail::Mutex mMutex;           ///< Critical section object used to protect access to the allocation counts.
-		uint32_t mBytesAllocated;       ///< Tracks the number of bytes currently allocated not yet freed.
-		uint32_t mPeakAllocated;        ///< Tracks the peak number of bytes allocated but not yet freed.
+		u32 mBytesAllocated;       ///< Tracks the number of bytes currently allocated not yet freed.
+		u32 mPeakAllocated;        ///< Tracks the peak number of bytes allocated but not yet freed.
 #endif // XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 
 	};
@@ -275,18 +279,18 @@ namespace xlang
 	{
 		// We don't expect to have allocated any blocks that aren't at least aligned to the machine word size.
 		XLANG_ASSERT_MSG(memory, "Free of null pointer");
-		XLANG_ASSERT_MSG(THERON_ALIGNED(memory, sizeof(int)), "Free of unaligned pointer");
+		XLANG_ASSERT_MSG(XLANG_ALIGNED(memory, sizeof(int)), "Free of unaligned pointer");
 
-		uint32_t *const callerBlock(reinterpret_cast<uint32_t *>(memory));
+		u32 *const callerBlock(reinterpret_cast<u32 *>(memory));
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 		// Check the pre-and post-guard fields, bookending the caller block.
-		const uint32_t *const offsetField(reinterpret_cast<uint32_t *>(callerBlock) - 3);
-		const uint32_t *const sizeField(callerBlock - 2);
-		const uint32_t *const preGuardField(callerBlock - 1);
+		const u32 *const offsetField(reinterpret_cast<u32 *>(callerBlock) - 3);
+		const u32 *const sizeField(callerBlock - 2);
+		const u32 *const preGuardField(callerBlock - 1);
 
-		const uint32_t callerBlockSize(*sizeField);
-		const uint32_t *const postGuardField(reinterpret_cast<uint32_t *>(reinterpret_cast<uint8_t *>(callerBlock) + callerBlockSize));
+		const u32 callerBlockSize(*sizeField);
+		const u32 *const postGuardField(reinterpret_cast<u32 *>(reinterpret_cast<u8 *>(callerBlock) + callerBlockSize));
 
 		if (*preGuardField != GUARD_VALUE || *postGuardField != GUARD_VALUE)
 		{
@@ -301,18 +305,18 @@ namespace xlang
 		}
 
 #else
-		uint32_t *const offsetField(reinterpret_cast<uint32_t *>(callerBlock) - 1);
+		u32 *const offsetField(reinterpret_cast<u32 *>(callerBlock) - 1);
 #endif // XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 
 		// Address of the internally allocated block.
-		const uint32_t callerBlockOffset(*offsetField);
-		uint8_t *const block(reinterpret_cast<uint8_t *>(callerBlock) - callerBlockOffset);
+		const u32 callerBlockOffset(*offsetField);
+		u8 *const block(reinterpret_cast<u8 *>(callerBlock) - callerBlockOffset);
 
 		delete [] block;
 	}
 
 
-	XLANG_FORCEINLINE uint32_t DefaultAllocator::GetBytesAllocated() const
+	XLANG_FORCEINLINE u32 DefaultAllocator::GetBytesAllocated() const
 	{
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
@@ -324,7 +328,7 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE uint32_t DefaultAllocator::GetPeakBytesAllocated() const
+	XLANG_FORCEINLINE u32 DefaultAllocator::GetPeakBytesAllocated() const
 	{
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
@@ -336,7 +340,8 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE void *DefaultAllocator::AllocateInline(const SizeType size, const SizeType alignment)
+	//XLANG_FORCEINLINE
+	void *DefaultAllocator::AllocateInline(const SizeType size, const SizeType alignment)
 	{
 		// Alignment values are expected to be powers of two greater than or equal to four bytes.
 		// This ensures that the size, offset, and guard fields are 4-byte aligned.
@@ -349,35 +354,35 @@ namespace xlang
 		XLANG_ASSERT_MSG((size & 0x3) == 0, "Allocation of memory block not a multiple of four bytes in size");
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
-		const uint32_t numPreFields(3);
-		const uint32_t numPostFields(1);
+		const u32 numPreFields(3);
+		const u32 numPostFields(1);
 #else
-		const uint32_t numPreFields(1);
-		const uint32_t numPostFields(0);
+		const u32 numPreFields(1);
+		const u32 numPostFields(0);
 #endif // XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 
 		// Calculate the size of the internally allocated block.
 		// We assume underlying allocations are always 4-byte aligned, so padding is at most (alignment-4) bytes.
-		const uint32_t maxPaddingSize(alignment - 4);
-		const uint32_t preambleSize(maxPaddingSize + numPreFields * sizeof(uint32_t));
-		const uint32_t postambleSize(numPostFields * sizeof(uint32_t));
-		const uint32_t internalSize(preambleSize + size + postambleSize);
+		const u32 maxPaddingSize(alignment - 4);
+		const u32 preambleSize(maxPaddingSize + numPreFields * sizeof(u32));
+		const u32 postambleSize(numPostFields * sizeof(u32));
+		const u32 internalSize(preambleSize + size + postambleSize);
 
-		uint32_t *const block = reinterpret_cast<uint32_t *>(new unsigned char[internalSize]);
-		XLANG_ASSERT_MSG(THERON_ALIGNED(block, 4), "Global new is assumed to always align to 4-byte boundaries");
+		u32 *const block = reinterpret_cast<u32 *>(new unsigned char[internalSize]);
+		XLANG_ASSERT_MSG(XLANG_ALIGNED(block, 4), "Global new is assumed to always align to 4-byte boundaries");
 
 		if (block)
 		{
 			// Calculate the pre-padding required to offset the caller block to an aligned address.
 			// We do this by accounting for the hidden pre-fields and then aligning the pointer.
-			uint8_t *callerBlock(reinterpret_cast<uint8_t *>(block + numPreFields));
+			u8 *callerBlock(reinterpret_cast<u8 *>(block + numPreFields));
 			XLANG_ALIGN(callerBlock, alignment);
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
-			uint32_t *const offsetField(reinterpret_cast<uint32_t *>(callerBlock) - 3);
-			uint32_t *const sizeField(reinterpret_cast<uint32_t *>(callerBlock) - 2);
-			uint32_t *const preGuardField(reinterpret_cast<uint32_t *>(callerBlock) - 1);
-			uint32_t *const postGuardField(reinterpret_cast<uint32_t *>(callerBlock + size));
+			u32 *const offsetField(reinterpret_cast<u32 *>(callerBlock) - 3);
+			u32 *const sizeField(reinterpret_cast<u32 *>(callerBlock) - 2);
+			u32 *const preGuardField(reinterpret_cast<u32 *>(callerBlock) - 1);
+			u32 *const postGuardField(reinterpret_cast<u32 *>(callerBlock + size));
 
 			*sizeField = size;
 			*preGuardField = GUARD_VALUE;
@@ -393,15 +398,15 @@ namespace xlang
 				}
 			}
 #else
-			uint32_t *const offsetField(reinterpret_cast<uint32_t *>(callerBlock) - 1);
+			u32 *const offsetField(reinterpret_cast<u32 *>(callerBlock) - 1);
 #endif // XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 
 			// Offset of the caller block within the internally allocated block, in bytes.
-			const uint32_t callerBlockOffset(static_cast<uint32_t>(callerBlock - reinterpret_cast<uint8_t *>(block)));
+			const u32 callerBlockOffset(static_cast<u32>(callerBlock - reinterpret_cast<u8 *>(block)));
 			*offsetField = callerBlockOffset;
 
 			// Caller gets the address of the caller block, which is expected to be aligned.
-			XLANG_ASSERT(THERON_ALIGNED(callerBlock, alignment));
+			XLANG_ASSERT(XLANG_ALIGNED(callerBlock, alignment));
 			return callerBlock;
 		}
 

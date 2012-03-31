@@ -5,14 +5,6 @@
 #pragma once 
 #endif
 
-/**
-\file Receiver.h
-Utility that can receive messages from actors.
-*/
-
-
-#include <new>
-
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Containers\x_IntrusiveList.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -122,19 +114,19 @@ namespace xlang
 		\code
 		struct Message
 		{
-		int mValue;
+			int mValue;
 		};
 
 		class Catcher
 		{
 		public:
 
-		inline void Catch(const Message &message, const xlang::Address from)
-		{
-		mMessage = message;
-		}
+			inline void Catch(const Message &message, const xlang::Address from)
+			{
+				mMessage = message;
+			}
 
-		Message mMessage;
+			Message mMessage;
 		};
 
 		xlang::Receiver receiver;
@@ -212,7 +204,7 @@ namespace xlang
 		\see Reset
 		\see Consume
 		*/
-		inline uint32_t Count() const;
+		inline u32 Count() const;
 
 		/**
 		\brief Waits until one or more messages arrive at the receiver.
@@ -248,7 +240,7 @@ namespace xlang
 		int outstandingCount(10);
 		while (outstandingCount)
 		{
-		outstandingCount -= receiver.Wait(outstandingCount);
+			outstandingCount -= receiver.Wait(outstandingCount);
 		}
 		\endcode
 
@@ -260,7 +252,7 @@ namespace xlang
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=Receiver">Using a Receiver</a>
 		\see <a href="http://www.theron-library.com/index.php?t=page&p=TerminatingTheFramework">Terminating the Framework</a>
 		*/
-		inline uint32_t Wait(const uint32_t max = 1);
+		inline u32 Wait(const u32 max = 1);
 
 		/**
 		\brief Consumes any unconsumed messages available on the receiver, up to a specified limit.
@@ -284,17 +276,17 @@ namespace xlang
 		int outstandingCount(10);
 		while (outstandingCount)
 		{
-		outstandingCount -= receiver.Consume(outstandingCount);
+			outstandingCount -= receiver.Consume(outstandingCount);
 
-		// Do some other work before checking again
-		// ...
+			// Do some other work before checking again
+			// ...
 
 		}
 		\endcode
 
 		\return The number of messages actually consumed, which may be zero.
 		*/
-		inline uint32_t Consume(const uint32_t max);
+		inline u32 Consume(const u32 max);
 
 #ifndef TARGET_TEST
 	private:
@@ -321,7 +313,7 @@ namespace xlang
 		Address mAddress;                           ///< Unique xlang address, or 'name', of the receiver.
 		MessageHandlerList mMessageHandlers;        ///< List of registered message handlers.
 		mutable detail::Monitor mMonitor;           ///< Synchronizes access to the message handlers.
-		uint32_t mMessagesReceived;                 ///< Indicates that a message was received.
+		u32 mMessagesReceived;                 ///< Indicates that a message was received.
 	};
 
 
@@ -413,9 +405,9 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Receiver::Count() const
+	XLANG_FORCEINLINE u32 Receiver::Count() const
 	{
-		uint32_t count(0);
+		u32 count(0);
 
 		{
 			detail::Lock lock(mMonitor.GetMutex());
@@ -433,7 +425,7 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Receiver::Wait(const uint32_t max)
+	XLANG_FORCEINLINE u32 Receiver::Wait(const u32 max)
 	{
 		detail::Lock lock(mMonitor.GetMutex());
 
@@ -448,7 +440,7 @@ namespace xlang
 			mMonitor.Wait(lock);
 		}
 
-		uint32_t numConsumed(mMessagesReceived);
+		u32 numConsumed(mMessagesReceived);
 		if (mMessagesReceived > max)
 		{
 			numConsumed = max;
@@ -459,11 +451,11 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE uint32_t Receiver::Consume(const uint32_t max)
+	XLANG_FORCEINLINE u32 Receiver::Consume(const u32 max)
 	{
 		detail::Lock lock(mMonitor.GetMutex());
 
-		uint32_t numConsumed(mMessagesReceived);
+		u32 numConsumed(mMessagesReceived);
 		if (mMessagesReceived > max)
 		{
 			numConsumed = max;
@@ -477,5 +469,5 @@ namespace xlang
 } // namespace xlang
 
 
-#endif // THERON_RECEIVER_H
+#endif // XLANG_RECEIVER_H
 

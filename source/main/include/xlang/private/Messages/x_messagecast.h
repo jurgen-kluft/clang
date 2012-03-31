@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_MESSAGECAST_H
 #define __XLANG_PRIVATE_HANDLERS_MESSAGECAST_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\Debug\x_Assert.h"
 #include "xlang\private\Messages\x_IMessage.h"
@@ -49,51 +53,16 @@ namespace xlang
 				XLANG_ASSERT(message);
 
 				// If explicit type names are used then they must be defined for all message types.
-				XLANG_ASSERT_MSG(message->TypeName(), "Message type has null type name");
+				XLANG_ASSERT_MSG(message->TypeId()>=0, "Message type has null type name");
 
 				// Check the type of the message using the type name it carries, which was set on creation.
-				if (message->TypeName() == MessageTraits<ValueType>::TYPE_NAME)
+				if (message->TypeId() == type2int<ValueType>::value())
 				{
 					// Hard-convert the given message to the indicated type.
 					return reinterpret_cast<const Message<ValueType> *>(message);
 				}
 
 				return 0;
-			}
-		};
-
-
-		// Specialization of MessageCast for the case where the message has no type name.
-		// This specialization uses C++ built-in RTTI instead of the explicitly stored type names.
-		template <>
-		class MessageCast<false>
-		{
-		public:
-
-			/// Attempts to read a value of the given type from a given message.
-			/// \note Returns a null pointer if the message is of the wrong type.
-			template <class ValueType>
-			XLANG_FORCEINLINE static const Message<ValueType> *CastMessage(const IMessage *const message)
-			{
-				XLANG_ASSERT(message);
-
-#if XLANG_ENABLE_MESSAGE_REGISTRATION_CHECKS
-				// We're running the specialization of this class that's used for messages without
-				// registered type ids/names, so this message hasn't been registered.
-				XLANG_FAIL_MSG("Message type is not registered");
-#endif // XLANG_ENABLE_MESSAGE_REGISTRATION_CHECKS
-
-				// Explicit type IDs must be defined for all message types or none at all.
-				XLANG_ASSERT_MSG(message->TypeName() == 0, "Only some message types are registered!");
-
-				// Try to convert the given message to a message of the expected type.
-				// The dynamic_cast used here requires Runtime Type Information (RTTI) support.
-				// If you see a failure here then check RTTI is enabled in your build,
-				// or if you actually intend to turn it off then register your message type name
-				// with THERON_REGISTER_MESSAGE() -- see the RegisteringMessages sample.
-				// That causes the default (unspecialized) version of this class to be used,
-				// which doesn't try to use dynamic_cast so doesn't require RTTI.
-				return dynamic_cast<const Message<ValueType> *>(message);
 			}
 		};
 

@@ -32,7 +32,7 @@ namespace xlang
 			inline IReceiverHandler *GetNext() const;
 
 			/// Returns the unique name of the message type handled by this handler.
-			virtual const char *GetMessageTypeName() const = 0;
+			virtual int GetMessageTypeId() const = 0;
 
 			/// Handles the given message, if it's of the type accepted by the handler.
 			/// \return True, if the handler handled the message.

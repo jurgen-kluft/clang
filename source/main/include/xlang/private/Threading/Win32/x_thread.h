@@ -1,5 +1,10 @@
 #ifndef __XLANG_PRIVATE_THREADING_WIN32_THREAD_H
 #define __XLANG_PRIVATE_THREADING_WIN32_THREAD_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
+#include "xbase\x_allocator.h"
 
 #ifdef _MSC_VER
 #pragma warning(push,0)
@@ -30,7 +35,8 @@ namespace xlang
 			typedef void (*EntryPoint)(void *const context);
 
 			/// Default constructor
-			XLANG_FORCEINLINE Thread() : mThread(0)
+			XLANG_FORCEINLINE Thread() 
+				: mThread(0)
 			{
 			}
 
@@ -54,13 +60,13 @@ namespace xlang
 			/// The thread is running if Start was called more recently than Join.
 			inline bool Running() const;
 
+			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
-
 			/// Struct that holds a pointer to a thread entry point function and some context data.
 			struct ThreadData
 			{
-				EntryPoint mEntryPoint;
-				void *mContext;
+				EntryPoint	mEntryPoint;
+				void		*mContext;
 			};
 
 			/// Thread entry point adapter function.
@@ -69,13 +75,13 @@ namespace xlang
 			/// \param pData A pointer to a ThreadData structure containing an entry point
 			/// function and a context pointer.
 			/// \return Unused dummy return value.
-			inline static uint32_t __stdcall ThreadStartProc(void *pData);
+			inline static u32 __stdcall ThreadStartProc(void *pData);
 
 			Thread(const Thread &other);
 			Thread &operator=(const Thread &other);
 
-			HANDLE mThread;             ///< Handle of the internal Win32 thread.
-			ThreadData mThreadData;     ///< Wrapper around the data passed to the thread on start.
+			HANDLE		mThread;		///< Handle of the internal Win32 thread.
+			ThreadData	mThreadData;	///< Wrapper around the data passed to the thread on start.
 		};
 
 
@@ -127,7 +133,7 @@ namespace xlang
 		}
 
 
-		inline uint32_t __stdcall Thread::ThreadStartProc(void *pData)
+		inline u32 __stdcall Thread::ThreadStartProc(void *pData)
 		{
 			// Call the real entry point function, passing the provided context.
 			ThreadData *threadData = reinterpret_cast<ThreadData *>(pData);

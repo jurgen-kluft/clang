@@ -52,10 +52,10 @@ namespace xlang
 				XLANG_ASSERT(handler);
 
 				// If explicit type names are used then they must be defined for all message types.
-				XLANG_ASSERT_MSG(handler->GetMessageTypeName(), "Missing type name for message type");
+				XLANG_ASSERT_MSG(handler->GetMessageTypeId()>=0, "Missing type name for message type");
 
 				// Compare the handlers using type names.
-				if (handler->GetMessageTypeName() != MessageTraits<ValueType>::TYPE_NAME)
+				if (handler->GetMessageTypeId() != type2int<ValueType>::value())
 				{
 					return 0;
 				}
@@ -65,31 +65,6 @@ namespace xlang
 				return reinterpret_cast<const HandlerType *>(handler);
 			}
 		};
-
-
-		// Specialization of the MessageHandlerCast for the case where the message type has no type name.
-		// This specialization uses C++ built-in RTTI instead of explicitly stored type names.
-		template <class ActorType>
-		class MessageHandlerCast<ActorType, false>
-		{
-		public:
-
-			/// Attempts to convert the given message handler, of unknown message type, to a handler of the given type.
-			/// \note Returns a null pointer if the unknown handler is of the wrong type.
-			template <class ValueType>
-			XLANG_FORCEINLINE static const MessageHandler<ActorType, ValueType> *CastHandler(const IMessageHandler *const handler)
-			{
-				XLANG_ASSERT(handler);
-
-				// Explicit type names must be defined for all message types or none at all.
-				XLANG_ASSERT_MSG(handler->GetMessageTypeName() == 0, "Type names specified for only some message types!");
-
-				// Try to convert the given message handler to this type.
-				typedef MessageHandler<ActorType, ValueType> HandlerType;
-				return dynamic_cast<const HandlerType *>(handler);
-			}
-		};
-
 
 	} // namespace detail
 } // namespace xlang

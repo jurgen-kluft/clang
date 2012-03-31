@@ -2,15 +2,114 @@
 #ifdef TESTS_TESTSUITES_ACTORTESTSUITE
 
 #include "xlang\private\x_BasicTypes.h"
-
 #include "xlang\private\Threading\x_Mutex.h"
 
+#include "xlang\x_Register.h"
 #include "xlang\x_Framework.h"
 #include "xlang\x_Actor.h"
 #include "xlang\x_Receiver.h"
-
+#include "xlang\private\Handlers\x_messagehandler.h"
 
 #include "xunittest\xunittest.h"
+
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
+
+#define XHANDLER(ActorType, MessageType) xlang::detail::MessageHandler<ActorType, MessageType>
+#define XHANDLER_ARRAY(size, name) xcore::xbyte name[size * xlang::SizeOfMessageHandler];
+
+class ActorHandlerConstructor : public xlang::Actor
+{
+public:
+
+	inline ActorHandlerConstructor()
+	{
+		//No memory allocations and we can sort the handlers
+		//by the pointer returned by GetMessageTypeName() since
+		//the pointer is unique. In this way we can do a binary
+		//search when the handler needs to be invoked!
+		//RegisterHandlerArray(handlerArray);
+		//RegisterHandler(this, &ActorHandlerConstructor::Handler);
+		RegisterHandler(this, &ActorHandlerConstructor::Handler);
+	}
+
+private:
+
+	inline void Handler(const int &message, const xlang::Address from)
+	{
+		Send(message, from);
+	}
+
+	XHANDLER_ARRAY(10, handlerArray);
+};
+
+class OneHandlerActor : public xlang::Actor
+{
+public:
+
+	struct Message
+	{
+	};
+
+	inline OneHandlerActor()
+	{
+		RegisterHandler(this, &OneHandlerActor::Handler);
+	}
+
+private:
+
+	inline void Handler(const Message &/*message*/, const xlang::Address /*from*/)
+	{
+	}
+};
+
+class TwoHandlerActor : public xlang::Actor
+{
+public:
+
+	struct MessageOne
+	{
+	};
+
+	struct MessageTwo
+	{
+	};
+
+	inline TwoHandlerActor()
+	{
+		RegisterHandler(this, &TwoHandlerActor::HandlerOne);
+		RegisterHandler(this, &TwoHandlerActor::HandlerTwo);
+	}
+
+private:
+
+	inline void HandlerOne(const MessageOne &/*message*/, const xlang::Address /*from*/)
+	{
+	}
+
+	inline void HandlerTwo(const MessageTwo &/*message*/, const xlang::Address /*from*/)
+	{
+	}
+};
+
+class ResponderActor : public xlang::Actor
+{
+public:
+
+	inline ResponderActor()
+	{
+		RegisterHandler(this, &ResponderActor::Handler);
+	}
+
+private:
+
+	inline void Handler(const int &value, const xlang::Address from)
+	{
+		Send(value, from);
+	}
+};
+
 
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 {
@@ -19,108 +118,25 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
         UNITTEST_FIXTURE_SETUP() {}
         UNITTEST_FIXTURE_TEARDOWN() {}
 
-		class ActorHandlerConstructor : public xlang::Actor
-		{
-		public:
-
-			inline ActorHandlerConstructor()
-			{
-				RegisterHandler(this, &ActorHandlerConstructor::Handler);
-			}
-
-		private:
-
-			inline void Handler(const int &message, const xlang::Address from)
-			{
-				Send(message, from);
-			}
-		};
-
-		class OneHandlerActor : public xlang::Actor
-		{
-		public:
-
-			struct Message
-			{
-			};
-
-			inline OneHandlerActor()
-			{
-				RegisterHandler(this, &OneHandlerActor::Handler);
-			}
-
-		private:
-
-			inline void Handler(const Message &/*message*/, const xlang::Address /*from*/)
-			{
-			}
-		};
-
-		class TwoHandlerActor : public xlang::Actor
-		{
-		public:
-
-			struct MessageOne
-			{
-			};
-
-			struct MessageTwo
-			{
-			};
-
-			inline TwoHandlerActor()
-			{
-				RegisterHandler(this, &TwoHandlerActor::HandlerOne);
-				RegisterHandler(this, &TwoHandlerActor::HandlerTwo);
-			}
-
-		private:
-
-			inline void HandlerOne(const MessageOne &/*message*/, const xlang::Address /*from*/)
-			{
-			}
-
-			inline void HandlerTwo(const MessageTwo &/*message*/, const xlang::Address /*from*/)
-			{
-			}
-		};
-
-		class ResponderActor : public xlang::Actor
-		{
-		public:
-
-			inline ResponderActor()
-			{
-				RegisterHandler(this, &ResponderActor::Handler);
-			}
-
-		private:
-
-			inline void Handler(const xlang::uint32_t &value, const xlang::Address from)
-			{
-				Send(value, from);
-			}
-		};
-
 		class Listener
 		{
 		public:
 
-			inline Listener() :
-			mValue(0),
-				mFrom()
+			inline Listener() 
+				: mValue(0)
+				, mFrom()
 			{
 			}
 
-			inline explicit Listener(const xlang::uint32_t value) :
-			mValue(value),
-				mFrom()
+			inline explicit Listener(const int value)
+				: mValue(value)
+				, mFrom()
 			{
 			}
 
-			inline xlang::uint32_t GetValue()
+			inline int GetValue()
 			{
-				xlang::uint32_t result(0);
+				int result(0);
 
 				mMutex.Lock();
 				result = mValue;
@@ -138,7 +154,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 				return result;
 			}
 
-			inline void Handle(const xlang::uint32_t &value, const xlang::Address from)
+			inline void Handle(const int &value, const xlang::Address from)
 			{
 				mMutex.Lock();
 				mValue = value;
@@ -149,7 +165,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 		private:
 
 			xlang::detail::Mutex mMutex;
-			xlang::uint32_t mValue;
+			int mValue;
 			xlang::Address mFrom;
 		};
 
@@ -190,8 +206,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 
 			// Push a test message to the responder actor, using the
 			// address of the receiver as the from address.
-			xlang::uint32_t value(1);
-			responder.Push(value, receiver.GetAddress());
+			responder.Push(1, receiver.GetAddress());
 
 			// When the ResponderActor receives a message, it sends a
 			// message back to the sender in aknowledgement, using its
@@ -219,15 +234,14 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 			// Push 5 messages to the responder actor, using the
 			// address of the receiver as the from address.
 			// After each send, wait for a return message.
-			xlang::uint32_t value(1);
 
-			const xlang::uint32_t NUM_MESSAGES = 1000;
-			for (xlang::uint32_t count = 0; count < NUM_MESSAGES; ++count)
+			const xlang::u32 NUM_MESSAGES = 1000;
+			for (xlang::u32 count = 0; count < NUM_MESSAGES; ++count)
 			{
-				responder.Push(value, receiver.GetAddress());
+				responder.Push(1, receiver.GetAddress());
 			}
 
-			for (xlang::uint32_t count = 0; count < NUM_MESSAGES; ++count)
+			for (xlang::u32 count = 0; count < NUM_MESSAGES; ++count)
 			{
 				receiver.Wait();
 			}

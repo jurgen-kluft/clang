@@ -1,11 +1,9 @@
 #ifndef __XLANG_ALLOCATORMANAGER_H
 #define __XLANG_ALLOCATORMANAGER_H
-
-/**
-\file AllocatorManager.h
-Manager for allocators used within xlang.
-*/
-
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\Debug\x_Assert.h"
 
@@ -33,13 +31,12 @@ namespace xlang
 	class MyAllocator : public xlang::IAllocator
 	{
 	public:
+						MyAllocator();
+		virtual			~MyAllocator();
 
-	MyAllocator();
-	virtual ~MyAllocator();
-
-	virtual void *Allocate(const SizeType size);
-	virtual void *AllocateAligned(const SizeType size, const SizeType alignment);
-	virtual void Free(void *const memory);
+		virtual void	*Allocate(const SizeType size);
+		virtual void	*AllocateAligned(const SizeType size, const SizeType alignment);
+		virtual void	Free(void *const memory);
 	};
 
 	MyAllocator allocator;
@@ -105,7 +102,7 @@ namespace xlang
 
 		if (defaultAllocator)
 		{
-		printf("Default allocator has %d bytes currently allocated\n", defaultAllocator->GetBytesAllocated());
+			printf("Default allocator has %d bytes currently allocated\n", defaultAllocator->GetBytesAllocated());
 		}
 		\endcode
 
@@ -119,24 +116,24 @@ namespace xlang
 	private:
 
 		/// Default constructor. Private, since the AllocatorManager is a singleton class.
-		inline AllocatorManager() :
-		mDefaultAllocator(),
-			mAllocator(&mDefaultAllocator)
+		inline AllocatorManager() 
+			: mDefaultAllocator()
+			, mAllocator(&mDefaultAllocator)
 		{
 		}
 
 		AllocatorManager(const AllocatorManager &other);
 		AllocatorManager &operator=(const AllocatorManager &other);
 
-		static AllocatorManager smInstance;         ///< The single, static instance.
+		static AllocatorManager smInstance;			///< The single, static instance.
 
-		DefaultAllocator mDefaultAllocator;         ///< Default allocator used if none is explicitly set.
-		IAllocator *mAllocator;                     ///< Pointer to a general allocator for use in internal allocations.
+		DefaultAllocator	mDefaultAllocator;		///< Default allocator used if none is explicitly set.
+		IAllocator			*mAllocator;			///< Pointer to a general allocator for use in internal allocations.
 	};
 
 
 } // namespace xlang
 
 
-#endif // THERON_ALLOCATORMANAGER_H
+#endif // XLANG_ALLOCATORMANAGER_H
 

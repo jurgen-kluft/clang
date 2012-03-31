@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGESENDER_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGESENDER_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\Directory\x_Directory.h"
 #include "xlang\private\Messages\x_IMessage.h"

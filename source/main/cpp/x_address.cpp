@@ -7,7 +7,7 @@
 namespace xlang
 {
 	detail::Mutex Address::smMutex;
-	uint32_t Address::smNextValue = 1;
+	u32 Address::smNextValue = 1;
 
 } // namespace xlang
 

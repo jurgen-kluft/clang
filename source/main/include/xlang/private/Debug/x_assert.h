@@ -1,19 +1,21 @@
 #ifndef __XLANG_PRIVATE_DEBUG_ASSERT_H
 #define __XLANG_PRIVATE_DEBUG_ASSERT_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
+#include "xbase\x_debug.h"
 #include "xlang\x_Defines.h"
 
 #if XLANG_ENABLE_ASSERTS
 
-#include <stdio.h>
-#include <assert.h>
-
 #ifndef XLANG_ASSERT
-#define XLANG_ASSERT(condition)                if (!(condition)) xlang::detail::Fail(__FILE__, __LINE__); else { }
+#define XLANG_ASSERT(condition)                ASSERT(condition)
 #endif // XLANG_ASSERT
 
 #ifndef XLANG_ASSERT_MSG
-#define XLANG_ASSERT_MSG(condition, msg)       if (!(condition)) xlang::detail::Fail(__FILE__, __LINE__, msg); else { }
+#define XLANG_ASSERT_MSG(condition, msg)       ASSERTS(condition, msg)
 #endif // XLANG_ASSERT_MSG
 
 #ifndef XLANG_FAIL
@@ -60,14 +62,14 @@ namespace xlang
 		*/
 		inline void Fail(const char *const file, const unsigned int line, const char *const message = 0)
 		{
-			fprintf(stderr, "FAIL in %s (%d)", file, line);
-			if (message)
-			{
-				fprintf(stderr, ": %s", message);
-			}
+			//fprintf(stderr, "FAIL in %s (%d)", file, line);
+			//if (message)
+			//{
+			//	fprintf(stderr, ": %s", message);
+			//}
 
-			fprintf(stderr, "\n");
-			assert(false);
+			//fprintf(stderr, "\n");
+			ASSERT(false);
 		}
 #endif // XLANG_ENABLE_ASSERTS
 

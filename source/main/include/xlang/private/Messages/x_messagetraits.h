@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGETRAITS_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGETRAITS_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 namespace xlang
 {
@@ -36,7 +40,7 @@ namespace xlang
 		/// matching, instead of the built-in C++ RTTI. This then allows RTTI to be disabled
 		/// in the application build.
 		///
-		/// The \ref THERON_REGISTER_MESSAGE macro can be used as a shorthand mechanism
+		/// The \ref XLANG_REGISTER_MESSAGE macro can be used as a shorthand mechanism
 		/// for registering automatically-generated names with message types.
 		///
 		/// \note If type names are used, then unique names must be specified for \em all
@@ -45,14 +49,13 @@ namespace xlang
 		/// type names must be unique and non-null, their values are arbitrary.
 		///
 		/// \tparam ValueType The message type for which the traits are defined.
-		/// \see THERON_REGISTER_MESSAGE
+		/// \see XLANG_REGISTER_MESSAGE
 		template <class ValueType>
 		struct MessageTraits
 		{
 			/// \brief Indicates whether the message type has an explicit name.
 			/// Message types for which have valid type names are identified
 			/// using their names rather than with built-in C++ Runtime Type Information
-			// (RTTI) via dynamic_cast.
 			static const bool HAS_TYPE_NAME = false;
 
 			/// \brief The unique name of the type.

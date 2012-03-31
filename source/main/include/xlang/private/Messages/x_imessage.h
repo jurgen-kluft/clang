@@ -1,8 +1,11 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_IMESSAGE_H
 #define __XLANG_PRIVATE_MESSAGES_IMESSAGE_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
-
 #include "xlang\x_Address.h"
 #include "xlang\x_Defines.h"
 
@@ -10,6 +13,27 @@ namespace xlang
 {
 	namespace detail
 	{
+		class type2intbase
+		{
+			template <typename T>
+			friend struct type2int;
+
+			static const int next()
+			{
+				static int id = 0; 
+				return id++;
+			}
+		};
+
+		template <typename T>
+		struct type2int
+		{
+			static const int value() 
+			{
+				static const int id = type2intbase::next();
+				return id;
+			}
+		};
 
 		/// Interface describing the generic API of the message class template.
 		class IMessage
@@ -42,7 +66,7 @@ namespace xlang
 			}
 
 			/// Returns the size in bytes of the memory block in which this message was allocated.
-			XLANG_FORCEINLINE uint32_t GetBlockSize() const
+			XLANG_FORCEINLINE u32 GetBlockSize() const
 			{
 				XLANG_ASSERT(mBlockSize);
 				return mBlockSize;
@@ -56,12 +80,12 @@ namespace xlang
 			}
 
 			/// Returns the size in bytes of the message data.
-			virtual uint32_t GetMessageSize() const = 0;
+			virtual u32 GetMessageSize() const = 0;
 
 			/// Returns the name of the message type.
 			/// This uniquely identifies the type of the message value.
 			/// \note Unless explicitly specified to avoid C++ RTTI, message names are null.
-			virtual const char *TypeName() const = 0;
+			virtual int TypeId() const = 0;
 
 			/// Allows the message instance to destruct its constructed value object before being freed.
 			virtual void Release() = 0;
@@ -73,14 +97,11 @@ namespace xlang
 			/// \param block The memory block containing the message.
 			/// \param blockSize The size of the memory block containing the message.
 			/// \param typeName String identifier uniquely identifying the type of the message value.
-			XLANG_FORCEINLINE IMessage(
-				const Address &from,
-				void *const block,
-				const uint32_t blockSize) :
-			mNext(0),
-				mFrom(from),
-				mBlock(block),
-				mBlockSize(blockSize)
+			XLANG_FORCEINLINE IMessage(const Address &from, void *const block, const u32 blockSize) 
+				: mNext(0)
+				, mFrom(from)
+				, mBlock(block)
+				, mBlockSize(blockSize)
 			{
 			}
 
@@ -90,14 +111,13 @@ namespace xlang
 			}
 
 		private:
+							IMessage(const IMessage &other);
+							IMessage &operator=(const IMessage &other);
 
-			IMessage(const IMessage &other);
-			IMessage &operator=(const IMessage &other);
-
-			IMessage *mNext;                ///< Pointer to the next message in a message queue.
-			const Address mFrom;            ///< The address from which the message was sent.
-			void *const mBlock;             ///< Pointer to the memory block containing the message.
-			const uint32_t mBlockSize;      ///< Total size of the message memory block in bytes.
+			IMessage		*mNext;			///< Pointer to the next message in a message queue.
+			const Address	mFrom;			///< The address from which the message was sent.
+			void *const		mBlock;			///< Pointer to the memory block containing the message.
+			const u32		mBlockSize;		///< Total size of the message memory block in bytes.
 		};
 
 

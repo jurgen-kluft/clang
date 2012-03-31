@@ -1,16 +1,15 @@
-// Copyright (C) by Ashton Mason. See LICENSE.txt for licensing information.
-
-
 //
 // This sample shows how to register message handlers in an actor class.
 //
 
+#include "xlang\x_Framework.h"
+#include "xlang\x_Receiver.h"
+#include "xlang\x_Actor.h"
 
-#include <stdio.h>
 
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-#include <Theron/Actor.h>
+// Placement new/delete
+void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+void	operator delete(void* mem, void* )							{ }
 
 
 struct Message
@@ -18,13 +17,12 @@ struct Message
     inline Message(const int value) : mValue(value)
     {
     }
-    
     int mValue;
 };
 
 
 // An example actor with two different handlers for the same message type.
-class ExampleActor : public Theron::Actor
+class ExampleActor : public xlang::Actor
 {
 public:
 
@@ -36,7 +34,7 @@ public:
 
 private:
 
-    inline void HandlerOne(const Message &message, const Theron::Address from)
+    inline void HandlerOne(const Message &message, const xlang::Address from)
     {
         printf("Handler ONE received message with value '%d'\n", message.mValue);
         
@@ -47,7 +45,7 @@ private:
         Send(message, from);
     }
 
-    inline void HandlerTwo(const Message &message, const Theron::Address from)
+    inline void HandlerTwo(const Message &message, const xlang::Address from)
     {
         printf("Handler TWO received message with value '%d'\n", message.mValue);
 
@@ -62,10 +60,10 @@ private:
 
 int main()
 {
-    Theron::Framework framework;
-    Theron::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
+    xlang::Framework framework;
+    xlang::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
 
-    Theron::Receiver receiver;
+    xlang::Receiver receiver;
 
     // Send a series of messages to the actor.
     // Each time it receives a message it switches handlers, so that

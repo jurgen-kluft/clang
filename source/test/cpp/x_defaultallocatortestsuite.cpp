@@ -8,6 +8,10 @@
 
 #include "xunittest\xunittest.h"
 
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
+
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 {
     UNITTEST_FIXTURE(main)
@@ -17,27 +21,27 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		struct Item
 		{
-			inline Item(const xlang::uint32_t a, const xlang::uint32_t b, const xlang::uint32_t c) 
+			inline Item(const xlang::u32 a, const xlang::u32 b, const xlang::u32 c) 
 				: mA(a)
 				, mB(b)
 				, mC(c)
 			{
 			}
-			xlang::uint32_t mA;
-			xlang::uint32_t mB;
-			xlang::uint32_t mC;
+			xlang::u32 mA;
+			xlang::u32 mB;
+			xlang::u32 mC;
 		};
 
 		struct ItemTwo
 		{
-			inline ItemTwo(const xlang::uint32_t a, const xlang::uint32_t b) 
+			inline ItemTwo(const xlang::u32 a, const xlang::u32 b) 
 				: mA(a)
 				, mB(b)
 			{
 			}
 
-			xlang::uint32_t mA;
-			xlang::uint32_t mB;
+			xlang::u32 mA;
+			xlang::u32 mB;
 		};
 
 
@@ -90,8 +94,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 			CHECK_TRUE(XLANG_ALIGNED(block0, 4));    // Allocated block isn't aligned");
 			CHECK_TRUE(XLANG_ALIGNED(block1, 4));    // Allocated block isn't aligned");
 
-			xlang::uint8_t *const bytes0(reinterpret_cast<xlang::uint8_t *>(block0));
-			xlang::uint8_t *const bytes1(reinterpret_cast<xlang::uint8_t *>(block1));
+			xlang::u8 *const bytes0(reinterpret_cast<xlang::u8 *>(block0));
+			xlang::u8 *const bytes1(reinterpret_cast<xlang::u8 *>(block1));
 
 			CHECK_TRUE(bytes0 + sizeof(Item) <= bytes1 || bytes1 + sizeof(Item) <= bytes0);    // Allocate returned overlapping blocks");
 
@@ -112,8 +116,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 			CHECK_TRUE(XLANG_ALIGNED(block0, 4));    // Allocated block isn't aligned");
 			CHECK_TRUE(XLANG_ALIGNED(block1, 4));    // Allocated block isn't aligned");
 
-			xlang::uint8_t *const bytes0(reinterpret_cast<xlang::uint8_t *>(block0));
-			xlang::uint8_t *const bytes1(reinterpret_cast<xlang::uint8_t *>(block1));
+			xlang::u8 *const bytes0(reinterpret_cast<xlang::u8 *>(block0));
+			xlang::u8 *const bytes1(reinterpret_cast<xlang::u8 *>(block1));
 
 			CHECK_TRUE(bytes0 + sizeof(Item) <= bytes1 || bytes1 + sizeof(ItemTwo) <= bytes0);    // Allocate returned overlapping blocks");
 

@@ -1,10 +1,10 @@
 #ifndef __XLANG_ACTORREF_H
 #define __XLANG_ACTORREF_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
-/**
-\file ActorRef.h
-Actor reference, references an actor in user code.
-*/
 #include "xlang\private\Debug\x_Assert.h"
 #include "xlang\private\Messages\x_MessageSender.h"
 
@@ -247,7 +247,7 @@ namespace xlang
 		the call, the returned count doesn't include the message whose receipt triggered the
 		processing.
 		*/
-		inline uint32_t GetNumQueuedMessages() const;
+		inline u32 GetNumQueuedMessages() const;
 
 	private:
 
@@ -347,7 +347,7 @@ namespace xlang
 	}
 
 
-	XLANG_FORCEINLINE uint32_t ActorRef::GetNumQueuedMessages() const
+	XLANG_FORCEINLINE u32 ActorRef::GetNumQueuedMessages() const
 	{
 		return mActor->GetNumQueuedMessages();
 	}
@@ -356,5 +356,5 @@ namespace xlang
 } // namespace xlang
 
 
-#endif // THERON_ACTORREF_H
+#endif // XLANG_ACTORREF_H
 

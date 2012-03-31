@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_MESSAGECACHE_MESSAGECACHE_H
 #define __XLANG_PRIVATE_MESSAGECACHE_MESSAGECACHE_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -15,8 +19,7 @@ namespace xlang
 {
 	namespace detail
 	{
-
-		/// A global cache of free message memory blocks of different sizes.
+		// A global cache of free message memory blocks of different sizes.
 		class MessageCache
 		{
 		public:
@@ -38,15 +41,15 @@ namespace xlang
 			inline void Dereference();
 
 			/// Allocates a memory block of the given size.
-			inline void *Allocate(const uint32_t size, const uint32_t alignment);
+			inline void *Allocate(const u32 size, const u32 alignment);
 
 			/// Frees a previously allocated memory block.
-			inline void Free(void *const block, const uint32_t size);
+			inline void Free(void *const block, const u32 size);
 
 		private:
 
 			/// Hashes a block size to a pool index.
-			inline static uint32_t MapBlockSizeToPool(const uint32_t size);
+			inline static u32 MapBlockSizeToPool(const u32 size);
 
 			MessageCache(const MessageCache &other);
 			MessageCache &operator=(const MessageCache &other);
@@ -54,13 +57,13 @@ namespace xlang
 			/// Number of memory block pools maintained.
 			/// Each pool holds memory blocks of a specific size.
 			/// The number of pools dictates the maximum block size that can be cached.
-			static const uint32_t MAX_POOLS = 32;
+			static const u32 MAX_POOLS = 32;
 
-			static MessageCache smInstance;         ///< Single, static instance of the class.
+			static MessageCache smInstance;			///< Single, static instance of the class.
 
-			Mutex mReferenceCountMutex;             ///< Synchronizes access to the reference count.
-			uint32_t mReferenceCount;               ///< Tracks how many clients exist.
-			Pool mPools[MAX_POOLS];                 ///< Pools of memory blocks of different sizes.
+			Mutex		mReferenceCountMutex;		///< Synchronizes access to the reference count.
+			u32	mReferenceCount;			///< Tracks how many clients exist.
+			Pool		mPools[MAX_POOLS];			///< Pools of memory blocks of different sizes.
 		};
 
 
@@ -70,9 +73,9 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE MessageCache::MessageCache() :
-		mReferenceCountMutex(),
-			mReferenceCount(0)
+		XLANG_FORCEINLINE MessageCache::MessageCache()
+			: mReferenceCountMutex()
+			, mReferenceCount(0)
 		{
 		}
 
@@ -82,7 +85,7 @@ namespace xlang
 			// Check that the pools were all emptied when the cache became unreferenced.
 			// If these asserts fail it probably means a xlang object (either an actor
 			// or a receiver) wasn't destructed prior to the application ending.
-			for (uint32_t index = 0; index < MAX_POOLS; ++index)
+			for (u32 index = 0; index < MAX_POOLS; ++index)
 			{
 				XLANG_ASSERT(mPools[index].Empty());
 			}
@@ -95,7 +98,7 @@ namespace xlang
 			if (mReferenceCount++ == 0)
 			{
 				// Check that the pools were all left empty from the last use, if any.
-				for (uint32_t index = 0; index < MAX_POOLS; ++index)
+				for (u32 index = 0; index < MAX_POOLS; ++index)
 				{
 					XLANG_ASSERT(mPools[index].Empty());
 				}
@@ -109,7 +112,7 @@ namespace xlang
 			if (--mReferenceCount == 0)
 			{
 				// Free any remaining blocks in the pools.
-				for (uint32_t index = 0; index < MAX_POOLS; ++index)
+				for (u32 index = 0; index < MAX_POOLS; ++index)
 				{
 					mPools[index].Clear();
 				}
@@ -117,7 +120,7 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE void *MessageCache::Allocate(const uint32_t size, const uint32_t alignment)
+		XLANG_FORCEINLINE void *MessageCache::Allocate(const u32 size, const u32 alignment)
 		{
 			// Alignment values are expected to be powers of two.
 			XLANG_ASSERT(size);
@@ -125,7 +128,7 @@ namespace xlang
 			XLANG_ASSERT((alignment & (alignment - 1)) == 0);
 
 			// Find the index of the pool containing blocks of this size.
-			const uint32_t poolIndex(MapBlockSizeToPool(size));
+			const u32 poolIndex(MapBlockSizeToPool(size));
 
 			// We can't cache blocks bigger than a certain maximum size.
 			if (poolIndex < MAX_POOLS)
@@ -143,13 +146,13 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE void MessageCache::Free(void *const block, const uint32_t size)
+		XLANG_FORCEINLINE void MessageCache::Free(void *const block, const u32 size)
 		{
 			XLANG_ASSERT(block);
 			XLANG_ASSERT(size);
 
 			// Find the index of the pool containing blocks of this size.
-			const uint32_t poolIndex(MapBlockSizeToPool(size));
+			const u32 poolIndex(MapBlockSizeToPool(size));
 
 			// We can't cache blocks bigger than a certain maximum size.
 			if (poolIndex < MAX_POOLS)
@@ -166,13 +169,13 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t MessageCache::MapBlockSizeToPool(const uint32_t size)
+		XLANG_FORCEINLINE u32 MessageCache::MapBlockSizeToPool(const u32 size)
 		{
 			// We assume that all allocations are non-zero multiples of four bytes!
 			XLANG_ASSERT((size & 3) == 0);
 
 			// Because all allocation sizes are multiples of four, we divide by four.
-			const uint32_t index(size >> 2);
+			const u32 index(size >> 2);
 
 			// Because the minimum size is four bytes, we subtract one.
 			XLANG_ASSERT(index > 0);

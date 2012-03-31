@@ -1,25 +1,22 @@
-// Copyright (C) by Ashton Mason. See LICENSE.txt for licensing information.
-
-
 //
 // This sample shows how to use a fallback handler to catch unhandled messages.
 //
 
+#include "xlang\x_Actor.h"
+#include "xlang\x_Address.h"
+#include "xlang\x_Framework.h"
+#include "xlang\x_Receiver.h"
 
-#include <stdio.h>
 
-#include <Theron/Actor.h>
-#include <Theron/Address.h>
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-
+// Placement new/delete
+void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+void	operator delete(void* mem, void* )							{ }
 
 // Trivial actor that ignores all messages, so that any sent to it
 // are passed on the fallback handler registered with its owning framework.
-class Actor : public Theron::Actor
+class Actor : public xlang::Actor
 {
 };
-
 
 // A simple non-trivial test message with some readable data.
 struct Message
@@ -28,10 +25,9 @@ struct Message
     {
     }
 
-    int mA;
-    float mB;
+    int		mA;
+    float	mB;
 };
-
 
 // Simple fallback handler object that logs unhandled messages to stdout.
 // Note that this handler is not threadsafe in the sense that if called
@@ -44,7 +40,7 @@ class FailedMessageLog
 public:
 
     // This handler is a 'blind' handler which takes the unhandled message as raw data.
-    inline void Handle(const void *const data, const Theron::uint32_t size, const Theron::Address from)
+    inline void Handle(const void *const data, const xlang::u32 size, const xlang::Address from)
     {
         printf("Unhandled message of %d bytes sent from address %d:\n", size, from.AsInteger());
 
@@ -67,8 +63,8 @@ public:
 
 int main()
 {
-    Theron::Framework framework;
-    Theron::Receiver receiver;
+    xlang::Framework framework;
+    xlang::Receiver receiver;
     
     // Register the custom fallback handler with the framework.
     // This handler is executed for any messages that either aren't delivered
@@ -81,7 +77,7 @@ int main()
     // Create an actor and send some messages to it, which it doesn't handle.
     // The messages are delivered but not handled by the actor, so are
     // caught by the log registered as the framework's default fallback message handler.
-    Theron::ActorRef actor(framework.CreateActor<Actor>());
+    xlang::ActorRef actor(framework.CreateActor<Actor>());
 
     printf("Sending message (16384, 1.5f) to actor\n");
     framework.Send(Message(16384, 1.5f), receiver.GetAddress(), actor.GetAddress());

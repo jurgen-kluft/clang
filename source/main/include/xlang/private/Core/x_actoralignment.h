@@ -27,7 +27,7 @@ namespace xlang
 		{
 			/// \brief Describes the memory alignment requirement of the actor type, in bytes.
 			/// The default alignment is four bytes.
-			static const uint32_t ALIGNMENT = 4;
+			static const u32 ALIGNMENT = 4;
 		};
 
 

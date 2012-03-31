@@ -10,6 +10,11 @@
 
 #include "xunittest\xunittest.h"
 
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
+
+
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORREFTESTSUITE)
 {
     UNITTEST_FIXTURE(main)
@@ -48,7 +53,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORREFTESTSUITE)
 			// Copy construct
 			xlang::ActorRef copy(actor);
 
-			xlang::uint32_t count(0);
+			xlang::u32 count(0);
 
 			{
 				xlang::detail::Lock lock(xlang::detail::Directory::GetMutex());
@@ -68,7 +73,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORREFTESTSUITE)
 			actorOne = actorTwo;
 
 			// Wait for actor one to be destroyed.
-			xlang::uint32_t numEntities(2);
+			xlang::u32 numEntities(2);
 			while (numEntities != 1)
 			{
 				CHECK_TRUE(numEntities == 2);   // Copy construction failed
@@ -81,7 +86,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORREFTESTSUITE)
 		UNITTEST_TEST(TestScope)
 		{
 			xlang::Framework framework;
-			xlang::uint32_t numEntities(0);
+			xlang::u32 numEntities(0);
 
 			{
 				xlang::ActorRef actorOne(framework.CreateActor<SimpleActor>());
@@ -133,7 +138,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORREFTESTSUITE)
 		UNITTEST_TEST(TestTransfer)
 		{
 			xlang::Framework framework;
-			xlang::uint32_t numEntities(0);
+			xlang::u32 numEntities(0);
 
 			xlang::ActorRef actorOne(framework.CreateActor<SimpleActor>());
 

@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGECREATOR_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGECREATOR_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\MessageCache\x_MessageCache.h"
@@ -33,8 +37,8 @@ namespace xlang
 		{
 			typedef Message<ValueType> MessageType;
 
-			const uint32_t blockSize(MessageType::GetSize());
-			const uint32_t blockAlignment(MessageType::GetAlignment());
+			const u32 blockSize(MessageType::GetSize());
+			const u32 blockAlignment(MessageType::GetAlignment());
 
 			// Allocate a message. It'll be deleted by the actor after it's been handled.
 			// We allocate a block from the global free list for caching of common allocations.

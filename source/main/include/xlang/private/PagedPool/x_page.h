@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_PAGEDPOOL_PAGE_H
 #define __XLANG_PRIVATE_PAGEDPOOL_PAGE_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -14,7 +18,7 @@ namespace xlang
 {
 	namespace detail
 	{
-		template <class Entry, uint32_t ENTRIES_PER_PAGE>
+		template <class Entry, u32 ENTRIES_PER_PAGE>
 		class Page
 		{
 		public:
@@ -73,14 +77,14 @@ namespace xlang
 			}
 
 			/// Allocates a free entry and sets its index, returning true on success.
-			XLANG_FORCEINLINE bool Allocate(FreeList &freeList, uint32_t &index)
+			XLANG_FORCEINLINE bool Allocate(FreeList &freeList, u32 &index)
 			{
 				void *const memory(freeList.Get());
 				if (memory)
 				{
 					// Calculate the index of the entry from its address.
 					Entry *const entry = reinterpret_cast<Entry *>(memory);
-					index = static_cast<uint32_t>(entry - mData);
+					index = static_cast<u32>(entry - mData);
 
 					return true;
 				}
@@ -89,7 +93,7 @@ namespace xlang
 			}
 
 			/// Frees a previously allocated entry.
-			XLANG_FORCEINLINE bool Free(FreeList &freeList, const uint32_t index)
+			XLANG_FORCEINLINE bool Free(FreeList &freeList, const u32 index)
 			{
 				XLANG_ASSERT(mData);
 				XLANG_ASSERT(index < ENTRIES_PER_PAGE);
@@ -102,7 +106,7 @@ namespace xlang
 			}
 
 			/// Gets a pointer to the entry at the given index.
-			XLANG_FORCEINLINE void *GetEntry(const uint32_t index) const
+			XLANG_FORCEINLINE void *GetEntry(const u32 index) const
 			{
 				XLANG_ASSERT(mData);
 				XLANG_ASSERT(index < ENTRIES_PER_PAGE);
@@ -112,7 +116,7 @@ namespace xlang
 
 			/// Gets the index of the entry addressed by the given pointer.
 			/// Returns ENTRIES_PER_PAGE if the pointer isn't the address of an entry in this.
-			XLANG_FORCEINLINE uint32_t GetIndex(void *const ptr) const
+			XLANG_FORCEINLINE u32 GetIndex(void *const ptr) const
 			{
 				XLANG_ASSERT(ptr);
 

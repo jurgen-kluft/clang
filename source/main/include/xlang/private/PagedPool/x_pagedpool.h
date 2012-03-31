@@ -1,7 +1,9 @@
 #ifndef __XLANG_PRIVATE_PAGEDPOOL_PAGEDPOOL_H
 #define __XLANG_PRIVATE_PAGEDPOOL_PAGEDPOOL_H
-
-#include <new>
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -18,7 +20,7 @@ namespace xlang
 	namespace detail
 	{
 		/// A growable pool in which objects can be allocated.
-		template <class Entry, uint32_t MAX_ENTRIES>
+		template <class Entry, u32 MAX_ENTRIES>
 		class PagedPool
 		{
 		public:
@@ -29,16 +31,16 @@ namespace xlang
 			}
 
 			/// Returns the number of allocated entries.
-			XLANG_FORCEINLINE uint32_t Count() const
+			XLANG_FORCEINLINE u32 Count() const
 			{
 				return mEntryCount;
 			}
 
 			/// Allocates an entity in the pool and returns its unique index.
-			XLANG_FORCEINLINE bool Allocate(uint32_t &index)
+			XLANG_FORCEINLINE bool Allocate(u32 &index)
 			{
-				uint32_t pageIndex(0);
-				uint32_t entryIndex(0);
+				u32 pageIndex(0);
+				u32 entryIndex(0);
 
 				if (mEntryCount < MAX_ENTRIES)
 				{
@@ -92,10 +94,10 @@ namespace xlang
 			}
 
 			/// Frees the entry at the given index and returns its memory to the pool.
-			XLANG_FORCEINLINE bool Free(const uint32_t index)
+			XLANG_FORCEINLINE bool Free(const u32 index)
 			{
-				const uint32_t pageIndex(PageIndex(index));
-				const uint32_t entryIndex(EntryIndex(index));
+				const u32 pageIndex(PageIndex(index));
+				const u32 entryIndex(EntryIndex(index));
 
 				XLANG_ASSERT(pageIndex < MAX_PAGES);
 
@@ -121,10 +123,10 @@ namespace xlang
 			}
 
 			/// Gets a pointer to the entry at the given index.
-			XLANG_FORCEINLINE void *GetEntry(const uint32_t index) const
+			XLANG_FORCEINLINE void *GetEntry(const u32 index) const
 			{
-				const uint32_t pageIndex(PageIndex(index));
-				const uint32_t entryIndex(EntryIndex(index));
+				const u32 pageIndex(PageIndex(index));
+				const u32 entryIndex(EntryIndex(index));
 
 				XLANG_ASSERT(pageIndex < MAX_PAGES);
 
@@ -140,18 +142,18 @@ namespace xlang
 
 			/// Gets the index of the entry addressed by the given pointer.
 			/// Returns MAX_ENTRIES if the entry is not found.
-			XLANG_FORCEINLINE uint32_t GetIndex(void *const entry) const
+			XLANG_FORCEINLINE u32 GetIndex(void *const entry) const
 			{
 				XLANG_ASSERT(entry);
 
 				// Search all pages that have ever been allocated for one which contains the entry.
-				uint32_t pageIndex(0);
+				u32 pageIndex(0);
 				while (pageIndex <= mMaxPageIndex)
 				{
 					const PageType &page(mPageTable[pageIndex]);
 					if (page.IsInitialized())
 					{
-						const uint32_t entryIndex(page.GetIndex(entry));
+						const u32 entryIndex(page.GetIndex(entry));
 						if (entryIndex < ENTRIES_PER_PAGE)
 						{
 							return Index(pageIndex, entryIndex);
@@ -166,25 +168,25 @@ namespace xlang
 
 		private:
 
-			static const uint32_t ENTRIES_PER_PAGE = 64;
-			static const uint32_t MAX_PAGES = (MAX_ENTRIES + ENTRIES_PER_PAGE - 1) / ENTRIES_PER_PAGE;
-			static const uint32_t ENTRY_INDEX_MASK = ENTRIES_PER_PAGE - 1;
-			static const uint32_t PAGE_INDEX_MASK = ~ENTRY_INDEX_MASK;
-			static const uint32_t PAGE_INDEX_SHIFT = 6;
+			static const u32 ENTRIES_PER_PAGE = 64;
+			static const u32 MAX_PAGES = (MAX_ENTRIES + ENTRIES_PER_PAGE - 1) / ENTRIES_PER_PAGE;
+			static const u32 ENTRY_INDEX_MASK = ENTRIES_PER_PAGE - 1;
+			static const u32 PAGE_INDEX_MASK = ~ENTRY_INDEX_MASK;
+			static const u32 PAGE_INDEX_SHIFT = 6;
 
 			typedef Page<Entry, ENTRIES_PER_PAGE> PageType;
 
-			XLANG_FORCEINLINE static uint32_t PageIndex(const uint32_t index)
+			XLANG_FORCEINLINE static u32 PageIndex(const u32 index)
 			{
 				return ((index & PAGE_INDEX_MASK) >> PAGE_INDEX_SHIFT);
 			}
 
-			XLANG_FORCEINLINE static uint32_t EntryIndex(const uint32_t index)
+			XLANG_FORCEINLINE static u32 EntryIndex(const u32 index)
 			{
 				return (index & ENTRY_INDEX_MASK);
 			}
 
-			XLANG_FORCEINLINE static uint32_t Index(const uint32_t pageIndex, const uint32_t entryIndex)
+			XLANG_FORCEINLINE static u32 Index(const u32 pageIndex, const u32 entryIndex)
 			{
 				return ((pageIndex << PAGE_INDEX_SHIFT) | entryIndex);
 			}
@@ -194,8 +196,8 @@ namespace xlang
 
 			PageType mPageTable[MAX_PAGES];     ///< Table of allocated pages, each of which is basically a pointer to a buffer.
 			FreeList mFreeLists[MAX_PAGES];     ///< Each page has its own dedicated list of free entries, so we can favour low-index pages.
-			uint32_t mEntryCount;               ///< Number of allocated entries in the entire pool.
-			uint32_t mMaxPageIndex;             ///< Maximum index of any allocated page.
+			u32 mEntryCount;               ///< Number of allocated entries in the entire pool.
+			u32 mMaxPageIndex;             ///< Maximum index of any allocated page.
 		};
 
 

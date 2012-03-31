@@ -24,7 +24,7 @@ namespace xlang
 		public:
 
 			/// Pointer to a member function of the actor type, which is the handler.
-			typedef void (ActorType::*HandlerFunction)(const void *const data, const uint32_t size, const Address from);
+			typedef void (ActorType::*HandlerFunction)(const void *const data, const u32 size, const Address from);
 
 			/// Constructor.
 			XLANG_FORCEINLINE explicit BlindDefaultHandler(HandlerFunction function) : mHandlerFunction(function)
@@ -61,7 +61,7 @@ namespace xlang
 			ActorType *const typedActor = static_cast<ActorType *>(actor);
 
 			const void *const messageData(message->GetMessageData());
-			const uint32_t messageSize(message->GetMessageSize());
+			const u32 messageSize(message->GetMessageSize());
 			const xlang::Address from(message->From());
 
 			XLANG_ASSERT(messageData && messageSize);

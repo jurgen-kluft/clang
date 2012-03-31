@@ -1,7 +1,11 @@
 #ifndef __XLANG_PRIVATE_CONTAINERS_LIST_H
 #define __XLANG_PRIVATE_CONTAINERS_LIST_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
-#include <new>
+#include "xbase\x_allocator.h"
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -25,8 +29,9 @@ namespace xlang
 			/// Wraps the list item type in a wrapper class with next and previous pointers.
 			struct Node
 			{
-				ItemType mItem;     ///> The item stored in the node.
-				Node *mNext;        ///> Pointer to the next node in the list.
+				ItemType	mItem;		///> The item stored in the node.
+				Node		*mNext;		///> Pointer to the next node in the list.
+				XCORE_CLASS_PLACEMENT_NEW_DELETE
 			};
 
 			/// Const iterator type.
@@ -188,7 +193,7 @@ namespace xlang
 
 			/// Returns the number of items currently in the list.
 			/// \return The number of items in the list.
-			inline uint32_t Size() const;
+			inline u32 Size() const;
 
 			/// Returns true if there are no items currently in the list.
 			inline bool Empty() const;
@@ -272,9 +277,9 @@ namespace xlang
 
 
 		template <class ItemType>
-		XLANG_FORCEINLINE uint32_t List<ItemType>::Size() const
+		XLANG_FORCEINLINE u32 List<ItemType>::Size() const
 		{
-			uint32_t count(0);
+			u32 count(0);
 			Node *node(mHead);
 
 			while (node)

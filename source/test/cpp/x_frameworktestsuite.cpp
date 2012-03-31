@@ -2,8 +2,42 @@
 #ifdef TESTS_TESTSUITES_FRAMEWORKTESTSUITE
 
 #include "xlang\x_Framework.h"
+#include "xlang\x_register.h"
 
 #include "xunittest\xunittest.h"
+
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
+
+class IntMessage
+{
+public:
+
+	inline explicit IntMessage(const xlang::u32 value) : mValue(value)
+	{
+	}
+
+	inline const xlang::u32 &Value() const
+	{
+		return mValue;
+	}
+
+	inline xlang::u32 &Value()
+	{
+		return mValue;
+	}
+
+	inline bool operator==(const IntMessage &other) const
+	{
+		return (mValue == other.mValue);
+	}
+
+private:
+
+	xlang::u32 mValue;
+};
+
 
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 {
@@ -40,7 +74,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 
 		private:
 
-			inline void Handler(const xlang::uint32_t &value, const xlang::Address from)
+			inline void Handler(const IntMessage &value, const xlang::Address from)
 			{
 				Send(value, from);
 			}
@@ -57,10 +91,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 
 		private:
 
-			inline void SetNumThreads(const int &numThreads, const xlang::Address from)
+			inline void SetNumThreads(const IntMessage &numThreads, const xlang::Address from)
 			{
-				GetFramework().SetMinThreads(numThreads);
-				GetFramework().SetMaxThreads(numThreads);
+				GetFramework().SetMinThreads(numThreads.Value());
+				GetFramework().SetMaxThreads(numThreads.Value());
 
 				// Send the message back to synchronize termination.
 				Send(numThreads, from);
@@ -237,8 +271,9 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 				// Send n messages to each responder.
 				for (int count = 0; count < 100; ++count)
 				{
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actorOne.GetAddress());
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actorTwo.GetAddress());
+					IntMessage msg(count);
+					framework.Send(msg, receiver.GetAddress(), actorOne.GetAddress());
+					framework.Send(msg, receiver.GetAddress(), actorTwo.GetAddress());
 				}
 
 				// Wait for all the replies.
@@ -264,7 +299,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 				// Send n messages to each responder.
 				for (int count = 0; count < 100; ++count)
 				{
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actor.GetAddress());
+					IntMessage msg(count);
+					framework.Send(msg, receiver.GetAddress(), actor.GetAddress());
 				}
 
 				// Wait for all the replies.
@@ -292,7 +328,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 				// Send n messages to each responder.
 				for (int count = 0; count < 100; ++count)
 				{
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actor.GetAddress());
+					IntMessage msg(count);
+					framework.Send(msg, receiver.GetAddress(), actor.GetAddress());
 				}
 
 				// Wait for all the replies.
@@ -328,11 +365,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 				// Send n messages to each responder.
 				for (int count = 0; count < 100; ++count)
 				{
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actors[0].GetAddress());
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actors[1].GetAddress());
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actors[2].GetAddress());
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actors[3].GetAddress());
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actors[4].GetAddress());
+					IntMessage msg(count);
+					framework.Send(msg, receiver.GetAddress(), actors[0].GetAddress());
+					framework.Send(msg, receiver.GetAddress(), actors[1].GetAddress());
+					framework.Send(msg, receiver.GetAddress(), actors[2].GetAddress());
+					framework.Send(msg, receiver.GetAddress(), actors[3].GetAddress());
+					framework.Send(msg, receiver.GetAddress(), actors[4].GetAddress());
 				}
 
 				// Wait for all the replies.
@@ -368,8 +406,9 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 				// Send n messages to each responder.
 				for (int count = 0; count < 100; ++count)
 				{
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actorOne.GetAddress());
-					framework.Send(static_cast<xlang::uint32_t>(count), receiver.GetAddress(), actorTwo.GetAddress());
+					IntMessage msg(count);
+					framework.Send(msg, receiver.GetAddress(), actorOne.GetAddress());
+					framework.Send(msg, receiver.GetAddress(), actorTwo.GetAddress());
 				}
 
 				// Wait for all the replies.
@@ -402,10 +441,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FRAMEWORKTESTSUITE)
 			// with requests to change the number of worker threads.
 			for (int count = 0; count < 100; ++count)
 			{
-				framework.Send(5, receiver.GetAddress(), actorOne.GetAddress());
-				framework.Send(10, receiver.GetAddress(), actorTwo.GetAddress());
-				framework.Send(12, receiver.GetAddress(), actorOne.GetAddress());
-				framework.Send(7, receiver.GetAddress(), actorTwo.GetAddress());
+				framework.Send(IntMessage( 5), receiver.GetAddress(), actorOne.GetAddress());
+				framework.Send(IntMessage(10), receiver.GetAddress(), actorTwo.GetAddress());
+				framework.Send(IntMessage(12), receiver.GetAddress(), actorOne.GetAddress());
+				framework.Send(IntMessage( 7), receiver.GetAddress(), actorTwo.GetAddress());
 			}
 
 			// Wait for all replies before terminating.

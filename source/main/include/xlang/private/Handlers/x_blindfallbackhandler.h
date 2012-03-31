@@ -1,5 +1,11 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_BLINDFALLBACKHANDLER_H
 #define __XLANG_PRIVATE_HANDLERS_BLINDFALLBACKHANDLER_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
+
+#include "xbase\x_allocator.h"
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -24,12 +30,12 @@ namespace xlang
 		public:
 
 			/// Pointer to a member function of a handler object.
-			typedef void (ObjectType::*HandlerFunction)(const void *const data, const uint32_t size, const Address from);
+			typedef void (ObjectType::*HandlerFunction)(const void *const data, const u32 size, const Address from);
 
 			/// Constructor.
-			XLANG_FORCEINLINE BlindFallbackHandler(ObjectType *const object, HandlerFunction function) :
-			mObject(object),
-				mHandlerFunction(function)
+			XLANG_FORCEINLINE BlindFallbackHandler(ObjectType *const object, HandlerFunction function)
+				: mObject(object)
+				, mHandlerFunction(function)
 			{
 			}
 
@@ -47,14 +53,15 @@ namespace xlang
 
 				// Call the handler, passing it the from address and also the message as blind data.
 				const void *const messageData(message->GetMessageData());
-				const uint32_t messageSize(message->GetMessageSize());
-				const xlang::Address from(message->From());
+				const u32 messageSize(message->GetMessageSize());
+				const Address from(message->From());
 
 				XLANG_ASSERT(messageData && messageSize);
 
 				(mObject->*mHandlerFunction)(messageData, messageSize, from);
 			}
 
+			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
 
 			BlindFallbackHandler(const BlindFallbackHandler &other);

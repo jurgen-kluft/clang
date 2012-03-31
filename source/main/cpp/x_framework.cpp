@@ -9,15 +9,23 @@ namespace xlang
 		, mFallbackMessageHandler(0)
 		, mDefaultFallbackHandler()
 	{
-		Initialize(2);
+		Initialize(2, 4);
 	}
 
-	Framework::Framework(const uint32_t numThreads)
+	Framework::Framework(const u32 numThreads)
 		: mThreadPool()
 		, mFallbackMessageHandler(0)
 		, mDefaultFallbackHandler()
 	{
-		Initialize(numThreads);
+		Initialize(numThreads, 2*numThreads);
+	}
+
+	Framework::Framework(const u32 numThreads, const u32 targetNumThreads)
+		: mThreadPool()
+		, mFallbackMessageHandler(0)
+		, mDefaultFallbackHandler()
+	{
+		Initialize(numThreads, targetNumThreads);
 	}
 
 

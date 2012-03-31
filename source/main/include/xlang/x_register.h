@@ -1,15 +1,14 @@
 #ifndef __XLANG_REGISTER_H
 #define __XLANG_REGISTER_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\Messages\x_MessageTraits.h"
 
-/**
-\file Register.h
-Registration for message types.
-*/
-
-
-#ifndef XLANG_REGISTER_MESSAGE
+#define XLANG_NO_REGISTER_MESSAGE
+#ifndef XLANG_NO_REGISTER_MESSAGE
 
 /**
 \brief Message type registration macro.
@@ -34,9 +33,9 @@ name of the message type must be given, including all namespace scoping.
 namespace MyNamespace
 {
 
-class MyMessage
-{
-};
+	class MyMessage
+	{
+	};
 
 }
 
@@ -54,24 +53,26 @@ if you specifically need to turn the built-in C++ RTTI system off.
 
 \see <a href="http://www.theron-library.com/index.php?t=page&p=RegisteringMessages">Registering messages</a>
 */
-#define XLANG_REGISTER_MESSAGE(MessageType)                                \
-namespace xlang                                                            \
-{                                                                           \
-namespace detail                                                            \
-{                                                                           \
-template <>                                                                 \
-struct MessageTraits<MessageType>                                           \
-{                                                                           \
-    static const bool HAS_TYPE_NAME = true;                                 \
-    static const char *const TYPE_NAME;                                     \
-};                                                                          \
-                                                                            \
-const char *const MessageTraits<MessageType>::TYPE_NAME = #MessageType;     \
-}                                                                           \
+#define XLANG_REGISTER_MESSAGE(MessageType)											\
+namespace xlang																		\
+{																					\
+	namespace detail																\
+	{																				\
+		template <typename T>														\
+		struct MessageTraits;														\
+		template <>																	\
+		struct MessageTraits<MessageType>											\
+		{																			\
+			static const bool HAS_TYPE_NAME = true;									\
+			static const char *const TYPE_NAME;										\
+		};																			\
+																					\
+		const char *const MessageTraits<MessageType>::TYPE_NAME = #MessageType;		\
+	}																				\
 }
 
 #endif // XLANG_REGISTER_MESSAGE
 
 
-#endif // THERON_REGISTER_H
+#endif // XLANG_REGISTER_H
 

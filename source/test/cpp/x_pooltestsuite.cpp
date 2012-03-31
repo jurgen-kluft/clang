@@ -7,6 +7,10 @@
 
 #include "xunittest\xunittest.h"
 
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
+
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 {
     UNITTEST_FIXTURE(main)
@@ -16,8 +20,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 
 		struct Item
 		{
-			xlang::uint32_t a;
-			xlang::uint32_t b;
+			xlang::u32 a;
+			xlang::u32 b;
 		};
 
 		UNITTEST_TEST(TestConstruct)
@@ -95,7 +99,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 			pool.Add(&item0);
 
 			// The address may happen to be aligned.
-			const xlang::uint32_t increasedAlignment(XLANG_ALIGNOF(Item) * 2);
+			const xlang::u32 increasedAlignment(XLANG_ALIGNOF(Item) * 2);
 			if (XLANG_ALIGNED(&item0, increasedAlignment))
 			{
 				CHECK_TRUE(pool.FetchAligned(increasedAlignment) == &item0); // Fetch failed

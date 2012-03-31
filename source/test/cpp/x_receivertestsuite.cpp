@@ -1,7 +1,7 @@
 #define TESTS_TESTSUITES_RECEIVERTESTSUITE
 #ifdef TESTS_TESTSUITES_RECEIVERTESTSUITE
 
-#include <new>
+#include "xbase\x_allocator.h"
 
 #include "xlang\private\x_BasicTypes.h"
 
@@ -12,8 +12,42 @@
 #include "xlang\x_AllocatorManager.h"
 #include "xlang\x_Framework.h"
 #include "xlang\x_Receiver.h"
+#include "xlang\x_Register.h"
 
 #include "xunittest\xunittest.h"
+
+// Placement new/delete
+static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+static inline void	operator delete(void* mem, void* )							{ }
+
+class MockMessage
+{
+public:
+
+	inline explicit MockMessage(const xlang::u32 value) : mValue(value)
+	{
+	}
+
+	inline const xlang::u32 &Value() const
+	{
+		return mValue;
+	}
+
+	inline xlang::u32 &Value()
+	{
+		return mValue;
+	}
+
+	inline bool operator==(const MockMessage &other) const
+	{
+		return (mValue == other.mValue);
+	}
+
+	XCORE_CLASS_PLACEMENT_NEW_DELETE
+private:
+	xlang::u32 mValue;
+};
+
 
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 {
@@ -29,8 +63,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 
 			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::uint32_t messageSize(MessageType::GetSize());
-			const xlang::uint32_t messageAlignment(MessageType::GetAlignment());
+			const xlang::u32 messageSize(MessageType::GetSize());
+			const xlang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 			xlang::detail::IMessage *const message = MessageType::Initialize(memory, value, from);
@@ -54,40 +88,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 				RegisterHandler(this, &ResponderActor::Handler);
 			}
 
+			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
 
-			inline void Handler(const xlang::uint32_t &value, const xlang::Address from)
+			inline void Handler(const MockMessage &value, const xlang::Address from)
 			{
 				Send(value, from);
 			}
-		};
-
-		class MockMessage
-		{
-		public:
-
-			inline explicit MockMessage(const xlang::uint32_t value) : mValue(value)
-			{
-			}
-
-			inline const xlang::uint32_t &Value() const
-			{
-				return mValue;
-			}
-
-			inline xlang::uint32_t &Value()
-			{
-				return mValue;
-			}
-
-			inline bool operator==(const MockMessage &other) const
-			{
-				return (mValue == other.mValue);
-			}
-
-		private:
-
-			xlang::uint32_t mValue;
 		};
 
 		class Listener
@@ -214,7 +221,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 
 			// Push a test message to the responder actor, using the
 			// address of the receiver as the from address.
-			xlang::uint32_t value(1);
+			MockMessage value(1);
 			responder.Push(value, receiver.GetAddress());
 
 			// Wait for the return message to be received.
@@ -231,7 +238,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 
 			// Push 5 messages to the responder actor, using the
 			// address of the receiver as the from address.
-			xlang::uint32_t value(1);
+			MockMessage value(1);
 			responder.Push(value, receiver.GetAddress());
 			responder.Push(value, receiver.GetAddress());
 			responder.Push(value, receiver.GetAddress());
@@ -257,7 +264,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 			// Push 5 messages to the responder actor, using the
 			// address of the receiver as the from address.
 			// After each send, wait for a return message.
-			xlang::uint32_t value(1);
+			MockMessage value(1);
 
 			responder.Push(value, receiver.GetAddress());
 			receiver.Wait();
@@ -288,11 +295,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 
 			// Push a test message to the responder actor, using the
 			// address of the receiver as the from address.
-			xlang::uint32_t value(1);
+			MockMessage value(1);
 			responder.Push(value, receiver.GetAddress());
 
 			// Busy-wait until the count becomes non-zero
-			xlang::uint32_t count = 0;
+			xlang::u32 count = 0;
 			while (count == 0)
 			{
 				count = receiver.Count();
@@ -327,11 +334,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 
 			// Push a test message to the responder actor, using the
 			// address of the receiver as the from address.
-			xlang::uint32_t value(1);
+			MockMessage value(1);
 			responder.Push(value, receiver.GetAddress());
 
 			// Busy-wait until the count becomes non-zero
-			xlang::uint32_t count = 0;
+			xlang::u32 count = 0;
 			while (count == 0)
 			{
 				count = receiver.Count();

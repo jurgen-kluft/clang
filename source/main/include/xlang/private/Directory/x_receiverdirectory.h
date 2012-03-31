@@ -28,7 +28,7 @@ namespace xlang
 			inline ReceiverDirectory();
 
 			/// Returns the number of receivers currently registered.
-			inline uint32_t Count() const;
+			inline u32 Count() const;
 
 			/// Registers a receiver and returns its unique address.
 			Address RegisterReceiver(Receiver *const receiver);
@@ -65,7 +65,7 @@ namespace xlang
 		}
 
 
-		XLANG_FORCEINLINE uint32_t ReceiverDirectory::Count() const
+		XLANG_FORCEINLINE u32 ReceiverDirectory::Count() const
 		{
 			return mReceiverPool.Count();
 		}

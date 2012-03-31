@@ -1,5 +1,9 @@
 #ifndef __XLANG_PRIVATE_CORE_MESSAGEALIGNMENT_H
 #define __XLANG_PRIVATE_CORE_MESSAGEALIGNMENT_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 
@@ -27,7 +31,7 @@ namespace xlang
 		{
 			/// \brief Describes the memory alignment requirement of the message type, in bytes.
 			/// The default alignment is four bytes.
-			static const uint32_t ALIGNMENT = 4;
+			static const u32 ALIGNMENT = 4;
 		};
 
 

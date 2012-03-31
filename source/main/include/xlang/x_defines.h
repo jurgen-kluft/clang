@@ -1,5 +1,9 @@
 #ifndef __XLANG_DEFINES_H
 #define __XLANG_DEFINES_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 /**
 \file Defines.h
@@ -44,14 +48,14 @@ be easily overridden just by defining the defines yourself globally in your buil
 			This is a global define that decides default values for several other
 			defines that individually control aspects of code generation related to debugging.
 
-			The value of \ref THERON_DEBUG can be overridden by defining it globally in the build
+			The value of \ref XLANG_DEBUG can be overridden by defining it globally in the build
 			(in the makefile using -D, or in the project preprocessor settings in Visual Studio).
 
-			If not defined, then \ref THERON_DEBUG defaults to 1 in GCC builds when NDEBUG is not
+			If not defined, then \ref XLANG_DEBUG defaults to 1 in GCC builds when NDEBUG is not
 			defined, and to 1 in other builds (including Visual C++) when _DEBUG is defined.
 			Otherwise it defaults to 0, disabling debug-related code generation.
 
-			If \ref THERON_DEBUG is defined as 1, then \ref XLANG_ENABLE_ASSERTS defaults to 1,
+			If \ref XLANG_DEBUG is defined as 1, then \ref XLANG_ENABLE_ASSERTS defaults to 1,
 			\ref XLANG_FORCEINLINE defaults to 'inline', and \ref
 			XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS defaults to 1. Otherwise those defines
 			default to 0, forced inlining, and 0, respectively.
@@ -59,33 +63,33 @@ be easily overridden just by defining the defines yourself globally in your buil
 			#define XLANG_DEBUG 0
 		#endif
 	#endif
-#endif // THERON_DEBUG
+#endif // XLANG_DEBUG
 
 
 #ifndef XLANG_ENABLE_ASSERTS
-	#if THERON_DEBUG
+	#if XLANG_DEBUG
 		#define XLANG_ENABLE_ASSERTS 1
 	#else
 		/**
 		\brief Enables generation of code for asserts within xlang.
 
-		Defaults to 0, disabling asserts, when \ref THERON_DEBUG is 0.
-		Defaults to 1, enabling asserts, when \ref THERON_DEBUG is 1.
+		Defaults to 0, disabling asserts, when \ref XLANG_DEBUG is 0.
+		Defaults to 1, enabling asserts, when \ref XLANG_DEBUG is 1.
 
 		The value of \ref XLANG_ENABLE_ASSERTS can be overridden by defining it globally
 		in the build (in the makefile using -D, or in the project preprocessor settings
 		in Visual Studio).
 		*/
 		#define XLANG_ENABLE_ASSERTS 0
-	#endif // THERON_DEBUG
+	#endif // XLANG_DEBUG
 #endif // XLANG_ENABLE_ASSERTS
 
 
 
 #ifndef XLANG_FORCEINLINE
-	#if THERON_DEBUG
+	#if XLANG_DEBUG
 		#define XLANG_FORCEINLINE inline
-	#else // THERON_DEBUG
+	#else // XLANG_DEBUG
 		#ifdef _MSC_VER
 			#define XLANG_FORCEINLINE __forceinline
 		#elif defined(__GNUC__)
@@ -103,7 +107,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 
 			\ref XLANG_FORCEINLINE defines the keyword used for inlined function definitions.
 			It defaults to __forceinline for Visual C++, and inline __attribute__((always_inline))
-			for gcc, when \ref THERON_DEBUG is 0. Otherwise it defaults to the inline keyword, obligatory
+			for gcc, when \ref XLANG_DEBUG is 0. Otherwise it defaults to the inline keyword, obligatory
 			on functions defined in headers.
 
 			The definition of \ref XLANG_FORCEINLINE can be overridden by defining it globally
@@ -112,23 +116,23 @@ be easily overridden just by defining the defines yourself globally in your buil
 			*/
 			#define XLANG_FORCEINLINE inline
 		#endif
-	#endif // THERON_DEBUG
+	#endif // XLANG_DEBUG
 #endif // XLANG_FORCEINLINE
 
 
 #ifndef XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
-	// Support THERON_ENABLE_SIMPLEALLOCATOR_CHECKS as a legacy synonym.
-	#if defined(THERON_ENABLE_SIMPLEALLOCATOR_CHECKS)
-		#define XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS THERON_ENABLE_SIMPLEALLOCATOR_CHECKS
+	// Support XLANG_ENABLE_SIMPLEALLOCATOR_CHECKS as a legacy synonym.
+	#if defined(XLANG_ENABLE_SIMPLEALLOCATOR_CHECKS)
+		#define XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS XLANG_ENABLE_SIMPLEALLOCATOR_CHECKS
 	#else
-		#if THERON_DEBUG
+		#if XLANG_DEBUG
 			#define XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS 1
 		#else
 			/**
 			\brief Enables debug checking of allocations in the \ref xlang::DefaultAllocator "DefaultAllocator".
 
 			This define controls the use of debugging checks in the default allocator used within
-			xlang. By default, this define is set to 0 when \ref THERON_DEBUG is 0, and 1 when \ref THERON_DEBUG is 1,
+			xlang. By default, this define is set to 0 when \ref XLANG_DEBUG is 0, and 1 when \ref XLANG_DEBUG is 1,
 			so that debug checks are enabled only in debug builds. However the define can be defined explicitly,
 			either to suppress the checking in debug builds or enforce it even in release builds, as required.
 
@@ -137,8 +141,8 @@ be easily overridden just by defining the defines yourself globally in your buil
 			settings in Visual Studio).
 			*/
 			#define XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS 0
-		#endif // THERON_DEBUG
-	#endif // defined(THERON_ENABLE_SIMPLEALLOCATOR_CHECKS)
+		#endif // XLANG_DEBUG
+	#endif // defined(XLANG_ENABLE_SIMPLEALLOCATOR_CHECKS)
 #endif // XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 
 
@@ -146,7 +150,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 	/**
 	\brief Enables run-time reporting of unregistered message types, which is off by default.
 
-	Message types can be registered using the \ref THERON_REGISTER_MESSAGE macro, which notifies
+	Message types can be registered using the \ref XLANG_REGISTER_MESSAGE macro, which notifies
 	xlang of the unique name of a message type. Registering the message types sent within an
 	application causes xlang's internal type ID system to be used to identity messages when they
 	arrive at an actor, instead of the built-in C++ typeid system.
@@ -162,7 +166,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 	If any of the message types are omitted, then errors may ensue (usually caught by asserts,
 	in debug builds).
 
-	To make this easier, define \ref THERON_ENABLE_MESSAGE_REGISTRATION_CHECKS as 1 in your local
+	To make this easier, define \ref XLANG_ENABLE_MESSAGE_REGISTRATION_CHECKS as 1 in your local
 	build (ideally globally with a compiler option). This enables run-time error reports that
 	helpfully detect message types that haven't been registered.
 
@@ -176,8 +180,8 @@ be easily overridden just by defining the defines yourself globally in your buil
 
 	\see <a href="http://www.theron-library.com/index.php?t=page&p=RegisteringMessages">Registering messages</a>
 	*/
-	#define XLANG_ENABLE_MESSAGE_REGISTRATION_CHECKS 0
-#endif // THERON_ENABLE_MESSAGE_REGISTRATION_CHECKS
+	#define XLANG_ENABLE_MESSAGE_REGISTRATION_CHECKS 1
+#endif // XLANG_ENABLE_MESSAGE_REGISTRATION_CHECKS
 
 
 #ifndef XLANG_ENABLE_UNHANDLED_MESSAGE_CHECKS
@@ -267,5 +271,5 @@ be easily overridden just by defining the defines yourself globally in your buil
 #endif // XLANG_MAX_RECEIVERS
 
 
-#endif // THERON_DEFINES_H
+#endif // XLANG_DEFINES_H
 

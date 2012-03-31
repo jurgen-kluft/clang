@@ -1,10 +1,9 @@
 #ifndef __XLANG_IALLOCATOR_H
 #define __XLANG_IALLOCATOR_H
-
-/**
-\file IAllocator.h
-Allocator interface.
-*/
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
 #include "xlang\private\x_BasicTypes.h"
 
@@ -37,7 +36,7 @@ namespace xlang
 	public:
 
 		/// \brief Defines an integer type used for specifying sizes of memory allocations.
-		typedef uint32_t SizeType;
+		typedef u32 SizeType;
 
 		/// \brief Default constructor
 		inline IAllocator()
@@ -80,5 +79,5 @@ namespace xlang
 } // namespace xlang
 
 
-#endif // THERON_IALLOCATOR_H
+#endif // XLANG_IALLOCATOR_H
 

@@ -1,16 +1,14 @@
-// Copyright (C) by Ashton Mason. See LICENSE.txt for licensing information.
-
-
 //
 // This sample shows how to use derivation to create subclasses of messages.
 //
 
+#include "xlang\x_Actor.h"
+#include "xlang\x_Framework.h"
+#include "xlang\x_Receiver.h"
 
-#include <stdio.h>
-
-#include <Theron/Actor.h>
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
+// Placement new/delete
+void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+void	operator delete(void* mem, void* )							{ }
 
 
 // A base message type.
@@ -43,7 +41,7 @@ public:
 
 
 // A simple actor that accepts messages of two related types.
-class SimpleActor : public Theron::Actor
+class SimpleActor : public xlang::Actor
 {
 public:
 
@@ -56,29 +54,27 @@ public:
 private:
 
     // Handler for messages of type BaseMessage.
-    inline void BaseMessageHandler(const BaseMessage &message, const Theron::Address from)
+    inline void BaseMessageHandler(const BaseMessage &message, const xlang::Address from)
     {
         Send(message, from);
         printf("Received BaseMessage with value '%d'\n", message.mBaseValue);
     }
 
     // Handler for messages of type DerivedMessage.
-    inline void DerivedMessageHandler(const DerivedMessage &message, const Theron::Address from)
+    inline void DerivedMessageHandler(const DerivedMessage &message, const xlang::Address from)
     {
         Send(message, from);
-        printf("Received DerivedMessage with base value '%d', derived value '%d'\n",
-            message.mBaseValue,
-            message.mDerivedValue);
+        printf("Received DerivedMessage with base value '%d', derived value '%d'\n", message.mBaseValue, message.mDerivedValue);
     }
 };
 
 
 int main()
 {
-    Theron::Framework framework;
-    Theron::ActorRef simpleActor(framework.CreateActor<SimpleActor>());
+    xlang::Framework framework;
+    xlang::ActorRef simpleActor(framework.CreateActor<SimpleActor>());
 
-    Theron::Receiver receiver;
+    xlang::Receiver receiver;
     
     // Send two messages, one a base message and the other a derived message.
     // By virtue of derivation both messages are valid BaseMessage messages.

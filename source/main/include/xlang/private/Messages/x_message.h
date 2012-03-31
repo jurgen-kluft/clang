@@ -1,7 +1,11 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGE_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGE_H
+#include "xbase\x_target.h"
+#ifdef USE_PRAGMA_ONCE 
+#pragma once 
+#endif
 
-#include <new>
+#include "xbase\x_allocator.h"
 
 #include "xlang\private\x_BasicTypes.h"
 #include "xlang\private\Debug\x_Assert.h"
@@ -11,7 +15,6 @@
 
 #include "xlang\x_AllocatorManager.h"
 #include "xlang\x_Defines.h"
-
 
 namespace xlang
 {
@@ -32,27 +35,25 @@ namespace xlang
 			}
 
 			/// Returns the memory block size required to initialize a message of this type.
-			XLANG_FORCEINLINE static uint32_t GetSize()
+			XLANG_FORCEINLINE static u32 GetSize()
 			{
 				// We allocate an aligned buffer to hold the message and its copy of the value.
 				// We lay the message and its value side by side in memory.
 				// The value is first, since it's the value that needs the alignment.
 				// The message object itself doesn't need special alignment.
-				const uint32_t messageSize(sizeof(ThisType));
-				uint32_t valueSize(sizeof(ValueType));
+				const u32 messageSize(sizeof(ThisType));
+				u32 valueSize(sizeof(ValueType));
 
 				// Empty structs passed as values have a size of one byte, which we don't like.
 				// We expect every allocation to be a multiple of four bytes, so we round up.
-				if (valueSize < 4)
-				{
-					valueSize = 4;
-				}
+				valueSize += (u32)(valueSize==0);
+				valueSize = (valueSize + 3) & 0xfffffffc;
 
 				return valueSize + messageSize;
 			}
 
 			/// Returns the memory block alignment required to initialize a message of this type.
-			XLANG_FORCEINLINE static uint32_t GetAlignment()
+			XLANG_FORCEINLINE static u32 GetAlignment()
 			{
 				return MessageAlignment<ValueType>::ALIGNMENT;
 			}
@@ -75,10 +76,9 @@ namespace xlang
 
 			/// Returns the name of the message type.
 			/// This uniquely identifies the type of the message value.
-			/// \note Unless explicitly specified to avoid C++ RTTI, message names are null.
-			virtual const char *TypeName() const
+			virtual int TypeId() const
 			{
-				return MessageTraits<ValueType>::TYPE_NAME;
+				return type2int<ValueType>::value();
 			}
 
 			/// Allows the message instance to destruct its constructed value object before being freed.
@@ -91,11 +91,11 @@ namespace xlang
 			}
 
 			/// Returns the size in bytes of the message value.
-			virtual uint32_t GetMessageSize() const
+			virtual u32 GetMessageSize() const
 			{
 				// Calculate the size of the message value itself. There's no padding between the
 				// message value block and the Message object that follows it.
-				return GetBlockSize() - static_cast<uint32_t>(sizeof(ThisType));
+				return GetBlockSize() - static_cast<u32>(sizeof(ThisType));
 			}
 
 			/// Gets the value carried by the message.
@@ -105,17 +105,18 @@ namespace xlang
 				return *reinterpret_cast<const ValueType *>(GetBlock());
 			}
 
+			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
 
 			/// Private constructor.
-			XLANG_FORCEINLINE Message(void *const block, const Address &from) :
-			   IMessage(from, block, ThisType::GetSize())
-			   {
-				   XLANG_ASSERT(block);
-			   }
+			XLANG_FORCEINLINE Message(void *const block, const Address &from)
+				: IMessage(from, block, ThisType::GetSize())
+			{
+				XLANG_ASSERT(block);
+			}
 
-			   Message(const Message &other);
-			   Message &operator=(const Message &other);
+			Message(const Message &other);
+			Message &operator=(const Message &other);
 		};
 
 

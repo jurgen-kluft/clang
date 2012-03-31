@@ -32,7 +32,6 @@ namespace xlang
 		}
 	}
 
-
 	Receiver::~Receiver()
 	{
 		{
@@ -54,7 +53,6 @@ namespace xlang
 		// Dereference the global free list to ensure it's destroyed.
 		detail::MessageCache::Instance().Dereference();
 	}
-
 
 	void Receiver::Push(detail::IMessage *const message)
 	{

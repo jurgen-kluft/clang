@@ -30,7 +30,7 @@ namespace xlang
 			inline ActorDirectory();
 
 			/// Returns the number of actors currently registered.
-			inline uint32_t Count() const;
+			inline u32 Count() const;
 
 			/// Registers an actor and returns its unique address.
 			Address RegisterActor(Framework *const framework, Actor *const actor);
@@ -64,7 +64,7 @@ namespace xlang
 		{
 		}
 
-		XLANG_FORCEINLINE uint32_t ActorDirectory::Count() const
+		XLANG_FORCEINLINE u32 ActorDirectory::Count() const
 		{
 			return mActorPool.Count();
 		}
@@ -72,7 +72,7 @@ namespace xlang
 		XLANG_FORCEINLINE ActorCore *ActorDirectory::GetActor(const Address &address) const
 		{
 			XLANG_ASSERT(Address::IsActorAddress(address));
-			const uint32_t index(address.GetIndex());
+			const u32 index(address.GetIndex());
 
 			// The entry in the actor pool is memory for an ActorCore object.
 			void *const entry(mActorPool.GetEntry(index));
