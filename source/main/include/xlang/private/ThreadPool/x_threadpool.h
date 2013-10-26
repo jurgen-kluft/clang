@@ -27,8 +27,6 @@ namespace xlang
 {
 	namespace detail
 	{
-
-
 		/// A pool of worker threads.
 		class ThreadPool
 		{
@@ -47,57 +45,57 @@ namespace xlang
 			ThreadPool();
 
 			/// Starts the pool, starting the given number of worker threads.
-			void Start(u32 count, u32 target_count);
+			void			Start(u32 count, u32 target_count);
 
 			/// Stops the pool, terminating all worker threads.
-			void Stop();
+			void			Stop();
 
 			/// Requests that there be at most \ref count worker threads in the pool.
 			/// \note If the current number is higher, threads are terminated until the maximum is reached.
-			void SetMaxThreads(const u32 count);
+			void			SetMaxThreads(const u32 count);
 
 			/// Requests that there be at least \ref count worker threads in the pool.
 			/// \note If the current number is lower, new threads are spawned until the maximum is reached.
-			void SetMinThreads(const u32 count);
+			void			SetMinThreads(const u32 count);
 
 			/// Returns the current maximum permitted number of worker threads in this pool.
-			inline u32 GetMaxThreads() const;
+			inline u32		GetMaxThreads() const;
 
 			/// Returns the current minimum permitted number of worker threads in this pool.
-			inline u32 GetMinThreads() const;
+			inline u32		GetMinThreads() const;
 
 			/// Gets the actual number of worker threads currently in the pool.
-			inline u32 GetNumThreads() const;
+			inline u32		GetNumThreads() const;
 
 			/// Gets the peak number of worker threads ever in the pool.
 			/// \note This includes any threads which were created but later terminated.
-			inline u32 GetPeakThreads() const;
+			inline u32		GetPeakThreads() const;
 
 			/// Resets internal counters that track reported events for thread pool management.
-			inline void ResetCounters() const;
+			inline void		ResetCounters() const;
 
 			/// Returns the number of messages processed within this pool.
 			/// The count is incremented automatically and can be reset using ResetCounters.
-			inline u32 GetNumMessagesProcessed() const;
+			inline u32		GetNumMessagesProcessed() const;
 
 			/// Returns the number of thread pulse events made in response to arriving messages.
 			/// The count is incremented automatically and can be reset using ResetCounters.
-			inline u32 GetNumThreadsPulsed() const;
+			inline u32		GetNumThreadsPulsed() const;
 
 			/// Returns the number of threads woken by pulse events in response to arriving messages.
 			/// The count is incremented automatically and can be reset using ResetCounters.
-			inline u32 GetNumThreadsWoken() const;
+			inline u32		GetNumThreadsWoken() const;
 
 			/// Gets a reference to the core message processing mutex.
-			inline Mutex &GetMutex() const;
+			inline Mutex	&GetMutex() const;
 
 			/// Pushes an actor that has received a message onto the work queue for processing,
 			/// and wakes up a worker thread to process it if one is available.
-			inline void Push(ActorCore *const actor);
+			inline void		Push(ActorCore *const actor);
 
 			/// Pushes an actor that has received a message onto the work queue for processing,
 			/// without waking up a worker thread. Instead the actor is processed by a running thread.
-			inline void TailPush(ActorCore *const actor);
+			inline void		TailPush(ActorCore *const actor);
 
 		private:
 
@@ -110,27 +108,27 @@ namespace xlang
 			ThreadPool &operator=(const ThreadPool &other);
 
 			/// Worker thread function.
-			void WorkerThreadProc();
+			void			WorkerThreadProc();
 
 			/// Manager thread function.
-			void ManagerThreadProc();
+			void			ManagerThreadProc();
 
 			/// Processes an actor core entry retrieved from the work queue.
-			inline void ProcessActorCore(Lock &lock, ActorCore *const actorCore);
+			inline void		ProcessActorCore(Lock &lock, ActorCore *const actorCore);
 
 			// Accessed in the main loop.
-			u32 mNumThreads;                       ///< Counts the number of threads running.
-			u32 mTargetThreads;                    ///< The number of threads currently desired.
-			WorkQueue mWorkQueue;                       ///< Threadsafe queue of actors waiting to be processed.
-			mutable Monitor mWorkQueueMonitor;          ///< Synchronizes access to the work queue.
-			mutable Monitor mManagerMonitor;            ///< Locking event that wakes the manager thread.
-			mutable u32 mNumMessagesProcessed;     ///< Counter used to count processed messages.
-			mutable u32 mNumThreadsPulsed;         ///< Counts the number of times we signaled a worker thread to wake.
-			mutable u32 mNumThreadsWoken;          ///< Counter used to count woken threads.
+			u32				mNumThreads;							///< Counts the number of threads running.
+			u32				mTargetThreads;							///< The number of threads currently desired.
+			WorkQueue		mWorkQueue;								///< Threadsafe queue of actors waiting to be processed.
+			mutable Monitor	mWorkQueueMonitor;						///< Synchronizes access to the work queue.
+			mutable Monitor	mManagerMonitor;						///< Locking event that wakes the manager thread.
+			mutable u32		mNumMessagesProcessed;					///< Counter used to count processed messages.
+			mutable u32		mNumThreadsPulsed;						///< Counts the number of times we signaled a worker thread to wake.
+			mutable u32		mNumThreadsWoken;						///< Counter used to count woken threads.
 
 			// Accessed infrequently.
-			ThreadCollection mWorkerThreads;            ///< Owned collection of worker threads.
-			Thread mManagerThread;                      ///< Dynamically creates and destroys the worker threads.
+			ThreadCollection mWorkerThreads;						///< Owned collection of worker threads.
+			Thread			mManagerThread;							///< Dynamically creates and destroys the worker threads.
 		};
 
 

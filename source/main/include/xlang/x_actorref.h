@@ -114,7 +114,7 @@ namespace xlang
 		\code
 		void ProcessActor(ActorRef &actor)
 		{
-		/// Do stuff
+			/// Do stuff
 		}
 		\endcode
 
@@ -123,7 +123,7 @@ namespace xlang
 		\code
 		void ProcessActor(ActorRef actor)
 		{
-		/// Do stuff
+			/// Do stuff
 		}
 		\endcode
 
@@ -164,17 +164,17 @@ namespace xlang
 
 		int main()
 		{
-		// Framework constructed.
-		xlang::Framework framework;
+			// Framework constructed.
+			xlang::Framework framework;
 
-		// Actor created and referenced by ActorRef.
-		xlang::ActorRef actor(framework.CreateActor<Actor>());
+			// Actor created and referenced by ActorRef.
+			xlang::ActorRef actor(framework.CreateActor<Actor>());
 
-		// Actor used
-		// ...
+			// Actor used
+			// ...
 
-		// ActorRef destructed, actor becomes unreferenced and is garbage collected.
-		// Framework destructed after destroying the actor.
+			// ActorRef destructed, actor becomes unreferenced and is garbage collected.
+			// Framework destructed after destroying the actor.
 		}
 		\endcode
 

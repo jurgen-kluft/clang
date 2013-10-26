@@ -18,9 +18,9 @@ namespace xlang
 			template <typename T>
 			friend struct type2int;
 
-			static const int next()
+			static const xcore::s32 next()
 			{
-				static int id = 0; 
+				static xcore::s32 id = 0; 
 				return id++;
 			}
 		};
@@ -28,9 +28,9 @@ namespace xlang
 		template <typename T>
 		struct type2int
 		{
-			static const int value() 
+			static const xcore::s32 value() 
 			{
-				static const int id = type2intbase::next();
+				static const xcore::s32 id = type2intbase::next();
 				return id;
 			}
 		};

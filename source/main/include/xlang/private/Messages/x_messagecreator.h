@@ -5,13 +5,13 @@
 #pragma once 
 #endif
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\MessageCache\x_MessageCache.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_Message.h"
+#include "xlang\private\x_basictypes.h"
+#include "xlang\private\messagecache\x_messagecache.h"
+#include "xlang\private\messages\x_imessage.h"
+#include "xlang\private\messages\x_message.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_Defines.h"
+#include "xlang\x_address.h"
+#include "xlang\x_defines.h"
 
 namespace xlang
 {

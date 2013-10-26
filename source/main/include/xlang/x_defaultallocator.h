@@ -171,7 +171,7 @@ namespace xlang
 
 		if (defaultAllocator)
 		{
-		printf("Default allocator has %d bytes currently allocated\n", defaultAllocator->GetBytesAllocated());
+			printf("Default allocator has %d bytes currently allocated\n", defaultAllocator->GetBytesAllocated());
 		}
 		\endcode
 
@@ -199,7 +199,7 @@ namespace xlang
 
 		if (defaultAllocator)
 		{
-		printf("Default allocator peak allocation was %d bytes\n", defaultAllocator->GetPeakBytesAllocated());
+			printf("Default allocator peak allocation was %d bytes\n", defaultAllocator->GetPeakBytesAllocated());
 		}
 		\endcode
 

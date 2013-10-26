@@ -84,9 +84,9 @@ a default alignment of four bytes will be used.
 namespace MyNamespace
 {
 
-class MyMessage
-{
-};
+	class MyMessage
+	{
+	};
 
 }
 
@@ -144,13 +144,12 @@ variables within user functions).
 // A message type that requires alignment.
 struct XLANG_PREALIGN(128) AlignedMessage
 {
-int mValue;
-
+	int mValue;
 } XLANG_POSTALIGN(128);
 
 int main()
 {
-AlignedMessage message;  // Aligned to 128 bytes by the compiler
+	AlignedMessage message;  // Aligned to 128 bytes by the compiler
 }
 \endcode
 The reason for using two macros is for portability: GCC and Visual C++
