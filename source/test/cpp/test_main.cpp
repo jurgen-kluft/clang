@@ -1,7 +1,6 @@
 #include "xbase\x_base.h"
 #include "xbase\x_console.h"
 #include "xbase\x_allocator.h"
-#include "xbase\x_string.h"
 
 #include "xunittest\xunittest.h"
 
@@ -79,9 +78,9 @@ bool gRunUnitTest(UnitTest::TestReporter& reporter)
 	xcore::TestAllocator testAllocator(systemAllocator);
 	gTestAllocator = &testAllocator;
 
-	xcore::x_Init(gTestAllocator);
+	xbase::x_Init();
 	int r = UNITTEST_SUITE_RUN(reporter, xLangUnitTest);
-	xcore::x_Exit();
+	xbase::x_Exit();
 
 	gTestAllocator->release();
 

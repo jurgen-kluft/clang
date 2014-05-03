@@ -59,10 +59,6 @@ namespace xlang
 	by the \ref XLANG_MAX_ACTORS define, which defines the number of unique
 	actor addresses.
 
-	\see <a href="http://www.theron-library.com/index.php?t=page&p=CreatingAnActor">Creating an Actor</a>
-	\see <a href="http://www.theron-library.com/index.php?t=page&p=InitializingAnActor">Initializing an Actor</a>
-	\see <a href="http://www.theron-library.com/index.php?t=page&p=UsingActorReferences">Using actor references</a>
-	\see <a href="http://www.theron-library.com/index.php?t=page&p=AligningActors">Aligning actors</a>
 	*/
 	class Actor
 	{
@@ -322,9 +318,6 @@ namespace xlang
 		\param actor Pointer to the derived actor instance.
 		\param handler Member function pointer identifying the message handler function.
 		\return True, if the registration was successful. Failure may indicate out-of-memory.
-
-		\see <a href="http://www.theron-library.com/index.php?t=page&p=HandlingMessages">Handling messages</a>
-		\see <a href="http://www.theron-library.com/index.php?t=page&p=DynamicHandlerRegistration">Dynamic handler registration</a>
 		*/
 		template <class ActorType, class ValueType>
 		inline bool RegisterHandler( ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
@@ -398,8 +391,6 @@ namespace xlang
 		actor is destructed. Doing so is optional and of course completely safe, but if any handlers
 		are left registered they will simply be automatically deregistered on destruction of the
 		actor.
-
-		\see <a href="http://www.theron-library.com/index.php?t=page&p=DynamicHandlerRegistration">Dynamic handler registration</a>
 		*/
 		template <class ActorType, class ValueType>
 		inline bool DeregisterHandler(ActorType *const actor, void (ActorType::*handler)(const ValueType &message, const Address from));
@@ -589,7 +580,6 @@ namespace xlang
 		guarantee on the arrival order of m1 and m2 at C.
 
 		\see TailSend
-		\see <a href="http://www.theron-library.com/index.php?t=page&p=SendingMessages">Sending messages</a>
 		*/
 		template <class ValueType>
 		inline bool Send(const ValueType &value, const Address &address) const;

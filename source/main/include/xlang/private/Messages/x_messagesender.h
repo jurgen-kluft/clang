@@ -30,20 +30,12 @@ namespace xlang
 			/// Sends the given value as a message from an address in the given framework
 			/// to some other address. 
 			template <class ValueType>
-			inline static bool Send(
-				const Framework *const framework,
-				const ValueType &value,
-				const Address &from,
-				const Address &to);
+			inline static bool Send(const Framework *const framework, const ValueType &value, const Address &from, const Address &to);
 
 			/// Sends the given value as a message from an address in the given framework
 			/// to some other address, without waking a worker thread to process it.
 			template <class ValueType>
-			inline static bool TailSend(
-				const Framework *const framework,
-				const ValueType &value,
-				const Address &from,
-				const Address &to);
+			inline static bool TailSend(const Framework *const framework, const ValueType &value, const Address &from, const Address &to);
 
 		private:
 
@@ -58,11 +50,7 @@ namespace xlang
 
 
 		template <class ValueType>
-		XLANG_FORCEINLINE bool MessageSender::Send(
-			const Framework *const framework,
-			const ValueType &value,
-			const Address &from,
-			const Address &to)
+		XLANG_FORCEINLINE bool MessageSender::Send(const Framework *const framework, const ValueType &value, const Address &from, const Address &to)
 		{
 			// The directory lock is used to protect the global free list.
 			Lock lock(Directory::GetMutex());
@@ -86,11 +74,7 @@ namespace xlang
 
 
 		template <class ValueType>
-		XLANG_FORCEINLINE bool MessageSender::TailSend(
-			const Framework *const framework,
-			const ValueType &value,
-			const Address &from,
-			const Address &to)
+		XLANG_FORCEINLINE bool MessageSender::TailSend(const Framework *const framework, const ValueType &value, const Address &from, const Address &to)
 		{
 			// The directory lock is used to protect the global free list.
 			Lock lock(Directory::GetMutex());

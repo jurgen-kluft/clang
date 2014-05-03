@@ -66,7 +66,7 @@ public:
 
     // Assignment operator, allowing the envelope to be assigned.
     // Note that the referenced object itself is not copied; just the reference to it.
-    // Theron currently uses the class copy-constructor to copy message types, but it's
+    // Framework currently uses the class copy-constructor to copy message types, but it's
     // good practice to also provide an assignment operator, which may be needed by other code.
     inline EnvelopeMessage &operator=(const EnvelopeMessage &other)
     {

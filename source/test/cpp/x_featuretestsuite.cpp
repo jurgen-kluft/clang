@@ -4,13 +4,13 @@
 #include <string>
 #include <queue>
 
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\x_Actor.h"
-#include "xlang\x_ActorRef.h"
-#include "xlang\x_Address.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\x_Register.h"
+#include "xlang\private\debug\x_assert.h"
+#include "xlang\x_actor.h"
+#include "xlang\x_actorref.h"
+#include "xlang\x_address.h"
+#include "xlang\x_framework.h"
+#include "xlang\x_receiver.h"
+#include "xlang\x_register.h"
 
 #include "xunittest\xunittest.h"
 
