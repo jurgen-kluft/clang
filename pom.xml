@@ -46,7 +46,7 @@
 		<Properties DependencyType="Root" Platform="*">
 			<PropertyGroup Label="xlang_TargetDirs">
 				<xlang_RootDir>$(SolutionDir)</xlang_RootDir>
-				<xlang_LibraryDir>$(SolutionDir)target\xlang\outdir\xlang_$(Configuration)_$(Platform)\</xlang_LibraryDir>
+				<xlang_LibraryDir>$(SolutionDir)target\xlang\outdir\xlang_$(PackageSignature)\</xlang_LibraryDir>
 				<xlang_IncludeDir>$(SolutionDir)source\main\include\</xlang_IncludeDir>
 				<xlang_TestIncludeDir>$(SolutionDir)source\test\include\</xlang_TestIncludeDir>
 			</PropertyGroup>
@@ -64,7 +64,7 @@
 		<Properties DependencyType="Source" Platform="*">
 			<PropertyGroup Label="xlang_TargetDirs">
 				<xlang_RootDir>$(SolutionDir)target\xlang\</xlang_RootDir> 
-				<xlang_LibraryDir>$(SolutionDir)target\xlang\target\xlang\outdir\xlang_$(Configuration)_$(Platform)\</xlang_LibraryDir>
+				<xlang_LibraryDir>$(SolutionDir)target\xlang\target\xlang\outdir\xlang_$(PackageSignature)\</xlang_LibraryDir>
 				<xlang_IncludeDir>$(SolutionDir)target\xlang\source\main\include\</xlang_IncludeDir>
 				<xlang_TestIncludeDir>$(SolutionDir)target\xlang\source\test\include\</xlang_TestIncludeDir>
 			</PropertyGroup>

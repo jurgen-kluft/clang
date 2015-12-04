@@ -865,7 +865,7 @@ namespace xlang
 
 	XLANG_FORCEINLINE detail::IDefaultHandler* Actor::GetDefaultHandler() const
 	{
-		if (mDefaultMessageHandler.data1 == 0)
+		if (mDefaultMessageHandler._vfptr_ == 0)
 			return NULL;
 		return (detail::IDefaultHandler*)&mDefaultMessageHandler;
 	}

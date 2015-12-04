@@ -12,9 +12,13 @@ void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
 void	operator delete(void* mem, void* )							{ }
 
 
-struct Message
+struct MessageIntValue
 {
-    inline Message(const int value) : mValue(value)
+	inline MessageIntValue() : mValue(-1)
+	{
+	}
+
+	inline MessageIntValue(const int value) : mValue(value)
     {
     }
     int mValue;
@@ -34,7 +38,7 @@ public:
 
 private:
 
-    inline void HandlerOne(const Message &message, const xlang::Address from)
+	inline void HandlerOne(const MessageIntValue &message, const xlang::Address from)
     {
         printf("Handler ONE received message with value '%d'\n", message.mValue);
         
@@ -45,7 +49,7 @@ private:
         Send(message, from);
     }
 
-    inline void HandlerTwo(const Message &message, const xlang::Address from)
+	inline void HandlerTwo(const MessageIntValue &message, const xlang::Address from)
     {
         printf("Handler TWO received message with value '%d'\n", message.mValue);
 
@@ -57,6 +61,17 @@ private:
     }
 };
 
+class Catcher
+{
+public:
+
+	inline void Catch(const MessageIntValue &message, const xlang::Address from)
+	{
+		mMessage = message;
+	}
+
+	MessageIntValue mMessage;
+};
 
 int main()
 {
@@ -64,13 +79,15 @@ int main()
     xlang::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
 
     xlang::Receiver receiver;
+	Catcher catcher;
+	receiver.RegisterHandler(&catcher, &Catcher::Catch);
 
     // Send a series of messages to the actor.
     // Each time it receives a message it switches handlers, so that
     // it reacts differently to odd and even messages.
     for (int count = 0; count < 10; ++count)
     {
-        exampleActor.Push(Message(count), receiver.GetAddress());
+		exampleActor.Push(MessageIntValue(count), receiver.GetAddress());
     }
 
     // Wait for the same number of response messages.

@@ -43,17 +43,17 @@ namespace xlang
 			IMessageHandler(const IMessageHandler &other);
 			IMessageHandler &operator=(const IMessageHandler &other);
 
-			u32 mMarked;           ///< Flag used to mark the handler for deletion.
+			u64 mMarked;           ///< Flag used to mark the handler for deletion.
 		};
 
 		XLANG_FORCEINLINE void IMessageHandler::Mark()
 		{
-			mMarked = 1;
+			mMarked |= 1;
 		}
 
 		XLANG_FORCEINLINE bool IMessageHandler::IsMarked() const
 		{
-			return mMarked!=0;
+			return (mMarked & 1) == 1;
 		}
 
 

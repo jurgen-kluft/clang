@@ -53,7 +53,7 @@ namespace xlang
 
 				// Call the handler, passing it the from address and also the message as blind data.
 				const void *const messageData(message->GetMessageData());
-				const u32 messageSize(message->GetMessageSize());
+				const u32 messageSize(message->GetMessageValueSize());
 				const Address from(message->From());
 
 				XLANG_ASSERT(messageData && messageSize);

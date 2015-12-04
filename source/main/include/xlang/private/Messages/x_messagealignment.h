@@ -31,7 +31,7 @@ namespace xlang
 		{
 			/// \brief Describes the memory alignment requirement of the message type, in bytes.
 			/// The default alignment is four bytes.
-			static const u32 ALIGNMENT = 4;
+			static const u32 ALIGNMENT = 8;
 		};
 
 

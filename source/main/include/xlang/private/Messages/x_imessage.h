@@ -13,24 +13,22 @@ namespace xlang
 {
 	namespace detail
 	{
-		class type2intbase
+		class type2intgeneric
 		{
-			template <typename T>
-			friend struct type2int;
-
+		protected:
 			static const xcore::s32 next()
 			{
-				static xcore::s32 id = 0; 
+				static xcore::s32 id = 1;
 				return id++;
 			}
 		};
 
 		template <typename T>
-		struct type2int
+		struct type2int : public type2intgeneric
 		{
 			static const xcore::s32 value() 
 			{
-				static const xcore::s32 id = type2intbase::next();
+				static const xcore::s32 id = next();
 				return id;
 			}
 		};
@@ -80,7 +78,7 @@ namespace xlang
 			}
 
 			/// Returns the size in bytes of the message data.
-			virtual u32 GetMessageSize() const = 0;
+			virtual u32 GetMessageValueSize() const = 0;
 
 			/// Returns the name of the message type.
 			/// This uniquely identifies the type of the message value.

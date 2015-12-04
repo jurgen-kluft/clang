@@ -22,7 +22,7 @@ namespace xlang
 
 	namespace detail
 	{
-		struct MessageHandler_t { MessageHandler_t() : data1(0), data2(0){} u64 data1; u64 data2; };
+		struct MessageHandler_t { MessageHandler_t() : _vfptr_(0), _marked_(0), _data_(0) {} void* _vfptr_; u64 _marked_; u64 _data_; };
 
 		/// Instantiable class template that remembers a message handler function and
 		/// the type of message it accepts. It is responsible for checking whether

@@ -70,6 +70,7 @@ namespace xlang
 	{
 	public:
 
+		static const SizeType MIN_ALIGNMENT = 8;
 		static const u32 GUARD_VALUE = 0xdddddddd;
 
 		/**
@@ -262,9 +263,9 @@ namespace xlang
 
 	inline void *DefaultAllocator::Allocate(const SizeType size)
 	{
-		// Default to 4-byte alignment in 32-bit builds.
+		// Default to sizeof(void*) alignment in 32-bit/64-bit builds.
 		// This call is force-inlined.
-		return AllocateInline(size, sizeof(int));
+		return AllocateInline(size, sizeof(void*));
 	}
 
 
@@ -345,31 +346,30 @@ namespace xlang
 	{
 		// Alignment values are expected to be powers of two greater than or equal to four bytes.
 		// This ensures that the size, offset, and guard fields are 4-byte aligned.
-		XLANG_ASSERT_MSG(alignment >= 4, "Actor and message alignments must be at least 4 bytes");
+		XLANG_ASSERT_MSG(alignment >= MIN_ALIGNMENT, "Actor and message alignments must be at least 4 bytes");
 		XLANG_ASSERT_MSG((alignment & (alignment - 1)) == 0, "Actor and message alignments must be powers of two");
 
 		// Allocation sizes are expected to be non-zero multiples of four bytes.
 		// This ensures that the trailing guard field is 4-byte aligned.
-		XLANG_ASSERT_MSG(size >= 4, "Allocation of memory block less than four bytes in size");
+		XLANG_ASSERT_MSG(size >= MIN_ALIGNMENT, "Allocation of memory block less than four bytes in size");
 		XLANG_ASSERT_MSG((size & 0x3) == 0, "Allocation of memory block not a multiple of four bytes in size");
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
-		const u32 numPreFields(3);
-		const u32 numPostFields(1);
+		const u32 numPreFields(4);
+		const u32 numPostFields(2);
 #else
-		const u32 numPreFields(1);
+		const u32 numPreFields(2);
 		const u32 numPostFields(0);
 #endif // XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 
 		// Calculate the size of the internally allocated block.
-		// We assume underlying allocations are always 4-byte aligned, so padding is at most (alignment-4) bytes.
-		const u32 maxPaddingSize(alignment - 4);
-		const u32 preambleSize(maxPaddingSize + numPreFields * sizeof(u32));
+		// We assume underlying allocations are always MIN_ALIGNMENT aligned, so padding is at most (alignment-MIN_ALIGNMENT) bytes.
+		const u32 preambleSize(numPreFields * sizeof(u32));
 		const u32 postambleSize(numPostFields * sizeof(u32));
-		const u32 internalSize(preambleSize + size + postambleSize);
+		const u32 internalSize(preambleSize + ((size + (alignment - 1)) & ~(alignment - 1)) + postambleSize);
 
 		u32 *const block = reinterpret_cast<u32 *>(new unsigned char[internalSize]);
-		XLANG_ASSERT_MSG(XLANG_ALIGNED(block, 4), "Global new is assumed to always align to 4-byte boundaries");
+		XLANG_ASSERT_MSG(XLANG_ALIGNED(block, MIN_ALIGNMENT), "Global new is assumed to always align to MIN_ALIGNMENT boundaries");
 
 		if (block)
 		{

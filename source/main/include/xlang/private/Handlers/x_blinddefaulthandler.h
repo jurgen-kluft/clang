@@ -61,7 +61,7 @@ namespace xlang
 			ActorType *const typedActor = static_cast<ActorType *>(actor);
 
 			const void *const messageData(message->GetMessageData());
-			const u32 messageSize(message->GetMessageSize());
+			const u32 messageSize(message->GetMessageValueSize());
 			const xlang::Address from(message->From());
 
 			XLANG_ASSERT(messageData && messageSize);

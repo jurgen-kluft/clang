@@ -23,6 +23,7 @@ namespace xlang
 		class MessageCache
 		{
 		public:
+			static const u32 MessageAlignment = sizeof(void*);
 
 			/// Gets a reference to the single global instance.
 			inline static MessageCache &Instance();
@@ -62,7 +63,7 @@ namespace xlang
 			static MessageCache smInstance;			///< Single, static instance of the class.
 
 			Mutex		mReferenceCountMutex;		///< Synchronizes access to the reference count.
-			u32	mReferenceCount;			///< Tracks how many clients exist.
+			u32			mReferenceCount;			///< Tracks how many clients exist.
 			Pool		mPools[MAX_POOLS];			///< Pools of memory blocks of different sizes.
 		};
 
@@ -175,7 +176,7 @@ namespace xlang
 			XLANG_ASSERT((size & 3) == 0);
 
 			// Because all allocation sizes are multiples of four, we divide by four.
-			const u32 index(size >> 2);
+			const u32 index((size + (MessageAlignment - 1)) / MessageAlignment);
 
 			// Because the minimum size is four bytes, we subtract one.
 			XLANG_ASSERT(index > 0);
