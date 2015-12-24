@@ -8,8 +8,8 @@
 #include "xunittest\xunittest.h"
 
 // Placement new/delete
-static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
-static inline void	operator delete(void* mem, void* )							{ }
+inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void	operator delete(void* mem, void* )							{ }
 
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGECACHETESTSUITE)
 {

@@ -13,8 +13,8 @@
 #include "xunittest\xunittest.h"
 
 // Placement new/delete
-static inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
-static inline void	operator delete(void* mem, void* )							{ }
+inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void	operator delete(void* mem, void* )							{ }
 
 #define XHANDLER(ActorType, MessageType) xlang::detail::MessageHandler<ActorType, MessageType>
 #define XHANDLER_ARRAY(size, name) xcore::xbyte name[size * xlang::SizeOfMessageHandler];

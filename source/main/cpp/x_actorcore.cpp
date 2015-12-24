@@ -102,7 +102,7 @@ namespace xlang
 					for (; ins<(s32)mNumMessageHandlers; ++ins)
 					{
 						IMessageHandler* handler = (IMessageHandler*)&mMessageHandlers[ins];
-						if ((xbyte*)new_handler->GetMessageTypeId() < (xbyte*)handler->GetMessageTypeId())
+						if (new_handler->GetMessageTypeId() < handler->GetMessageTypeId())
 							break;
 					}
 

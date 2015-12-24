@@ -38,7 +38,7 @@ namespace xlang
 			XLANG_FORCEINLINE static u32 GetMessageSize()
 			{
 				const u32 alignment(GetAlignment());
-				return (sizeof(ThisType) + (alignment - 1)) & ~(alignment - 1);
+				return ((u32)sizeof(ThisType) + (alignment - 1)) & ~(alignment - 1);
 			}
 
 			/// Returns the memory block size required to initialize a message of this type.
