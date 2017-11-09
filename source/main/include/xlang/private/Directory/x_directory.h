@@ -1,8 +1,8 @@
 #ifndef __XLANG_PRIVATE_DIRECTORY_DIRECTORY_H
 #define __XLANG_PRIVATE_DIRECTORY_DIRECTORY_H
 
-#include "xlang\private\Threading\x_Mutex.h"
-#include "xlang\x_Defines.h"
+#include "xlang/private/Threading/x_Mutex.h"
+#include "xlang/x_Defines.h"
 
 namespace xlang
 {

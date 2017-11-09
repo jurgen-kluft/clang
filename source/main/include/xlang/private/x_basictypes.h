@@ -1,6 +1,6 @@
 #ifndef __XLANG_PRIVATE_BASICTYPES_H
 #define __XLANG_PRIVATE_BASICTYPES_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif

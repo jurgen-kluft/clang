@@ -1,15 +1,15 @@
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Directory\x_Directory.h"
-#include "xlang\private\Directory\x_ReceiverDirectory.h"
-#include "xlang\private\MessageCache\x_MessageCache.h"
-#include "xlang\private\Messages\x_MessageCreator.h"
-#include "xlang\private\Threading\x_Lock.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Directory/x_Directory.h"
+#include "xlang/private/Directory/x_ReceiverDirectory.h"
+#include "xlang/private/MessageCache/x_MessageCache.h"
+#include "xlang/private/Messages/x_MessageCreator.h"
+#include "xlang/private/Threading/x_Lock.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
-#include "xlang\x_IAllocator.h"
-#include "xlang\x_Receiver.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
+#include "xlang/x_IAllocator.h"
+#include "xlang/x_Receiver.h"
 
 
 namespace xlang

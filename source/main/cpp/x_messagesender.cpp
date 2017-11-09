@@ -1,13 +1,13 @@
-#include "xlang\private\Core\x_ActorCore.h"
-#include "xlang\private\Directory\x_ActorDirectory.h"
-#include "xlang\private\Directory\x_ReceiverDirectory.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_MessageSender.h"
-#include "xlang\private\Threading\x_Mutex.h"
-#include "xlang\private\Threading\x_Lock.h"
+#include "xlang/private/Core/x_ActorCore.h"
+#include "xlang/private/Directory/x_ActorDirectory.h"
+#include "xlang/private/Directory/x_ReceiverDirectory.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_MessageSender.h"
+#include "xlang/private/Threading/x_Mutex.h"
+#include "xlang/private/Threading/x_Lock.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_Framework.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_Framework.h"
 
 
 namespace xlang

@@ -1,12 +1,12 @@
-#include "xlang\private\Core\x_ActorCore.h"
-#include "xlang\private\Core\x_ActorDestroyer.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Directory\x_ActorDirectory.h"
-#include "xlang\private\Directory\x_Directory.h"
-#include "xlang\private\Threading\x_Lock.h"
+#include "xlang/private/Core/x_ActorCore.h"
+#include "xlang/private/Core/x_ActorDestroyer.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Directory/x_ActorDirectory.h"
+#include "xlang/private/Directory/x_Directory.h"
+#include "xlang/private/Threading/x_Lock.h"
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_AllocatorManager.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_AllocatorManager.h"
 
 
 namespace xlang

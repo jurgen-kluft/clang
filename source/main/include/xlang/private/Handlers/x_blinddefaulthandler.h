@@ -1,14 +1,14 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_BLINDDEFAULTHANDLER_H
 #define __XLANG_PRIVATE_HANDLERS_BLINDDEFAULTHANDLER_H
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_Message.h"
-#include "xlang\private\Handlers\x_IDefaultHandler.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_Message.h"
+#include "xlang/private/Handlers/x_IDefaultHandler.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_Defines.h"
 
 namespace xlang
 {

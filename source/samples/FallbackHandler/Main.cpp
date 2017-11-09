@@ -2,10 +2,10 @@
 // This sample shows how to use a fallback handler to catch unhandled messages.
 //
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Address.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_Framework.h"
+#include "xlang/x_Receiver.h"
 
 
 // Placement new/delete

@@ -1,9 +1,9 @@
 //
 // This sample shows how to register a default handler for messages of unhandled types.
 //
-#include "xlang\x_Actor.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_Framework.h"
+#include "xlang/x_Receiver.h"
 
 
 // Placement new/delete

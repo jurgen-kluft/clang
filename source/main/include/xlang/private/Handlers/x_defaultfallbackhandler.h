@@ -5,10 +5,10 @@
 	#include <stdio.h>
 #endif // XLANG_ENABLE_UNHANDLED_MESSAGE_CHECKS
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 #if XLANG_ENABLE_UNHANDLED_MESSAGE_CHECKS
 	#define XLANG_FALLBACK_HANDLER_ARG(x) x

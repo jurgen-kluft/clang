@@ -1,8 +1,8 @@
-#include "xlang\private\Directory\x_ActorDirectory.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/Directory/x_ActorDirectory.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Framework.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_Framework.h"
 
 // Placement new/delete
 inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }

@@ -8,9 +8,9 @@
 
 #include <stdio.h>
 
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-#include <Theron/Actor.h>
+#include "xlang/x_framework.h"
+#include "xlang/x_receiver.h"
+#include "xlang/x_actor.h"
 
 
 // The message type accepted by the actor, which contains an integer value.

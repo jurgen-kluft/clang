@@ -1,24 +1,24 @@
 #ifndef __XLANG_RECEIVER_H
 #define __XLANG_RECEIVER_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Containers\x_IntrusiveList.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Handlers\x_ReceiverHandler.h"
-#include "xlang\private\Handlers\x_IReceiverHandler.h"
-#include "xlang\private\Handlers\x_ReceiverHandlerCast.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_MessageTraits.h"
-#include "xlang\private\Threading\x_Lock.h"
-#include "xlang\private\Threading\x_Monitor.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Containers/x_IntrusiveList.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Handlers/x_ReceiverHandler.h"
+#include "xlang/private/Handlers/x_IReceiverHandler.h"
+#include "xlang/private/Handlers/x_ReceiverHandlerCast.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_MessageTraits.h"
+#include "xlang/private/Threading/x_Lock.h"
+#include "xlang/private/Threading/x_Monitor.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
 
 
 namespace UnitTests

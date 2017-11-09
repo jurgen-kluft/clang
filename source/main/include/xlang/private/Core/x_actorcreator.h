@@ -1,18 +1,18 @@
 #ifndef __XLANG_PRIVATE_CORE_ACTORCREATOR_H
 #define __XLANG_PRIVATE_CORE_ACTORCREATOR_H
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Core\x_ActorAlignment.h"
-#include "xlang\private\Core\x_ActorCore.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Directory\x_ActorDirectory.h"
-#include "xlang\private\Directory\x_Directory.h"
-#include "xlang\private\Threading\x_Lock.h"
-#include "xlang\private\Threading\x_Mutex.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Core/x_ActorAlignment.h"
+#include "xlang/private/Core/x_ActorCore.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Directory/x_ActorDirectory.h"
+#include "xlang/private/Directory/x_Directory.h"
+#include "xlang/private/Threading/x_Lock.h"
+#include "xlang/private/Threading/x_Mutex.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

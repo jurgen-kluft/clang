@@ -8,9 +8,9 @@
 
 #include <stdio.h>
 
-#include <Theron/Actor.h>
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
+#include "xlang/x_actor.h"
+#include "xlang/x_framework.h"
+#include "xlang/x_receiver.h"
 
 
 // First of two message types accepted by the actor.

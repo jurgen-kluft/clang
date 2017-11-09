@@ -1,20 +1,20 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGE_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGE_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xbase\x_allocator.h"
+#include "xbase/x_allocator.h"
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_MessageTraits.h"
-#include "xlang\private\Messages\x_MessageAlignment.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_MessageTraits.h"
+#include "xlang/private/Messages/x_MessageAlignment.h"
 
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
 
 namespace xlang
 {

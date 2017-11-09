@@ -1,6 +1,6 @@
-#include "xlang\private\MessageCache\x_MessageCache.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Framework.h"
+#include "xlang/private/MessageCache/x_MessageCache.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Framework.h"
 
 namespace xlang
 {

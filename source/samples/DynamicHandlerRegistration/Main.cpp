@@ -2,9 +2,9 @@
 // This sample shows how to register message handlers in an actor class.
 //
 
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\x_Actor.h"
+#include "xlang/x_Framework.h"
+#include "xlang/x_Receiver.h"
+#include "xlang/x_Actor.h"
 
 
 // Placement new/delete

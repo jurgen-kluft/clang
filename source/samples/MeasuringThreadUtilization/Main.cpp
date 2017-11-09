@@ -13,10 +13,10 @@
 
 #include <stdio.h>
 
-#include <Theron/Actor.h>
-#include <Theron/ActorRef.h>
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
+#include "xlang/x_actor.h"
+#include "xlang/x_actorref.h"
+#include "xlang/x_framework.h"
+#include "xlang/x_receiver.h"
 
 
 static const int RESPONDER_ACTORS = 10;

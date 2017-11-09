@@ -8,13 +8,13 @@
 
 #include <stdio.h>
 
-#include <Theron/Actor.h>
-#include <Theron/AllocatorManager.h>
-#include <Theron/Framework.h>
-#include <Theron/IAllocator.h>
-#include <Theron/Receiver.h>
+#include "xlang/x_actor.h"
+#include "xlang/x_allocatormanager.h"
+#include "xlang/x_framework.h"
+#include "xlang/x_iallocator.h"
+#include "xlang/x_receiver.h"
 
-#include <Common/LinearAllocator.h>
+#include "xlang/x_linearallocator.h"
 
 
 // A trivial message type.

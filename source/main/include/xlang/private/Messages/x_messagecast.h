@@ -1,16 +1,16 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_MESSAGECAST_H
 #define __XLANG_PRIVATE_HANDLERS_MESSAGECAST_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_Message.h"
-#include "xlang\private\Messages\x_MessageTraits.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_Message.h"
+#include "xlang/private/Messages/x_MessageTraits.h"
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

@@ -1,14 +1,14 @@
 #ifndef __XLANG_PRIVATE_PAGEDPOOL_FREELIST_H
 #define __XLANG_PRIVATE_PAGEDPOOL_FREELIST_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 namespace xlang
 {

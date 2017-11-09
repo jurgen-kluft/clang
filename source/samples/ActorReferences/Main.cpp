@@ -8,12 +8,12 @@
 
 #include <stdio.h>
 
-#include <Theron/Detail/Threading/Lock.h>
-#include <Theron/Detail/Threading/Mutex.h>
+#include "xlang/private/Threading/x_lock.h"
+#include "xlang/private/Threading/x_mutex.h"
 
-#include <Theron/Framework.h>
-#include <Theron/Actor.h>
-#include <Theron/Address.h>
+#include "xlang/x_framework.h"
+#include "xlang/x_actor.h"
+#include "xlang/x_address.h"
 
 
 struct Counter

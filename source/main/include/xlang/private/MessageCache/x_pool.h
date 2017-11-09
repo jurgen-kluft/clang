@@ -1,17 +1,17 @@
 #ifndef __XLANG_PRIVATE_MESSAGECACHE_POOL_H
 #define __XLANG_PRIVATE_MESSAGECACHE_POOL_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Align.h"
-#include "xlang\x_Defines.h"
-#include "xlang\x_IAllocator.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Align.h"
+#include "xlang/x_Defines.h"
+#include "xlang/x_IAllocator.h"
 
 
 namespace xlang

@@ -1,9 +1,9 @@
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Threading\x_Lock.h"
-#include "xlang\private\ThreadPool\x_ThreadCollection.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Threading/x_Lock.h"
+#include "xlang/private/ThreadPool/x_ThreadCollection.h"
 
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

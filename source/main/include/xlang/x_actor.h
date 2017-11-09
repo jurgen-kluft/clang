@@ -1,29 +1,29 @@
 #ifndef __XLANG_ACTOR_H
 #define __XLANG_ACTOR_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\x_basictypes.h"
-#include "xlang\private\containers\x_intrusivelist.h"
-#include "xlang\private\core\x_actorcore.h"
-#include "xlang\private\core\x_actorcreator.h"
-#include "xlang\private\debug\x_assert.h"
-#include "xlang\private\handlers\x_blinddefaulthandler.h"
-#include "xlang\private\handlers\x_defaulthandler.h"
-#include "xlang\private\handlers\x_idefaulthandler.h"
-#include "xlang\private\handlers\x_messagehandler.h"
-#include "xlang\private\handlers\x_imessagehandler.h"
-#include "xlang\private\handlers\x_messagehandlercast.h"
-#include "xlang\private\messages\x_messagesender.h"
-#include "xlang\private\messages\x_messagetraits.h"
-#include "xlang\private\threading\x_lock.h"
+#include "xlang/private/x_basictypes.h"
+#include "xlang/private/Containers/x_intrusivelist.h"
+#include "xlang/private/Core/x_actorcore.h"
+#include "xlang/private/Core/x_actorcreator.h"
+#include "xlang/private/Debug/x_assert.h"
+#include "xlang/private/Handlers/x_blinddefaulthandler.h"
+#include "xlang/private/Handlers/x_defaulthandler.h"
+#include "xlang/private/Handlers/x_idefaulthandler.h"
+#include "xlang/private/Handlers/x_messagehandler.h"
+#include "xlang/private/Handlers/x_imessagehandler.h"
+#include "xlang/private/Handlers/x_messagehandlercast.h"
+#include "xlang/private/Messages/x_messagesender.h"
+#include "xlang/private/Messages/x_messagetraits.h"
+#include "xlang/private/Threading/x_lock.h"
 
-#include "xlang\x_address.h"
-#include "xlang\x_allocatormanager.h"
-#include "xlang\x_defines.h"
-#include "xlang\x_register.h"
+#include "xlang/x_address.h"
+#include "xlang/x_allocatormanager.h"
+#include "xlang/x_defines.h"
+#include "xlang/x_register.h"
 
 /**
 Main namespace, containing all public API components.

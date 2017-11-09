@@ -18,12 +18,12 @@
 // minimum or maximum limit on the number of threadpool threads.
 //
 
-#include "xbase\x_allocator.h"
+#include "xbase/x_allocator.h"
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\x_Register.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_Framework.h"
+#include "xlang/x_Receiver.h"
+#include "xlang/x_Register.h"
 
 
 static const int PROCESSOR_ACTORS = 10;

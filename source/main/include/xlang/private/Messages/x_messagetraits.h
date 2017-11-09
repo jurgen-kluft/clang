@@ -1,6 +1,6 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGETRAITS_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGETRAITS_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif

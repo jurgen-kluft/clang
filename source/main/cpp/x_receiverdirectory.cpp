@@ -1,7 +1,7 @@
-#include "xlang\private\Directory\x_ReceiverDirectory.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/Directory/x_ReceiverDirectory.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_Receiver.h"
+#include "xlang/x_Receiver.h"
 
 
 namespace xlang

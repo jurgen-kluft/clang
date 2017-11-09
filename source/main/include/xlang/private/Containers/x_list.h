@@ -1,17 +1,17 @@
 #ifndef __XLANG_PRIVATE_CONTAINERS_LIST_H
 #define __XLANG_PRIVATE_CONTAINERS_LIST_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xbase\x_allocator.h"
+#include "xbase/x_allocator.h"
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

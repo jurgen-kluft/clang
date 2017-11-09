@@ -22,10 +22,10 @@
 
 #include <stdio.h>
 
-#include <Theron/Actor.h>
-#include <Theron/Address.h>
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
+#include "xlang/x_actor.h"
+#include "xlang/x_address.h"
+#include "xlang/x_framework.h"
+#include "xlang/x_receiver.h"
 
 
 // A file read request message.

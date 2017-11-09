@@ -8,8 +8,8 @@
 
 #include <stdio.h>
 
-#include <Theron/Framework.h>
-#include <Theron/Actor.h>
+#include "xlang/x_framework.h"
+#include "xlang/x_actor.h"
 
 
 // A trivial actor that does nothing.

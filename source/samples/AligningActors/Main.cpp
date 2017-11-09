@@ -1,38 +1,11 @@
-// Copyright (C) by Ashton Mason. See LICENSE.txt for licensing information.
-
-
-//
-// This sample shows how to use Theron with actor implementations that have
-// specialized memory alignment requirements.
-//
-// The required memory alignment of a user-written actor class can be specified
-// using the THERON_ALIGN_ACTOR macro defined in Theron/Align.h.
-//
-// Use of this macro is optional. Using it, users can notify Theron of any
-// specialized memory alignment requirements of their custom actor classes.
-// If the memory alignment of an actor type is specified using this macro,
-// Theron will request correctly aligned memory when allocating instances
-// of that actor type in \ref Framework::CreateActor. If not, then a default
-// alignment of four bytes will be used.
-//
-// Specifying the alignment requirements of an actor type is not enough,
-// by itself, to guarantee correct alignment of actor allocations. Users must
-// also ensure that the allocator used by Theron supports alignment.
-// The default allocator, DefaultAllocator, supports alignment and returns
-// correctly aligned allocations. Users replacing the default allocator with
-// a custom allocator, implementing the \ref IAllocator interface and enabled
-// with \ref Theron::AllocatorManager::SetAllocator, supports aligned allocations.
-//
-
-
 #include <stdio.h>
 
-#include <Theron/Actor.h>
-#include <Theron/Align.h>
-#include <Theron/AllocatorManager.h>
-#include <Theron/Framework.h>
+#include "xlang/x_actor.h"
+#include "xlang/x_align.h"
+#include "xlang/x_allocatormanager.h"
+#include "xlang/x_framework.h"
 
-#include <Common/LinearAllocator.h>
+#include "xlang/x_linearallocator.h"
 
 
 namespace Example

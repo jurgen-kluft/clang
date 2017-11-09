@@ -1,11 +1,11 @@
 #ifndef __XLANG_PRIVATE_CONTAINERS_INTRUSIVEQUEUE_H
 #define __XLANG_PRIVATE_CONTAINERS_INTRUSIVEQUEUE_H
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_Align.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Align.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

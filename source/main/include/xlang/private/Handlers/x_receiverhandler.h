@@ -1,20 +1,20 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_RECEIVERHANDLER_H
 #define __XLANG_PRIVATE_HANDLERS_RECEIVERHANDLER_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xbase\x_allocator.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Handlers\x_IReceiverHandler.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_Message.h"
-#include "xlang\private\Messages\x_MessageCast.h"
-#include "xlang\private\Messages\x_MessageTraits.h"
+#include "xbase/x_allocator.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Handlers/x_IReceiverHandler.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_Message.h"
+#include "xlang/private/Messages/x_MessageCast.h"
+#include "xlang/private/Messages/x_MessageTraits.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

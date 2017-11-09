@@ -1,13 +1,13 @@
 #ifndef __XLANG_PRIVATE_DIRECTORY_ACTORDIRECTORY_H
 #define __XLANG_PRIVATE_DIRECTORY_ACTORDIRECTORY_H
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Core\x_ActorCore.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\PagedPool\x_PagedPool.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Core/x_ActorCore.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/PagedPool/x_PagedPool.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

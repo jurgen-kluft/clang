@@ -15,9 +15,9 @@
 
 #include <stdio.h>
 
-#include <Theron/Actor.h>
-#include <Theron/ActorRef.h>
-#include <Theron/Framework.h>
+#include "xlang/x_actor.h"
+#include "xlang/x_actorref.h"
+#include "xlang/x_framework.h"
 
 
 int main()

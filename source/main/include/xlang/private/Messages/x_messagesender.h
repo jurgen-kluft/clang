@@ -1,17 +1,17 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGESENDER_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGESENDER_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\Directory\x_Directory.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_MessageCreator.h"
-#include "xlang\private\Threading\x_Lock.h"
+#include "xlang/private/Directory/x_Directory.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_MessageCreator.h"
+#include "xlang/private/Threading/x_Lock.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

@@ -11,7 +11,7 @@
 #pragma warning(pop)
 #endif //_MSC_VER
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

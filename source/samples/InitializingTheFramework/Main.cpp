@@ -1,14 +1,10 @@
-// Copyright (C) by Ashton Mason. See LICENSE.txt for licensing information.
-
-
 //
 // This sample shows how to initialize a framework.
 //
 
-
 #include <stdio.h>
 
-#include <Theron/Framework.h>
+#include "xlang/x_framework.h"
 
 
 int main()

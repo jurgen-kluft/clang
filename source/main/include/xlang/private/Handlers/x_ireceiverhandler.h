@@ -1,10 +1,10 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_IRECEIVERHANDLER_H
 #define __XLANG_PRIVATE_HANDLERS_IRECEIVERHANDLER_H
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Messages\x_IMessage.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Messages/x_IMessage.h"
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 namespace xlang
 {

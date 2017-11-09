@@ -8,9 +8,9 @@
 
 #include <stdio.h>
 
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-#include <Theron/Actor.h>
+#include "xlang/x_framework.h"
+#include "xlang/x_receiver.h"
+#include "xlang/x_actor.h"
 
 
 // A simple actor that can be initialized explicitly on creation.

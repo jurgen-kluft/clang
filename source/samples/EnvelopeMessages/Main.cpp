@@ -30,9 +30,9 @@
 #include <vector>
 #include <assert.h>
 
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\x_Actor.h"
+#include "xlang/x_Framework.h"
+#include "xlang/x_Receiver.h"
+#include "xlang/x_Actor.h"
 
 
 

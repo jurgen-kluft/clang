@@ -1,10 +1,10 @@
 #ifndef __XLANG_PRIVATE_THREADING_WIN32_THREAD_H
 #define __XLANG_PRIVATE_THREADING_WIN32_THREAD_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
-#include "xbase\x_allocator.h"
+#include "xbase/x_allocator.h"
 
 #ifdef _MSC_VER
 #pragma warning(push,0)
@@ -17,8 +17,8 @@
 #pragma warning(pop)
 #endif //_MSC_VER
 
-#include "xlang\x_Defines.h"
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/x_Defines.h"
+#include "xlang/private/Debug/x_Assert.h"
 
 namespace xlang
 {

@@ -1,26 +1,26 @@
 #ifndef __XLANG_PRIVATE_THREADPOOL_THREADPOOL_H
 #define __XLANG_PRIVATE_THREADPOOL_THREADPOOL_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Containers\x_IntrusiveQueue.h"
-#include "xlang\private\Core\x_ActorCore.h"
-#include "xlang\private\Core\x_ActorDestroyer.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Directory\x_Directory.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_MessageCreator.h"
-#include "xlang\private\Threading\x_Lock.h"
-#include "xlang\private\Threading\x_Thread.h"
-#include "xlang\private\Threading\x_Monitor.h"
-#include "xlang\private\ThreadPool\x_ThreadCollection.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Containers/x_IntrusiveQueue.h"
+#include "xlang/private/Core/x_ActorCore.h"
+#include "xlang/private/Core/x_ActorDestroyer.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Directory/x_Directory.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_MessageCreator.h"
+#include "xlang/private/Threading/x_Lock.h"
+#include "xlang/private/Threading/x_Thread.h"
+#include "xlang/private/Threading/x_Monitor.h"
+#include "xlang/private/ThreadPool/x_ThreadCollection.h"
 
-#include "xlang\x_Align.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_Align.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

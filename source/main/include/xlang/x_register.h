@@ -1,11 +1,11 @@
 #ifndef __XLANG_REGISTER_H
 #define __XLANG_REGISTER_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\Messages\x_MessageTraits.h"
+#include "xlang/private/Messages/x_MessageTraits.h"
 
 #define XLANG_NO_REGISTER_MESSAGE
 #ifndef XLANG_NO_REGISTER_MESSAGE

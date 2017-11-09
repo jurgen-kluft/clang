@@ -1,10 +1,10 @@
 #ifndef __XLANG_PRIVATE_THREADING_WIN32_LOCK_H
 #define __XLANG_PRIVATE_THREADING_WIN32_LOCK_H
 
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Threading\Win32\x_Mutex.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Threading/Win32/x_Mutex.h"
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

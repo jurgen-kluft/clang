@@ -1,7 +1,7 @@
 #ifndef __XLANG_PRIVATE_CORE_ACTORALIGNMENT_H
 #define __XLANG_PRIVATE_CORE_ACTORALIGNMENT_H
 
-#include "xlang\private\x_BasicTypes.h"
+#include "xlang/private/x_BasicTypes.h"
 
 namespace xlang
 {

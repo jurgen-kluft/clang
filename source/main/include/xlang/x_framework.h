@@ -1,30 +1,30 @@
 #ifndef __XLANG_FRAMEWORK_H
 #define __XLANG_FRAMEWORK_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_ActorRef.h"
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
-#include "xlang\x_Receiver.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_ActorRef.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
+#include "xlang/x_Receiver.h"
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Core\x_ActorConstructor.h"
-#include "xlang\private\Core\x_ActorCore.h"
-#include "xlang\private\Core\x_ActorCreator.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Handlers\x_BlindFallbackHandler.h"
-#include "xlang\private\Handlers\x_DefaultFallbackHandler.h"
-#include "xlang\private\Handlers\x_FallbackHandler.h"
-#include "xlang\private\Handlers\x_IFallbackHandler.h"
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_MessageSender.h"
-#include "xlang\private\Threading\x_Mutex.h"
-#include "xlang\private\ThreadPool\x_ThreadPool.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Core/x_ActorConstructor.h"
+#include "xlang/private/Core/x_ActorCore.h"
+#include "xlang/private/Core/x_ActorCreator.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Handlers/x_BlindFallbackHandler.h"
+#include "xlang/private/Handlers/x_DefaultFallbackHandler.h"
+#include "xlang/private/Handlers/x_FallbackHandler.h"
+#include "xlang/private/Handlers/x_IFallbackHandler.h"
+#include "xlang/private/Messages/x_IMessage.h"
+#include "xlang/private/Messages/x_MessageSender.h"
+#include "xlang/private/Threading/x_Mutex.h"
+#include "xlang/private/ThreadPool/x_ThreadPool.h"
 
 namespace xlang
 {

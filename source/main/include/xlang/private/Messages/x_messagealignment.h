@@ -1,11 +1,11 @@
 #ifndef __XLANG_PRIVATE_CORE_MESSAGEALIGNMENT_H
 #define __XLANG_PRIVATE_CORE_MESSAGEALIGNMENT_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\x_BasicTypes.h"
+#include "xlang/private/x_BasicTypes.h"
 
 namespace xlang
 {

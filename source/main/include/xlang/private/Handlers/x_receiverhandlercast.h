@@ -1,12 +1,12 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_RECEIVERHANDLERCAST_H
 #define __XLANG_PRIVATE_HANDLERS_RECEIVERHANDLERCAST_H
 
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Handlers\x_IReceiverHandler.h"
-#include "xlang\private\Handlers\x_ReceiverHandler.h"
-#include "xlang\private\Messages\x_MessageTraits.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Handlers/x_IReceiverHandler.h"
+#include "xlang/private/Handlers/x_ReceiverHandler.h"
+#include "xlang/private/Messages/x_MessageTraits.h"
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

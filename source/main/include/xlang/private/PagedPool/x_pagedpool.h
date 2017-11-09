@@ -1,18 +1,18 @@
 #ifndef __XLANG_PRIVATE_PAGEDPOOL_PAGEDPOOL_H
 #define __XLANG_PRIVATE_PAGEDPOOL_PAGEDPOOL_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\PagedPool\x_FreeList.h"
-#include "xlang\private\PagedPool\x_Page.h"
+#include "xlang/private/x_BasicTypes.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/PagedPool/x_FreeList.h"
+#include "xlang/private/PagedPool/x_Page.h"
 
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_IAllocator.h"
-#include "xlang\x_Defines.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_IAllocator.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang

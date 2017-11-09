@@ -17,9 +17,9 @@
 #include <vector>
 #include <stdio.h>
 
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-#include <Theron/Actor.h>
+#include "xlang/x_framework.h"
+#include "xlang/x_receiver.h"
+#include "xlang/x_actor.h"
 
 
 // A non-trivial (but still copyable) message type.

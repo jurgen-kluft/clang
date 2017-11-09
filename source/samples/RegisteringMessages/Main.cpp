@@ -23,11 +23,11 @@
 #define THERON_ENABLE_MESSAGE_REGISTRATION_CHECKS 1
 
 
-#include <Theron/Actor.h>
-#include <Theron/Address.h>
-#include <Theron/Framework.h>
-#include <Theron/Receiver.h>
-#include <Theron/Register.h>
+#include "xlang/x_actor.h"
+#include "xlang/x_address.h"
+#include "xlang/x_framework.h"
+#include "xlang/x_receiver.h"
+#include "xlang/x_register.h"
 
 
 namespace Example

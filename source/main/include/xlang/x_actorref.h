@@ -1,18 +1,18 @@
 #ifndef __XLANG_ACTORREF_H
 #define __XLANG_ACTORREF_H
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang\private\Debug\x_Assert.h"
-#include "xlang\private\Messages\x_MessageSender.h"
+#include "xlang/private/Debug/x_Assert.h"
+#include "xlang/private/Messages/x_MessageSender.h"
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Defines.h"
-#include "xlang\x_IAllocator.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_Address.h"
+#include "xlang/x_AllocatorManager.h"
+#include "xlang/x_Defines.h"
+#include "xlang/x_IAllocator.h"
 
 namespace xlang
 {

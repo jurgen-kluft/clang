@@ -5,12 +5,12 @@
 #define COMMON_LINEARALLOCATOR_H
 
 
-#include "xlang/private/debug/x_assert.h"
-#include "xlang/private/threading/x_lock.h"
-#include "xlang/private/threading/x_mutex.h"
+#include <Theron/Detail/Debug/Assert.h>
+#include <Theron/Detail/Threading/Lock.h>
+#include <Theron/Detail/Threading/Mutex.h>
 
-#include "xlang/x_align.h"
-#include "xlang/x_iallocator.h"
+#include <Theron/Align.h>
+#include <Theron/IAllocator.h>
 
 
 namespace Example

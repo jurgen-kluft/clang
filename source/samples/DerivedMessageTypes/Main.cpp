@@ -2,9 +2,9 @@
 // This sample shows how to use derivation to create subclasses of messages.
 //
 
-#include "xlang\x_Actor.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
+#include "xlang/x_Actor.h"
+#include "xlang/x_Framework.h"
+#include "xlang/x_Receiver.h"
 
 // Placement new/delete
 void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }

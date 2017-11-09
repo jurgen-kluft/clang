@@ -1,9 +1,9 @@
 #ifndef __XLANG_PRIVATE_CORE_ACTORCONSTRUCTOR_H
 #define __XLANG_PRIVATE_CORE_ACTORCONSTRUCTOR_H
 
-#include "xlang\private\Debug\x_Assert.h"
+#include "xlang/private/Debug/x_Assert.h"
 
-#include "xlang\x_Defines.h"
+#include "xlang/x_Defines.h"
 
 
 namespace xlang
