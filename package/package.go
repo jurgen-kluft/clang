@@ -1,31 +1,31 @@
-package xlang
+package clang
 
 import (
-	"github.com/jurgen-kluft/xcode/denv"
-	"github.com/jurgen-kluft/xbase/package"
-	"github.com/jurgen-kluft/xentry/package"
-	"github.com/jurgen-kluft/xunittest/package"
+	cbase "github.com/jurgen-kluft/cbase/package"
+	"github.com/jurgen-kluft/ccode/denv"
+	centry "github.com/jurgen-kluft/centry/package"
+	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
-// GetPackage returns the package object of 'xlang'
+// GetPackage returns the package object of 'clang'
 func GetPackage() *denv.Package {
 	// Dependencies
-	unittestpkg := xunittest.GetPackage()
-	entrypkg := xentry.GetPackage()
-	basepkg := xbase.GetPackage()
+	unittestpkg := cunittest.GetPackage()
+	entrypkg := centry.GetPackage()
+	basepkg := cbase.GetPackage()
 
-	// The main (xlang) package
-	mainpkg := denv.NewPackage("xlang")
+	// The main (clang) package
+	mainpkg := denv.NewPackage("clang")
 	mainpkg.AddPackage(unittestpkg)
 	mainpkg.AddPackage(entrypkg)
 	mainpkg.AddPackage(basepkg)
 
-	// 'xlang' library
-	mainlib := denv.SetupDefaultCppLibProject("xlang", "github.com\\jurgen-kluft\\xlang")
+	// 'clang' library
+	mainlib := denv.SetupDefaultCppLibProject("clang", "github.com\\jurgen-kluft\\clang")
 	mainlib.Dependencies = append(mainlib.Dependencies, basepkg.GetMainLib())
 
-	// 'xlang' unittest project
-	maintest := denv.SetupDefaultCppTestProject("xlang_test", "github.com\\jurgen-kluft\\xlang")
+	// 'clang' unittest project
+	maintest := denv.SetupDefaultCppTestProject("clang_test", "github.com\\jurgen-kluft\\clang")
 	maintest.Dependencies = append(maintest.Dependencies, unittestpkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, entrypkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
