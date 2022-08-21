@@ -1,8 +1,8 @@
 package clang
 
 import (
-	"github.com/jurgen-kluft/ccode/denv"
 	"github.com/jurgen-kluft/cbase/package"
+	"github.com/jurgen-kluft/ccode/denv"
 	"github.com/jurgen-kluft/centry/package"
 	"github.com/jurgen-kluft/cunittest/package"
 )
