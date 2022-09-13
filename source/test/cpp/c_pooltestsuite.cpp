@@ -1,9 +1,9 @@
 #define TESTS_TESTSUITES_POOLTESTSUITE
 #ifdef TESTS_TESTSUITES_POOLTESTSUITE
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\MessageCache\x_Pool.h"
-#include "xlang\x_Align.h"
+#include "clang\private\x_BasicTypes.h"
+#include "clang\private\MessageCache\x_Pool.h"
+#include "clang\x_Align.h"
 
 #include "xunittest\xunittest.h"
 
@@ -20,18 +20,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 
 		struct Item
 		{
-			xlang::u32 a;
-			xlang::u32 b;
+			clang::u32 a;
+			clang::u32 b;
 		};
 
 		UNITTEST_TEST(TestConstruct)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 		}
 
 		UNITTEST_TEST(TestAdd)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 
 			Item item0;
 			pool.Add(&item0);
@@ -39,7 +39,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 
 		UNITTEST_TEST(TestEmptyAfterAdd)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 
 			Item item0;
 			pool.Add(&item0);
@@ -49,13 +49,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 
 		UNITTEST_TEST(TestFetchWhileEmpty)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 			CHECK_TRUE(pool.Fetch() == 0);	//Fetch should fail when empty
 		}
 
 		UNITTEST_TEST(TestFetchAfterAdd)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 
 			Item item0;
 			pool.Add(&item0);
@@ -65,7 +65,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 
 		UNITTEST_TEST(TestEmptyAfterFetch)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 
 			Item item0;
 			pool.Add(&item0);
@@ -76,13 +76,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 
 		UNITTEST_TEST(TestFetchSizeWhileEmpty)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 			CHECK_TRUE(pool.FetchAligned(XLANG_ALIGNOF(Item)) == 0); // Fetch should fail when empty
 		}
 
 		UNITTEST_TEST(TestFetchCorrectAlignment)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 
 			Item item0;
 			pool.Add(&item0);
@@ -93,13 +93,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_POOLTESTSUITE)
 
 		UNITTEST_TEST(TestFetchWrongAlignment)
 		{
-			xlang::detail::Pool pool;
+			clang::detail::Pool pool;
 
 			Item item0;
 			pool.Add(&item0);
 
 			// The address may happen to be aligned.
-			const xlang::u32 increasedAlignment(XLANG_ALIGNOF(Item) * 2);
+			const clang::u32 increasedAlignment(XLANG_ALIGNOF(Item) * 2);
 			if (XLANG_ALIGNED(&item0, increasedAlignment))
 			{
 				CHECK_TRUE(pool.FetchAligned(increasedAlignment) == &item0); // Fetch failed

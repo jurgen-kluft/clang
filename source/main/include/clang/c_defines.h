@@ -1,6 +1,6 @@
 #ifndef __XLANG_DEFINES_H
 #define __XLANG_DEFINES_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
@@ -10,9 +10,9 @@
 \brief Global user-overridable defines.
 
 This file defines, in one place, all the defines which can be defined in order
-to override default options within xlang. Some of them enable or disable debugging
+to override default options within clang. Some of them enable or disable debugging
 functionality, others abstract away platform-specific detail such as code inlining
-and variable alignment, and still others control the operation of xlang such as
+and variable alignment, and still others control the operation of clang such as
 the limits on the number of threads per \ref Framework and the total number of \ref Actor
 "Actors" and \ref Receiver "Receivers" that can be created in an application.
 
@@ -71,7 +71,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 		#define XLANG_ENABLE_ASSERTS 1
 	#else
 		/**
-		\brief Enables generation of code for asserts within xlang.
+		\brief Enables generation of code for asserts within clang.
 
 		Defaults to 0, disabling asserts, when \ref XLANG_DEBUG is 0.
 		Defaults to 1, enabling asserts, when \ref XLANG_DEBUG is 1.
@@ -96,9 +96,9 @@ be easily overridden just by defining the defines yourself globally in your buil
 			#define XLANG_FORCEINLINE inline __attribute__((always_inline))
 		#else
 			/**
-			\brief Controls force-inlining of core functions within xlang.
+			\brief Controls force-inlining of core functions within clang.
 
-			Many functions within xlang are force-inlined via compiler keywords, to avoid
+			Many functions within clang are force-inlined via compiler keywords, to avoid
 			function call overhead, resulting in a significant speedup over optionally inlined code.
 			The use of forced inlining does however lead to some code bloat. Therefore it may
 			be desirable to turn it off in some builds. Moreover, it makes debugging difficult when
@@ -129,10 +129,10 @@ be easily overridden just by defining the defines yourself globally in your buil
 			#define XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS 1
 		#else
 			/**
-			\brief Enables debug checking of allocations in the \ref xlang::DefaultAllocator "DefaultAllocator".
+			\brief Enables debug checking of allocations in the \ref clang::DefaultAllocator "DefaultAllocator".
 
 			This define controls the use of debugging checks in the default allocator used within
-			xlang. By default, this define is set to 0 when \ref XLANG_DEBUG is 0, and 1 when \ref XLANG_DEBUG is 1,
+			clang. By default, this define is set to 0 when \ref XLANG_DEBUG is 0, and 1 when \ref XLANG_DEBUG is 1,
 			so that debug checks are enabled only in debug builds. However the define can be defined explicitly,
 			either to suppress the checking in debug builds or enforce it even in release builds, as required.
 
@@ -151,8 +151,8 @@ be easily overridden just by defining the defines yourself globally in your buil
 	\brief Enables run-time reporting of unregistered message types, which is off by default.
 
 	Message types can be registered using the \ref XLANG_REGISTER_MESSAGE macro, which notifies
-	xlang of the unique name of a message type. Registering the message types sent within an
-	application causes xlang's internal type ID system to be used to identity messages when they
+	clang of the unique name of a message type. Registering the message types sent within an
+	application causes clang's internal type ID system to be used to identity messages when they
 	arrive at an actor, instead of the built-in C++ typeid system.
 
 	This has two useful effects: Firstly, it avoids calling the slow C++ dynamic_cast
@@ -189,13 +189,13 @@ be easily overridden just by defining the defines yourself globally in your buil
 	\brief Enables reporting of undelivered and unhandled messages, which is enabled by default.
 
 	This define controls reporting of messages that are either not delivered (because no entity
-	exists at the address to which the message is sent, in which case \ref xlang::Actor::Send "Actor::Send"
-	and \ref xlang::Framework::Send "Framework::Send" return false), or not handled by the actor to
+	exists at the address to which the message is sent, in which case \ref clang::Actor::Send "Actor::Send"
+	and \ref clang::Framework::Send "Framework::Send" return false), or not handled by the actor to
 	which they were delivered (because the actor has no message handlers registered for the message type
 	and no default message handler).
 
-	Such messages are passed to a \ref xlang::Framework::SetFallbackHandler "fallback handler"
-	registered with the \ref xlang::Framework "Framework" concerned (that within which the message was sent,
+	Such messages are passed to a \ref clang::Framework::SetFallbackHandler "fallback handler"
+	registered with the \ref clang::Framework "Framework" concerned (that within which the message was sent,
 	in the case of undelivered messages, and that containing the unresponsive actor, in the case of
 	unhandled messages). The default fallback handler registered with each framework, which is
 	used unless replaced explicitly by a custom user-specified fallback handler, reports such
@@ -205,7 +205,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 	default fallback handler reports failures. If defined to 0, it does nothing, and unhandled
 	messages are silently unreported. Defining \ref XLANG_ENABLE_UNHANDLED_MESSAGE_CHECKS to 0
 	effectively turns off the checking. If the intention is to replace the reporting mechanism, then
-	use \ref xlang::Framework::SetFallbackHandler "SetFallbackHandler" to replace the default handler
+	use \ref clang::Framework::SetFallbackHandler "SetFallbackHandler" to replace the default handler
 	entirely with a custom handler implementation.
 
 	Defaults to 1 (enabled). Set this to 0 to disable the reporting.
@@ -222,7 +222,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 	/**
 	\brief Hard limit on the maximum number of worker threads software is allowed to enable.
 
-	This define sets a hard limit on the number of worker threads each \ref xlang::Framework
+	This define sets a hard limit on the number of worker threads each \ref clang::Framework
 	"Framework" is allowed to own at once. The actual number of threads in each framework is set in
 	code; this is just a hard limit on the maximum number that can be set. Requests to create
 	larger numbers of threads are clamped to the value defined by this define.
@@ -239,7 +239,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 
 #ifndef XLANG_MAX_ACTORS
 	/**
-	\brief Limits the maximum number of actors that can be created at once within xlang.
+	\brief Limits the maximum number of actors that can be created at once within clang.
 
 	If you want to create a very large number of simultaneous actors then you'll need to
 	change the value of this define. Note that doing so may lead to higher fixed memory
@@ -256,7 +256,7 @@ be easily overridden just by defining the defines yourself globally in your buil
 
 #ifndef XLANG_MAX_RECEIVERS
 	/**
-	\brief Limits the maximum number of receivers that can be created at once within xlang.
+	\brief Limits the maximum number of receivers that can be created at once within clang.
 
 	If you want to create a very large number of simultaneous receivers then you'll need to
 	change the value of this define. Note that doing so may lead to higher fixed memory

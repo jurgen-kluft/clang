@@ -1,34 +1,34 @@
 #ifndef __XLANG_ACTOR_H
 #define __XLANG_ACTOR_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_basictypes.h"
-#include "xlang/private/Containers/x_intrusivelist.h"
-#include "xlang/private/Core/x_actorcore.h"
-#include "xlang/private/Core/x_actorcreator.h"
-#include "xlang/private/Debug/x_assert.h"
-#include "xlang/private/Handlers/x_blinddefaulthandler.h"
-#include "xlang/private/Handlers/x_defaulthandler.h"
-#include "xlang/private/Handlers/x_idefaulthandler.h"
-#include "xlang/private/Handlers/x_messagehandler.h"
-#include "xlang/private/Handlers/x_imessagehandler.h"
-#include "xlang/private/Handlers/x_messagehandlercast.h"
-#include "xlang/private/Messages/x_messagesender.h"
-#include "xlang/private/Messages/x_messagetraits.h"
-#include "xlang/private/Threading/x_lock.h"
+#include "clang/private/c_basictypes.h"
+#include "clang/private/Containers/c_intrusivelist.h"
+#include "clang/private/Core/c_actorcore.h"
+#include "clang/private/Core/c_actorcreator.h"
+#include "clang/private/Debug/c_assert.h"
+#include "clang/private/Handlers/c_blinddefaulthandler.h"
+#include "clang/private/Handlers/c_defaulthandler.h"
+#include "clang/private/Handlers/c_idefaulthandler.h"
+#include "clang/private/Handlers/c_messagehandler.h"
+#include "clang/private/Handlers/c_imessagehandler.h"
+#include "clang/private/Handlers/c_messagehandlercast.h"
+#include "clang/private/Messages/c_messagesender.h"
+#include "clang/private/Messages/c_messagetraits.h"
+#include "clang/private/Threading/c_lock.h"
 
-#include "xlang/x_address.h"
-#include "xlang/x_allocatormanager.h"
-#include "xlang/x_defines.h"
-#include "xlang/x_register.h"
+#include "clang/c_address.h"
+#include "clang/c_allocatormanager.h"
+#include "clang/c_defines.h"
+#include "clang/c_register.h"
 
 /**
 Main namespace, containing all public API components.
 */
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -39,7 +39,7 @@ namespace xlang
 	/**
 	\brief The actor baseclass.
 
-	All actors in xlang must derive from this class.
+	All actors in clang must derive from this class.
 	It provides the core functionality of an actor, such as the ability
 	to \ref RegisterHandler "register message handlers" and \ref Send "send messages",
 	including responding to messages received from other actors. When implementing
@@ -80,12 +80,12 @@ namespace xlang
 		functions.
 
 		\code
-		class MyActor : public xlang::Actor
+		class MyActor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef myActor = framework.CreateActor<MyActor>();
+		clang::Framework framework;
+		clang::ActorRef myActor = framework.CreateActor<MyActor>();
 		\endcode
 
 		A powerful feature of actors is that they can create other actors, allowing
@@ -120,7 +120,7 @@ namespace xlang
 		we print out the address ("identity") of the actor in response to a query:
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		public:
 
@@ -135,7 +135,7 @@ namespace xlang
 
 		private:
 
-			inline void Identify(const IdentifyMessage &message, const xlang::Address from)
+			inline void Identify(const IdentifyMessage &message, const clang::Address from)
 			{
 				printf("Actor address is: %d\n", GetAddress().AsInteger());
 			}
@@ -169,11 +169,11 @@ namespace xlang
 		collected too.
 
 		\code
-		class Wheel : public xlang::Actor
+		class Wheel : public clang::Actor
 		{
 		};
 
-		class Car : public xlang::Actor
+		class Car : public clang::Actor
 		{
 		public:
 			Car()
@@ -185,7 +185,7 @@ namespace xlang
 			}
 
 		private:
-			xlang::ActorRef mWheels[4];
+			clang::ActorRef mWheels[4];
 		};
 		\endcode
 
@@ -220,7 +220,7 @@ namespace xlang
 		must currently always take their message parameters by \em reference:
 
 		\code
-		class HelloWorld : public xlang::Actor
+		class HelloWorld : public clang::Actor
 		{
 		public:
 
@@ -233,7 +233,7 @@ namespace xlang
 
 		private:
 
-			inline void Hello(const HelloMessage &message, const xlang::Address from)
+			inline void Hello(const HelloMessage &message, const clang::Address from)
 			{
 				printf("Hello world!\n");
 			}
@@ -254,7 +254,7 @@ namespace xlang
 		registered for the base message type explicitly from the derived handler, if required.
 
 		\code
-		class HelloWorld : public xlang::Actor
+		class HelloWorld : public clang::Actor
 		{
 		public:
 
@@ -269,12 +269,12 @@ namespace xlang
 
 		private:
 
-			inline void Hello(const HelloMessage &message, const xlang::Address from)
+			inline void Hello(const HelloMessage &message, const clang::Address from)
 			{
 				printf("Hello world!\n");
 			}
 
-			inline void Howdy(const HowdyMessage &message, const xlang::Address from)
+			inline void Howdy(const HowdyMessage &message, const clang::Address from)
 			{
 				Hello(message, from);
 				printf("How y'all doin?\n");
@@ -287,7 +287,7 @@ namespace xlang
 		confusing effect:
 
 		\code
-		class HelloWorld : public xlang::Actor
+		class HelloWorld : public clang::Actor
 		{
 		public:
 
@@ -301,12 +301,12 @@ namespace xlang
 
 		private:
 
-			inline void HelloOne(const HelloMessage &message, const xlang::Address from)
+			inline void HelloOne(const HelloMessage &message, const clang::Address from)
 			{
 				printf("Hello world!\n");
 			}
 
-			inline void HelloTwo(const HelloMessage &message, const xlang::Address from)
+			inline void HelloTwo(const HelloMessage &message, const clang::Address from)
 			{
 				printf("Hello world!\n");
 			}
@@ -338,7 +338,7 @@ namespace xlang
 		using messages. It only responds to \em hello messages when awake:
 
 		\code
-		class HelloWorld : public xlang::Actor
+		class HelloWorld : public clang::Actor
 		{
 		public:
 
@@ -353,7 +353,7 @@ namespace xlang
 
 		private:
 
-			inline void Wake(const WakeMessage &message, const xlang::Address from)
+			inline void Wake(const WakeMessage &message, const clang::Address from)
 			{
 				RegisterHandler(this, &HelloWorld::Hello);
 
@@ -361,7 +361,7 @@ namespace xlang
 				RegisterHandler(this, &HelloWorld::Sleep);
 			}
 
-			inline void Sleep(const SleepMessage &message, const xlang::Address from)
+			inline void Sleep(const SleepMessage &message, const clang::Address from)
 			{
 				DeregisterHandler(this, &HelloWorld::Hello);
 
@@ -369,7 +369,7 @@ namespace xlang
 				RegisterHandler(this, &HelloWorld::Wake);
 			}
 
-			inline void Hello(const HelloMessage &message, const xlang::Address from)
+			inline void Hello(const HelloMessage &message, const clang::Address from)
 			{
 				printf("Hello world!\n");
 			}
@@ -413,7 +413,7 @@ namespace xlang
 		which no regular message handlers are registered.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		public:
 
@@ -424,7 +424,7 @@ namespace xlang
 
 		private:
 
-			inline void DefaultHandler(const xlang::Address from)
+			inline void DefaultHandler(const clang::Address from)
 			{
 				printf("Actor received unknown message from address '%d'\n", from.AsInteger());
 			}
@@ -459,7 +459,7 @@ namespace xlang
 		the contents of an unexpected message to help with debugging.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		public:
 
@@ -470,7 +470,7 @@ namespace xlang
 
 		private:
 
-			inline void DefaultHandler(const void *const data, const xlang::u32 size, const xlang::Address from)
+			inline void DefaultHandler(const void *const data, const clang::u32 size, const clang::Address from)
 			{
 				printf("Actor received unknown message of size %d from address '%d'\n", size, from.AsInteger());
 			}
@@ -490,7 +490,7 @@ namespace xlang
 		\brief Sends a message to the entity (actor or receiver) at the given address.
 
 		\code
-		class Responder : public xlang::Actor
+		class Responder : public clang::Actor
 		{
 		public:
 
@@ -505,7 +505,7 @@ namespace xlang
 
 		private:
 
-			inline void Respond(const Message &message, const xlang::Address from)
+			inline void Respond(const Message &message, const clang::Address from)
 			{
 				// Send the message back to the sender.
 				Send(message, from);
@@ -530,7 +530,7 @@ namespace xlang
 		Of course, a safer approach is to send a std::string, as shown as the third call:
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		public:
 			Actor()
@@ -567,12 +567,12 @@ namespace xlang
 		\param value The message value to be sent.
 		\return True, if the message was delivered to the target entity, otherwise false.
 
-		\note An important detail of message handling in xlang is that message handling
+		\note An important detail of message handling in clang is that message handling
 		order is guaranteed. That is, if an actor A sends two messages m1 and m2 successively
 		to another actor B, then it's guaranteed that m1 and m2 will arrive at B, and be
-		handled, in that order. xlang is able to guarantee this because it currently only
+		handled, in that order. clang is able to guarantee this because it currently only
 		supports actors within the same process, so message transfer is entirely under its
-		control. If xlang is ever extended to support actors across multiple processes, or
+		control. If clang is ever extended to support actors across multiple processes, or
 		multiple hosts, then this guarantee may have to be relaxed; nevertheless the arrival
 		order of messages sent between actors in the same process will still be guaranteed.
 		Of course the guarantee doesn't apply to messages sent by different actors: If two
@@ -601,7 +601,7 @@ namespace xlang
 		available.
 
 		\code
-		class Processor : public xlang::Actor
+		class Processor : public clang::Actor
 		{
 		public:
 
@@ -612,7 +612,7 @@ namespace xlang
 
 		private:
 
-			inline void Process(const int &message, const xlang::Address from)
+			inline void Process(const int &message, const clang::Address from)
 			{
 				// Do some compute-intensive processing using the message value
 				// ...
@@ -931,7 +931,7 @@ namespace xlang
 	}
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_ACTOR_H

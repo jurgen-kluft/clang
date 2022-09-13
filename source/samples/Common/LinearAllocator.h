@@ -5,12 +5,12 @@
 #define COMMON_LINEARALLOCATOR_H
 
 
-#include "xlang/private/debug/x_assert.h"
-#include "xlang/private/threading/x_lock.h"
-#include "xlang/private/threading/x_mutex.h"
+#include "clang/private/debug/c_assert.h"
+#include "clang/private/threading/c_lock.h"
+#include "clang/private/threading/c_mutex.h"
 
-#include "xlang/x_align.h"
-#include "xlang/x_iallocator.h"
+#include "clang/c_align.h"
+#include "clang/c_iallocator.h"
 
 
 namespace Example

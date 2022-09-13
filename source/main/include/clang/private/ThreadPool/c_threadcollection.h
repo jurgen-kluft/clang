@@ -1,18 +1,18 @@
 #ifndef __XLANG_PRIVATE_THREADPOOL_THREADCOLLECTION_H
 #define __XLANG_PRIVATE_THREADPOOL_THREADCOLLECTION_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Containers/x_List.h"
-#include "xlang/private/Threading/x_Thread.h"
-#include "xlang/private/Threading/x_Mutex.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Containers/c_List.h"
+#include "clang/private/Threading/c_Thread.h"
+#include "clang/private/Threading/c_Mutex.h"
 
-#include "xlang/x_Defines.h"
+#include "clang/c_Defines.h"
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -98,7 +98,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_THREADPOOL_THREADCOLLECTION_H

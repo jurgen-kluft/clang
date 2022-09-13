@@ -13,10 +13,10 @@
 
 #include <stdio.h>
 
-#include "xlang/x_actor.h"
-#include "xlang/x_actorref.h"
-#include "xlang/x_framework.h"
-#include "xlang/x_receiver.h"
+#include "clang/c_actor.h"
+#include "clang/c_actorref.h"
+#include "clang/c_framework.h"
+#include "clang/c_receiver.h"
 
 
 static const int RESPONDER_ACTORS = 10;

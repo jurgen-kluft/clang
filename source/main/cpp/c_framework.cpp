@@ -1,8 +1,8 @@
-#include "xlang/private/MessageCache/x_MessageCache.h"
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Framework.h"
+#include "clang/private/MessageCache/c_MessageCache.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Framework.h"
 
-namespace xlang
+namespace clang
 {
 	Framework::Framework()
 		: mThreadPool()
@@ -44,5 +44,5 @@ namespace xlang
 	}
 
 
-} // namespace xlang
+} // namespace clang
 

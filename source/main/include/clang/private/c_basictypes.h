@@ -1,11 +1,11 @@
 #ifndef __XLANG_PRIVATE_BASICTYPES_H
 #define __XLANG_PRIVATE_BASICTYPES_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-namespace xlang
+namespace clang
 {
 	using xcore::xbyte;
 	using xcore::s8;

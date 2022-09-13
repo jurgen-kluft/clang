@@ -1,18 +1,18 @@
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Directory/x_Directory.h"
-#include "xlang/private/Directory/x_ReceiverDirectory.h"
-#include "xlang/private/MessageCache/x_MessageCache.h"
-#include "xlang/private/Messages/x_MessageCreator.h"
-#include "xlang/private/Threading/x_Lock.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Directory/c_Directory.h"
+#include "clang/private/Directory/c_ReceiverDirectory.h"
+#include "clang/private/MessageCache/c_MessageCache.h"
+#include "clang/private/Messages/c_MessageCreator.h"
+#include "clang/private/Threading/c_Lock.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
-#include "xlang/x_IAllocator.h"
-#include "xlang/x_Receiver.h"
+#include "clang/c_Address.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
+#include "clang/c_IAllocator.h"
+#include "clang/c_Receiver.h"
 
 
-namespace xlang
+namespace clang
 {
 	Receiver::Receiver() 
 		: mAddress(Address::Null())
@@ -87,6 +87,6 @@ namespace xlang
 	}
 
 
-} // namespace xlang
+} // namespace clang
 
 

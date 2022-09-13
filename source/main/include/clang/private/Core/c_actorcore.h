@@ -1,21 +1,21 @@
 #ifndef __XLANG_PRIVATE_CORE_ACTORCORE_H
 #define __XLANG_PRIVATE_CORE_ACTORCORE_H
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Containers/x_IntrusiveList.h"
-#include "xlang/private/Containers/x_IntrusiveQueue.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Handlers/x_MessageHandler.h"
-#include "xlang/private/Handlers/x_IMessageHandler.h"
-#include "xlang/private/Handlers/x_MessageHandlerCast.h"
-#include "xlang/private/Messages/x_IMessage.h"
-#include "xlang/private/Messages/x_MessageTraits.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Containers/c_IntrusiveList.h"
+#include "clang/private/Containers/c_IntrusiveQueue.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Handlers/c_MessageHandler.h"
+#include "clang/private/Handlers/c_IMessageHandler.h"
+#include "clang/private/Handlers/c_MessageHandlerCast.h"
+#include "clang/private/Messages/c_IMessage.h"
+#include "clang/private/Messages/c_MessageTraits.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_Defines.h"
-#include "xlang/x_IAllocator.h"
+#include "clang/c_Address.h"
+#include "clang/c_Defines.h"
+#include "clang/c_IAllocator.h"
 
-namespace xlang
+namespace clang
 {
 	class Actor;
 	class Framework;
@@ -324,7 +324,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_CORE_ACTORCORE_H

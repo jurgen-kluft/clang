@@ -1,11 +1,11 @@
 #include <stdio.h>
 
-#include "xlang/x_actor.h"
-#include "xlang/x_align.h"
-#include "xlang/x_allocatormanager.h"
-#include "xlang/x_framework.h"
+#include "clang/c_actor.h"
+#include "clang/c_align.h"
+#include "clang/c_allocatormanager.h"
+#include "clang/c_framework.h"
 
-#include "xlang/x_linearallocator.h"
+#include "clang/c_linearallocator.h"
 
 
 namespace Example

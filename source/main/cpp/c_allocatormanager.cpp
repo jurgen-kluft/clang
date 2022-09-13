@@ -1,9 +1,9 @@
-#include "xlang/x_AllocatorManager.h"
+#include "clang/c_AllocatorManager.h"
 
-namespace xlang
+namespace clang
 {
 	AllocatorManager AllocatorManager::smInstance;
 
-} // namespace xlang
+} // namespace clang
 
 

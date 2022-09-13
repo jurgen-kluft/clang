@@ -8,12 +8,12 @@
 
 #include <stdio.h>
 
-#include "xlang/private/Threading/x_lock.h"
-#include "xlang/private/Threading/x_mutex.h"
+#include "clang/private/Threading/c_lock.h"
+#include "clang/private/Threading/c_mutex.h"
 
-#include "xlang/x_framework.h"
-#include "xlang/x_actor.h"
-#include "xlang/x_address.h"
+#include "clang/c_framework.h"
+#include "clang/c_actor.h"
+#include "clang/c_address.h"
 
 
 struct Counter

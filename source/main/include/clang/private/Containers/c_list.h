@@ -1,20 +1,20 @@
 #ifndef __XLANG_PRIVATE_CONTAINERS_LIST_H
 #define __XLANG_PRIVATE_CONTAINERS_LIST_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xbase/x_allocator.h"
+#include "cbase/c_allocator.h"
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Debug/x_Assert.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Debug/c_Assert.h"
 
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -396,7 +396,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_CONTAINERS_LIST_H

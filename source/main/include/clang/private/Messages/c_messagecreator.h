@@ -1,23 +1,23 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGECREATOR_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGECREATOR_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_basictypes.h"
-#include "xlang/private/MessageCache/x_messagecache.h"
-#include "xlang/private/Messages/x_imessage.h"
-#include "xlang/private/Messages/x_message.h"
+#include "clang/private/c_basictypes.h"
+#include "clang/private/MessageCache/c_messagecache.h"
+#include "clang/private/Messages/c_imessage.h"
+#include "clang/private/Messages/c_message.h"
 
-#include "xlang/x_address.h"
-#include "xlang/x_defines.h"
+#include "clang/c_address.h"
+#include "clang/c_defines.h"
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
-		/// Helper class that constructs and destroys xlang's internal message objects.
+		/// Helper class that constructs and destroys clang's internal message objects.
 		class MessageCreator
 		{
 		public:
@@ -64,7 +64,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_MESSAGES_MESSAGECREATOR_H

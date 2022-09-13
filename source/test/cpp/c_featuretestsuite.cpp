@@ -4,20 +4,20 @@
 #include <string>
 #include <queue>
 
-#include "xlang\private\debug\x_assert.h"
-#include "xlang\x_actor.h"
-#include "xlang\x_actorref.h"
-#include "xlang\x_address.h"
-#include "xlang\x_framework.h"
-#include "xlang\x_receiver.h"
-#include "xlang\x_register.h"
+#include "clang\private\debug\x_assert.h"
+#include "clang\x_actor.h"
+#include "clang\x_actorref.h"
+#include "clang\x_address.h"
+#include "clang\x_framework.h"
+#include "clang\x_receiver.h"
+#include "clang\x_register.h"
 
 #include "xunittest\xunittest.h"
 
 
 
 template <class CountType>
-class Sequencer : public xlang::Actor
+class Sequencer : public clang::Actor
 {
 public:
 
@@ -32,7 +32,7 @@ public:
 
 private:
 
-	inline void Receive(const CountType &message, const xlang::Address /*from*/)
+	inline void Receive(const CountType &message, const clang::Address /*from*/)
 	{
 		if (message != mNextValue++)
 		{
@@ -40,7 +40,7 @@ private:
 		}
 	}
 
-	inline void GetValue(const bool &/*message*/, const xlang::Address from)
+	inline void GetValue(const bool &/*message*/, const clang::Address from)
 	{
 		Send(mStatus, from);
 	}
@@ -55,13 +55,13 @@ const char *Sequencer<CountType>::GOOD = "good";
 template <class CountType>
 const char *Sequencer<CountType>::BAD = "bad";
 
-//typedef std::vector<xlang::u32> IntVectorMessage;
+//typedef std::vector<clang::u32> IntVectorMessage;
 struct IntVectorMessage
 {
-	xlang::u32		n;
-	xlang::u32		a;
-	xlang::u32		b;
-	xlang::u32		c;
+	clang::u32		n;
+	clang::u32		a;
+	clang::u32		b;
+	clang::u32		c;
 };
 //XLANG_REGISTER_MESSAGE(IntVectorMessage);
 
@@ -91,12 +91,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
         UNITTEST_FIXTURE_SETUP() {}
         UNITTEST_FIXTURE_TEARDOWN() {}
 
-		class Trivial : public xlang::Actor
+		class Trivial : public clang::Actor
 		{
 		};
 
 		template <class MessageType>
-		class Replier : public xlang::Actor
+		class Replier : public clang::Actor
 		{
 		public:
 
@@ -107,14 +107,14 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void Handler(const MessageType &message, const xlang::Address from)
+			inline void Handler(const MessageType &message, const clang::Address from)
 			{
 				Send(message, from);
 			}
 		};
 
 		template <class MessageType>
-		class DefaultReplier : public xlang::Actor
+		class DefaultReplier : public clang::Actor
 		{
 		public:
 
@@ -126,12 +126,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void Handler(const MessageType &message, const xlang::Address from)
+			inline void Handler(const MessageType &message, const clang::Address from)
 			{
 				Send(message, from);
 			}
 
-			inline void DefaultHandler(const xlang::Address from)
+			inline void DefaultHandler(const clang::Address from)
 			{
 				std::string hello("hello");
 				Send(hello, from);
@@ -142,7 +142,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 		};
 
-		class Signaler : public xlang::Actor
+		class Signaler : public clang::Actor
 		{
 		public:
 
@@ -153,14 +153,14 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void Signal(const xlang::Address &address, const xlang::Address from)
+			inline void Signal(const clang::Address &address, const clang::Address from)
 			{
 				// Send the 'from' address to the address received in the message.
 				Send(from, address);
 			}
 		};
 
-		class Poker : public xlang::Actor
+		class Poker : public clang::Actor
 		{
 		public:
 
@@ -171,14 +171,14 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void Poke(const xlang::ActorRef &actor, const xlang::Address from)
+			inline void Poke(const clang::ActorRef &actor, const clang::Address from)
 			{
 				// Poke the actor referenced by the message, sending it the from address.
 				Send(from, actor.GetAddress());
 			}
 		};
 
-		class Switcher : public xlang::Actor
+		class Switcher : public clang::Actor
 		{
 		public:
 
@@ -189,14 +189,14 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void SayHello(const std::string &/*message*/, const xlang::Address from)
+			inline void SayHello(const std::string &/*message*/, const clang::Address from)
 			{
 				DeregisterHandler(this, &Switcher::SayHello);
 				RegisterHandler(this, &Switcher::SayGoodbye);
 				Send(std::string("hello"), from);
 			}
 
-			inline void SayGoodbye(const std::string &/*message*/, const xlang::Address from)
+			inline void SayGoodbye(const std::string &/*message*/, const clang::Address from)
 			{
 				DeregisterHandler(this, &Switcher::SayGoodbye);
 				RegisterHandler(this, &Switcher::SayHello);
@@ -209,26 +209,26 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 		public:
 
-			inline Catcher() : mMessage(), mFrom(xlang::Address::Null())
+			inline Catcher() : mMessage(), mFrom(clang::Address::Null())
 			{
 			}
 
-			inline void Catch(const MessageType &message, const xlang::Address from)
+			inline void Catch(const MessageType &message, const clang::Address from)
 			{
 				mMessage = message;
 				mFrom = from;
 			}
 
 			MessageType mMessage;
-			xlang::Address mFrom;
+			clang::Address mFrom;
 		};
 
 		struct Holder
 		{
-			xlang::ActorRef mRef;
+			clang::ActorRef mRef;
 		};
 
-		class Counter : public xlang::Actor
+		class Counter : public clang::Actor
 		{
 		public:
 
@@ -240,12 +240,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void Increment(const int &message, const xlang::Address /*from*/)
+			inline void Increment(const int &message, const clang::Address /*from*/)
 			{
 				mCount += message;
 			}
 
-			inline void GetValue(const bool &/*message*/, const xlang::Address from)
+			inline void GetValue(const bool &/*message*/, const clang::Address from)
 			{
 				Send(mCount, from);
 			}
@@ -253,7 +253,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			int mCount;
 		};
 
-		class TwoHandlerCounter : public xlang::Actor
+		class TwoHandlerCounter : public clang::Actor
 		{
 		public:
 
@@ -266,17 +266,17 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void IncrementOne(const int &message, const xlang::Address /*from*/)
+			inline void IncrementOne(const int &message, const clang::Address /*from*/)
 			{
 				mCount += message;
 			}
 
-			inline void IncrementTwo(const float &/*message*/, const xlang::Address /*from*/)
+			inline void IncrementTwo(const float &/*message*/, const clang::Address /*from*/)
 			{
 				++mCount;
 			}
 
-			inline void GetValue(const bool &/*message*/, const xlang::Address from)
+			inline void GetValue(const bool &/*message*/, const clang::Address from)
 			{
 				Send(mCount, from);
 			}
@@ -284,7 +284,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			int mCount;
 		};
 
-		class MultipleHandlerCounter : public xlang::Actor
+		class MultipleHandlerCounter : public clang::Actor
 		{
 		public:
 
@@ -297,17 +297,17 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void IncrementOne(const int &message, const xlang::Address /*from*/)
+			inline void IncrementOne(const int &message, const clang::Address /*from*/)
 			{
 				mCount += message;
 			}
 
-			inline void IncrementTwo(const int &/*message*/, const xlang::Address /*from*/)
+			inline void IncrementTwo(const int &/*message*/, const clang::Address /*from*/)
 			{
 				++mCount;
 			}
 
-			inline void GetValue(const bool &/*message*/, const xlang::Address from)
+			inline void GetValue(const bool &/*message*/, const clang::Address from)
 			{
 				Send(mCount, from);
 			}
@@ -316,13 +316,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		};
 
 
-		class Parameterized : public xlang::Actor
+		class Parameterized : public clang::Actor
 		{
 		public:
 
 			struct Parameters
 			{
-				xlang::Address mAddress;
+				clang::Address mAddress;
 			};
 
 			inline Parameterized(const Parameters &params) : mAddress(params.mAddress)
@@ -330,7 +330,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				RegisterHandler(this, &Parameterized::Handler);
 			}
 
-			inline void Handler(const int &message, const xlang::Address /*from*/)
+			inline void Handler(const int &message, const clang::Address /*from*/)
 			{
 				// Send a message to the address provided on construction.
 				Send(message, mAddress);
@@ -338,10 +338,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			xlang::Address mAddress;
+			clang::Address mAddress;
 		};
 
-		class Recursor : public xlang::Actor
+		class Recursor : public clang::Actor
 		{
 		public:
 
@@ -358,13 +358,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 					Parameters childParams;
 					childParams.mCount = params.mCount - 1;
 
-					xlang::Framework &framework(GetFramework());
-					xlang::ActorRef child(framework.CreateActor<Recursor>(childParams));
+					clang::Framework &framework(GetFramework());
+					clang::ActorRef child(framework.CreateActor<Recursor>(childParams));
 				}
 			}
 		};
 
-		class TailRecursor : public xlang::Actor
+		class TailRecursor : public clang::Actor
 		{
 		public:
 
@@ -385,8 +385,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 					Parameters childParams;
 					childParams.mCount = mCount - 1;
 
-					xlang::Framework &framework(GetFramework());
-					xlang::ActorRef child(framework.CreateActor<TailRecursor>(childParams));
+					clang::Framework &framework(GetFramework());
+					clang::ActorRef child(framework.CreateActor<TailRecursor>(childParams));
 				}
 			}
 
@@ -395,11 +395,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			int mCount;
 		};
 
-		class AutoSender : public xlang::Actor
+		class AutoSender : public clang::Actor
 		{
 		public:
 
-			typedef xlang::Address Parameters;
+			typedef clang::Address Parameters;
 
 			inline AutoSender(const Parameters &address)
 			{
@@ -411,11 +411,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			}
 		};
 
-		class TailSender : public xlang::Actor
+		class TailSender : public clang::Actor
 		{
 		public:
 
-			typedef xlang::Address Parameters;
+			typedef clang::Address Parameters;
 
 			inline TailSender(const Parameters &address) : mAddress(address)
 			{
@@ -430,10 +430,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				TailSend(1, mAddress);
 			}
 
-			xlang::Address mAddress;
+			clang::Address mAddress;
 		};
 
-		class AutoDeregistrar : public xlang::Actor
+		class AutoDeregistrar : public clang::Actor
 		{
 		public:
 
@@ -444,18 +444,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				DeregisterHandler(this, &AutoDeregistrar::HandlerOne);
 			}
 
-			inline void HandlerOne(const int &/*message*/, const xlang::Address from)
+			inline void HandlerOne(const int &/*message*/, const clang::Address from)
 			{
 				Send(1, from);
 			}
 
-			inline void HandlerTwo(const int &/*message*/, const xlang::Address from)
+			inline void HandlerTwo(const int &/*message*/, const clang::Address from)
 			{
 				Send(2, from);
 			}
 		};
 
-		class TailDeregistrar : public xlang::Actor
+		class TailDeregistrar : public clang::Actor
 		{
 		public:
 
@@ -469,13 +469,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				DeregisterHandler(this, &TailDeregistrar::Handler);
 			}
 
-			inline void Handler(const int &/*message*/, const xlang::Address from)
+			inline void Handler(const int &/*message*/, const clang::Address from)
 			{
 				Send(0, from);
 			}
 		};
 
-		class MessageQueueCounter : public xlang::Actor
+		class MessageQueueCounter : public clang::Actor
 		{
 		public:
 
@@ -484,13 +484,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				RegisterHandler(this, &MessageQueueCounter::Handler);
 			}
 
-			inline void Handler(const int &/*message*/, const xlang::Address from)
+			inline void Handler(const int &/*message*/, const clang::Address from)
 			{
 				Send(GetNumQueuedMessages(), from);
 			}
 		};
 
-		class BlindActor : public xlang::Actor
+		class BlindActor : public clang::Actor
 		{
 		public:
 
@@ -501,11 +501,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void BlindDefaultHandler(const void *const data, const xlang::u32 size, const xlang::Address from)
+			inline void BlindDefaultHandler(const void *const data, const clang::u32 size, const clang::Address from)
 			{
 				// We know the message is a u32.
-				const xlang::u32 *const p(reinterpret_cast<const xlang::u32 *>(data));
-				const xlang::u32 value(*p);
+				const clang::u32 *const p(reinterpret_cast<const clang::u32 *>(data));
+				const clang::u32 value(*p);
 
 				Send(value, from);
 				Send(size, from);
@@ -521,7 +521,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			{
 			}
 
-			inline void Catch(const MessageType &message, const xlang::Address /*from*/)
+			inline void Catch(const MessageType &message, const clang::Address /*from*/)
 			{
 				mMessages.push(message);
 			}
@@ -539,7 +539,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			std::queue<MessageType> mMessages;
 		};
 
-		class HandlerChecker : public xlang::Actor
+		class HandlerChecker : public clang::Actor
 		{
 		public:
 
@@ -550,7 +550,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			inline void Check2(const int & /*message*/, const xlang::Address from)
+			inline void Check2(const int & /*message*/, const clang::Address from)
 			{
 				Send(IsHandlerRegistered(this, &HandlerChecker::Check2), from);
 				Send(IsHandlerRegistered(this, &HandlerChecker::Dummy), from);
@@ -595,18 +595,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				Send(IsHandlerRegistered(this, &HandlerChecker::Unregistered), from);
 			}
 
-			inline void Dummy(const int & message, const xlang::Address from)
+			inline void Dummy(const int & message, const clang::Address from)
 			{
 				// We do this just so that Dummy and Unregistered differ, so the compiler won't merge them!
 				Send(message, from);
 			}
 
-			inline void Unregistered(const int & /*message*/, const xlang::Address /*from*/)
+			inline void Unregistered(const int & /*message*/, const clang::Address /*from*/)
 			{
 			}
 		};
 
-		class Nestor : public xlang::Actor
+		class Nestor : public clang::Actor
 		{
 		public:
 
@@ -621,7 +621,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 			typedef Replier<int> ChildActor;
 
-			inline void Create(const CreateMessage & /*message*/, const xlang::Address /*from*/)
+			inline void Create(const CreateMessage & /*message*/, const clang::Address /*from*/)
 			{
 				mChildren.push_back(GetFramework().CreateActor<ChildActor>());
 				mChildren.push_back(GetFramework().CreateActor<ChildActor>());
@@ -636,7 +636,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				Send(2, mChildren[2].GetAddress());
 			}
 
-			inline void Destroy(const DestroyMessage & /*message*/, const xlang::Address from)
+			inline void Destroy(const DestroyMessage & /*message*/, const clang::Address from)
 			{
 				mCaller = from;
 				if (mReplies[0] && mReplies[1] && mReplies[2])
@@ -646,32 +646,32 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 				}
 			}
 
-			inline void Receive(const int & message, const xlang::Address /*from*/)
+			inline void Receive(const int & message, const clang::Address /*from*/)
 			{
 				mReplies[message] = true;
 
-				if (mCaller != xlang::Address::Null() && mReplies[0] && mReplies[1] && mReplies[2])
+				if (mCaller != clang::Address::Null() && mReplies[0] && mReplies[1] && mReplies[2])
 				{
 					mChildren.clear();
 					Send(true, mCaller);
 				}
 			}
 
-			std::vector<xlang::ActorRef> mChildren;
+			std::vector<clang::ActorRef> mChildren;
 			std::vector<bool> mReplies;
-			xlang::Address mCaller;
+			clang::Address mCaller;
 		};
 
 		class FallbackHandler
 		{
 		public:
 
-			inline void Handle(const xlang::Address from)
+			inline void Handle(const clang::Address from)
 			{
 				mAddress = from;
 			}
 
-			xlang::Address mAddress;
+			clang::Address mAddress;
 		};
 
 		class BlindFallbackHandler
@@ -682,27 +682,27 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			{
 			}
 
-			inline void Handle(const void *const data, const xlang::u32 size, const xlang::Address from)
+			inline void Handle(const void *const data, const clang::u32 size, const clang::Address from)
 			{
 				mData = data;
-				mValue = *reinterpret_cast<const xlang::u32 *>(data);
+				mValue = *reinterpret_cast<const clang::u32 *>(data);
 				mSize = size;
 				mAddress = from;
 			}
 
 			const void *mData;
-			xlang::u32 mValue;
-			xlang::u32 mSize;
-			xlang::Address mAddress;
+			clang::u32 mValue;
+			clang::u32 mSize;
+			clang::Address mAddress;
 		};
 
-		class LastGasp : public xlang::Actor
+		class LastGasp : public clang::Actor
 		{
 		public:
 
-			typedef xlang::Address Parameters;
+			typedef clang::Address Parameters;
 
-			inline explicit LastGasp(const xlang::Address address) : mAddress(address)
+			inline explicit LastGasp(const clang::Address address) : mAddress(address)
 			{
 			}
 
@@ -713,68 +713,68 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		private:
 
-			xlang::Address mAddress;
+			clang::Address mAddress;
 		};
 
 
 		UNITTEST_TEST(NullActorReference)
 		{
-			xlang::ActorRef nullReference;
-			CHECK_TRUE(nullReference == xlang::ActorRef::Null());    // Default-constructed reference isn't null");
-			CHECK_TRUE((nullReference != xlang::ActorRef::Null()) == false);    // Default-constructed reference isn't null");
+			clang::ActorRef nullReference;
+			CHECK_TRUE(nullReference == clang::ActorRef::Null());    // Default-constructed reference isn't null");
+			CHECK_TRUE((nullReference != clang::ActorRef::Null()) == false);    // Default-constructed reference isn't null");
 		}
 
 		UNITTEST_TEST(CreateActorInFunction)
 		{
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<Trivial>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<Trivial>());
 		}
 
 		UNITTEST_TEST(CreateActorWithParamsInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			Parameterized::Parameters params;
 			params.mAddress = receiver.GetAddress();
-			xlang::ActorRef actor(framework.CreateActor<Parameterized>(params));
+			clang::ActorRef actor(framework.CreateActor<Parameterized>(params));
 
-			framework.Send(0, xlang::Address::Null(), actor.GetAddress());
+			framework.Send(0, clang::Address::Null(), actor.GetAddress());
 
 			receiver.Wait();
 		}
 
 		UNITTEST_TEST(SendMessageToReceiverInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 			framework.Send(0.0f, receiver.GetAddress(), receiver.GetAddress());
 		}
 
 		UNITTEST_TEST(SendMessageFromNullAddressInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
-			framework.Send(0, xlang::Address::Null(), receiver.GetAddress());
+			framework.Send(0, clang::Address::Null(), receiver.GetAddress());
 			receiver.Wait();
 		}
 
 		UNITTEST_TEST(SendMessageToActorFromNullAddressInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
-			xlang::ActorRef signaler(framework.CreateActor<Signaler>());
+			clang::Framework framework;
+			clang::Receiver receiver;
+			clang::ActorRef signaler(framework.CreateActor<Signaler>());
 
-			framework.Send(receiver.GetAddress(), xlang::Address::Null(), signaler.GetAddress());
+			framework.Send(receiver.GetAddress(), clang::Address::Null(), signaler.GetAddress());
 			receiver.Wait();
 		}
 
 		UNITTEST_TEST(SendMessageToActorFromReceiverInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
-			xlang::ActorRef signaler(framework.CreateActor<Signaler>());
+			clang::Framework framework;
+			clang::Receiver receiver;
+			clang::ActorRef signaler(framework.CreateActor<Signaler>());
 
 			framework.Send(receiver.GetAddress(), receiver.GetAddress(), signaler.GetAddress());
 			receiver.Wait();
@@ -782,19 +782,19 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(PushMessageToActorFromNullAddressInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
-			xlang::ActorRef signaler(framework.CreateActor<Signaler>());
+			clang::Framework framework;
+			clang::Receiver receiver;
+			clang::ActorRef signaler(framework.CreateActor<Signaler>());
 
-			signaler.Push(receiver.GetAddress(), xlang::Address::Null());
+			signaler.Push(receiver.GetAddress(), clang::Address::Null());
 			receiver.Wait();
 		}
 
 		UNITTEST_TEST(PushMessageToActorFromReceiverInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
-			xlang::ActorRef signaler(framework.CreateActor<Signaler>());
+			clang::Framework framework;
+			clang::Receiver receiver;
+			clang::ActorRef signaler(framework.CreateActor<Signaler>());
 
 			signaler.Push(receiver.GetAddress(), receiver.GetAddress());
 			receiver.Wait();
@@ -804,9 +804,9 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Replier<float> FloatReplier;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
-			xlang::ActorRef actor(framework.CreateActor<FloatReplier>());
+			clang::Framework framework;
+			clang::Receiver receiver;
+			clang::ActorRef actor(framework.CreateActor<FloatReplier>());
 
 			framework.Send(5.0f, receiver.GetAddress(), actor.GetAddress());
 
@@ -818,10 +818,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef Replier<float> FloatReplier;
 			typedef Catcher<float> FloatCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<FloatReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<FloatReplier>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			FloatCatcher catcher;
 			receiver.RegisterHandler(&catcher, &FloatCatcher::Catch);
 
@@ -837,8 +837,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Replier<float> FloatReplier;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			Holder object;
 			object.mRef = framework.CreateActor<FloatReplier>();
@@ -854,10 +854,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef Replier<VectorMessage> VectorReplier;
 			typedef Catcher<VectorMessage> VectorCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<VectorReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<VectorReplier>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			VectorCatcher catcher;
 			receiver.RegisterHandler(&catcher, &VectorCatcher::Catch);
 
@@ -878,10 +878,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef Replier<PointerMessage> PointerReplier;
 			typedef Catcher<PointerMessage> PointerCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<PointerReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<PointerReplier>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			PointerCatcher catcher;
 			receiver.RegisterHandler(&catcher, &PointerCatcher::Catch);
 
@@ -900,10 +900,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef Replier<PointerMessage> PointerReplier;
 			typedef Catcher<PointerMessage> PointerCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<PointerReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<PointerReplier>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			PointerCatcher catcher;
 			receiver.RegisterHandler(&catcher, &PointerCatcher::Catch);
 
@@ -918,8 +918,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(CreateDerivedActor)
 		{
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<StringReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<StringReplier>());
 		}
 
 		UNITTEST_TEST(SendMessageToDerivedActor)
@@ -927,10 +927,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef const char * StringMessage;
 			typedef Catcher<StringMessage> StringCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<StringReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<StringReplier>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			StringCatcher catcher;
 			receiver.RegisterHandler(&catcher, &StringCatcher::Catch);
 
@@ -947,10 +947,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Catcher<int> CountCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<Counter>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<Counter>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			CountCatcher catcher;
 			receiver.RegisterHandler(&catcher, &CountCatcher::Catch);
 
@@ -972,10 +972,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Replier<int> IntReplier;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<IntReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<IntReplier>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			framework.Send(10, receiver.GetAddress(), actor.GetAddress());
 
 			receiver.Wait();
@@ -985,10 +985,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Catcher<int> CountCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<TwoHandlerCounter>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<TwoHandlerCounter>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			CountCatcher catcher;
 			receiver.RegisterHandler(&catcher, &CountCatcher::Catch);
 
@@ -1011,10 +1011,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Catcher<int> CountCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<MultipleHandlerCounter>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<MultipleHandlerCounter>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			CountCatcher catcher;
 			receiver.RegisterHandler(&catcher, &CountCatcher::Catch);
 
@@ -1035,10 +1035,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef Catcher<const char *> StringCatcher;
 			typedef Sequencer<int> IntSequencer;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<IntSequencer>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<IntSequencer>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			StringCatcher catcher;
 			receiver.RegisterHandler(&catcher, &StringCatcher::Catch);
 
@@ -1068,13 +1068,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(SendAddressAsMessage)
 		{
-			typedef Catcher<xlang::Address> AddressCatcher;
+			typedef Catcher<clang::Address> AddressCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actorA(framework.CreateActor<Signaler>());
-			xlang::ActorRef actorB(framework.CreateActor<Signaler>());
+			clang::Framework framework;
+			clang::ActorRef actorA(framework.CreateActor<Signaler>());
+			clang::ActorRef actorB(framework.CreateActor<Signaler>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			AddressCatcher catcher;
 			receiver.RegisterHandler(&catcher, &AddressCatcher::Catch);
 
@@ -1090,13 +1090,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(SendActorRefAsMessage)
 		{
-			typedef Catcher<xlang::Address> AddressCatcher;
+			typedef Catcher<clang::Address> AddressCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actorA(framework.CreateActor<Poker>());
-			xlang::ActorRef actorB(framework.CreateActor<Signaler>());
+			clang::Framework framework;
+			clang::ActorRef actorA(framework.CreateActor<Poker>());
+			clang::ActorRef actorB(framework.CreateActor<Signaler>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			AddressCatcher catcher;
 			receiver.RegisterHandler(&catcher, &AddressCatcher::Catch);
 
@@ -1116,11 +1116,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef DefaultReplier<float> FloatReplier;
 			typedef Catcher<std::string> StringCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<FloatReplier>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<FloatReplier>());
 
 			StringCatcher catcher;
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			receiver.RegisterHandler(&catcher, &StringCatcher::Catch);
 
 			// Send an int to the replier, which expects floats but has a default handler.
@@ -1136,11 +1136,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Catcher<std::string> StringCatcher;
 
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<Switcher>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<Switcher>());
 
 			StringCatcher catcher;
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			receiver.RegisterHandler(&catcher, &StringCatcher::Catch);
 
 			framework.Send(std::string("hello"), receiver.GetAddress(), actor.GetAddress());
@@ -1162,21 +1162,21 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(CreateActorInConstructor)
 		{
-			xlang::Framework framework;
+			clang::Framework framework;
 
 			Recursor::Parameters params;
 			params.mCount = 10;
-			xlang::ActorRef actor(framework.CreateActor<Recursor>(params));
+			clang::ActorRef actor(framework.CreateActor<Recursor>(params));
 		}
 
 		UNITTEST_TEST(SendMessageInConstructor)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			// Pass the address of the receiver ton the actor constructor.
 			AutoSender::Parameters params(receiver.GetAddress());
-			xlang::ActorRef actor(framework.CreateActor<AutoSender>(params));
+			clang::ActorRef actor(framework.CreateActor<AutoSender>(params));
 
 			// Wait for the messages sent by the actor on construction.
 			receiver.Wait();
@@ -1187,13 +1187,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Catcher<int> IntCatcher;
 
-			xlang::Framework framework;
+			clang::Framework framework;
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			IntCatcher catcher;
 			receiver.RegisterHandler(&catcher, &IntCatcher::Catch);
 
-			xlang::ActorRef actor(framework.CreateActor<AutoDeregistrar>());
+			clang::ActorRef actor(framework.CreateActor<AutoDeregistrar>());
 
 			// Send the actor a message and check that the first handler doesn't send us a reply.
 			framework.Send(0, receiver.GetAddress(), actor.GetAddress());
@@ -1206,22 +1206,22 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(CreateActorInDestructor)
 		{
-			xlang::Framework framework;
+			clang::Framework framework;
 
 			TailRecursor::Parameters params;
 			params.mCount = 10;
-			xlang::ActorRef actor(framework.CreateActor<TailRecursor>(params));
+			clang::ActorRef actor(framework.CreateActor<TailRecursor>(params));
 		}
 
 		UNITTEST_TEST(SendMessageInDestructor)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			{
 				// Pass the address of the receiver ton the actor constructor.
 				TailSender::Parameters params(receiver.GetAddress());
-				xlang::ActorRef actor(framework.CreateActor<TailSender>(params));
+				clang::ActorRef actor(framework.CreateActor<TailSender>(params));
 			}
 
 			// Wait for the messages sent by the actor on construction.
@@ -1233,15 +1233,15 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			// We check that it's safe to deregister a handler in an actor destructor,
 			// but since it can't handle messages after destruction, there's little effect.
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<TailDeregistrar>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<TailDeregistrar>());
 		}
 
 		UNITTEST_TEST(CreateActorInHandler)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
-			xlang::ActorRef actor(framework.CreateActor<Nestor>());
+			clang::Framework framework;
+			clang::Receiver receiver;
+			clang::ActorRef actor(framework.CreateActor<Nestor>());
 
 			framework.Send(CreateMessage(), receiver.GetAddress(), actor.GetAddress());
 			framework.Send(DestroyMessage(), receiver.GetAddress(), actor.GetAddress());
@@ -1251,15 +1251,15 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(GetNumQueuedMessagesInHandler)
 		{
-			typedef Catcher<xlang::u32> CountCatcher;
+			typedef Catcher<clang::u32> CountCatcher;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			CountCatcher catcher;
 			receiver.RegisterHandler(&catcher, &CountCatcher::Catch);
 
-			xlang::ActorRef actor(framework.CreateActor<MessageQueueCounter>());
+			clang::ActorRef actor(framework.CreateActor<MessageQueueCounter>());
 
 			// Send the actor two messages.
 			framework.Send(0, receiver.GetAddress(), actor.GetAddress());
@@ -1277,12 +1277,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		UNITTEST_TEST(GetNumQueuedMessagesInFunction)
 		{
 			typedef const char * StringMessage;
-			typedef Catcher<xlang::u32> CountCatcher;
+			typedef Catcher<clang::u32> CountCatcher;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
-			xlang::ActorRef actor(framework.CreateActor<StringReplier>());
+			clang::ActorRef actor(framework.CreateActor<StringReplier>());
 
 			// Send the actor two messages.
 			StringMessage stringMessage("hello");
@@ -1290,7 +1290,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			framework.Send(stringMessage, receiver.GetAddress(), actor.GetAddress());
 
 			// Race conditions decide how many messages are in the queue when we ask.
-			xlang::u32 numMessages(actor.GetNumQueuedMessages());
+			clang::u32 numMessages(actor.GetNumQueuedMessages());
 			CHECK_TRUE(numMessages < 3);    // Bad count");
 
 			receiver.Wait();
@@ -1306,18 +1306,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(UseBlindDefaultHandler)
 		{
-			typedef Accumulator<xlang::u32> UIntAccumulator;
+			typedef Accumulator<clang::u32> UIntAccumulator;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			UIntAccumulator accumulator;
 			receiver.RegisterHandler(&accumulator, &UIntAccumulator::Catch);
 
-			xlang::ActorRef actor(framework.CreateActor<BlindActor>());
+			clang::ActorRef actor(framework.CreateActor<BlindActor>());
 
 			// Send the actor a u32 message, which is the type it secretly expects.
-			framework.Send(xlang::u32(75), receiver.GetAddress(), actor.GetAddress());
+			framework.Send(clang::u32(75), receiver.GetAddress(), actor.GetAddress());
 
 			// The actor sends back the value of the message data and the size.
 			receiver.Wait();
@@ -1331,16 +1331,16 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		{
 			typedef Accumulator<bool> BoolAccumulator;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			BoolAccumulator accumulator;
 			receiver.RegisterHandler(&accumulator, &BoolAccumulator::Catch);
 
-			xlang::ActorRef actor(framework.CreateActor<HandlerChecker>());
+			clang::ActorRef actor(framework.CreateActor<HandlerChecker>());
 			framework.Send(int(0), receiver.GetAddress(), actor.GetAddress());
 
-			xlang::u32 count(21);
+			clang::u32 count(21);
 			while (count)
 			{
 				count -= receiver.Wait(count);
@@ -1385,32 +1385,32 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(SendMessagesToShortLivedActor)
 		{
-			typedef Accumulator<xlang::u32> UIntAccumulator;
-			typedef Replier<xlang::u32> UIntReplier;
+			typedef Accumulator<clang::u32> UIntAccumulator;
+			typedef Replier<clang::u32> UIntReplier;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			UIntAccumulator accumulator;
 			receiver.RegisterHandler(&accumulator, &UIntAccumulator::Catch);
 
 			{
-				xlang::ActorRef actor(framework.CreateActor<UIntReplier>());
+				clang::ActorRef actor(framework.CreateActor<UIntReplier>());
 
 				// Send the actor a series of messages.
-				framework.Send(xlang::u32(0), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::u32(1), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::u32(2), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::u32(3), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::u32(4), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::u32(5), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::u32(6), receiver.GetAddress(), actor.GetAddress());
-				framework.Send(xlang::u32(7), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(0), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(1), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(2), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(3), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(4), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(5), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(6), receiver.GetAddress(), actor.GetAddress());
+				framework.Send(clang::u32(7), receiver.GetAddress(), actor.GetAddress());
 			}
 
 			// Check that we received the replies even though the actor became unreferenced.
 
-			xlang::u32 count(8);
+			clang::u32 count(8);
 			while (count)
 			{
 				count -= receiver.Wait(8);
@@ -1428,7 +1428,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(SetFallbackHandler)
 		{
-			xlang::Framework framework;
+			clang::Framework framework;
 			FallbackHandler fallbackHandler;
 
 			CHECK_TRUE(framework.SetFallbackHandler(&fallbackHandler, &FallbackHandler::Handle));    // Register failed");
@@ -1436,17 +1436,17 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(HandleUndeliveredMessageSentInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			FallbackHandler fallbackHandler;
 			framework.SetFallbackHandler(&fallbackHandler, &FallbackHandler::Handle);
 
 			// Create an actor and let it die but remember its address.
-			xlang::Address lastGaspAddress;
+			clang::Address lastGaspAddress;
 
 			{
-				xlang::ActorRef actor(framework.CreateActor<LastGasp>(receiver.GetAddress()));
+				clang::ActorRef actor(framework.CreateActor<LastGasp>(receiver.GetAddress()));
 				lastGaspAddress = actor.GetAddress();
 			}
 
@@ -1463,19 +1463,19 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 		UNITTEST_TEST(HandleUndeliveredMessageSentInHandler)
 		{
 			FallbackHandler fallbackHandler;
-			xlang::Address signalerAddress;
+			clang::Address signalerAddress;
 
 			{
-				xlang::Framework framework;
-				xlang::Receiver receiver;
+				clang::Framework framework;
+				clang::Receiver receiver;
 
 				framework.SetFallbackHandler(&fallbackHandler, &FallbackHandler::Handle);
 
 				// Create an actor and let it die but remember its address.
-				xlang::Address lastGaspAddress;
+				clang::Address lastGaspAddress;
 
 				{
-					xlang::ActorRef actor(framework.CreateActor<LastGasp>(receiver.GetAddress()));
+					clang::ActorRef actor(framework.CreateActor<LastGasp>(receiver.GetAddress()));
 					lastGaspAddress = actor.GetAddress();
 				}
 
@@ -1484,7 +1484,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 				// Create a second actor to send a message to the stale address of the first.
 				// The Signaler sends a message to the address it is sent.
-				xlang::ActorRef signaler(framework.CreateActor<Signaler>());
+				clang::ActorRef signaler(framework.CreateActor<Signaler>());
 				signalerAddress = signaler.GetAddress();
 				framework.Send(lastGaspAddress, receiver.GetAddress(), signalerAddress);
 
@@ -1497,21 +1497,21 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(HandleUnhandledMessageSentInFunction)
 		{
-			typedef Replier<xlang::u32> UIntReplier;
+			typedef Replier<clang::u32> UIntReplier;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			FallbackHandler fallbackHandler;
 			framework.SetFallbackHandler(&fallbackHandler, &FallbackHandler::Handle);
 
 			// Create a replier that handles only ints, then send it a float.
-			xlang::ActorRef replier(framework.CreateActor<UIntReplier>());
+			clang::ActorRef replier(framework.CreateActor<UIntReplier>());
 			framework.Send(5.0f, receiver.GetAddress(), replier.GetAddress());
 
 			// Send the replier an int and wait for the reply so we know both messages
 			// have been processed.
-			framework.Send(xlang::u32(5), receiver.GetAddress(), replier.GetAddress());
+			framework.Send(clang::u32(5), receiver.GetAddress(), replier.GetAddress());
 			receiver.Wait();
 
 			// Check that the unhandled message was handled by the registered fallback handler.
@@ -1520,17 +1520,17 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 
 		UNITTEST_TEST(HandleUndeliveredBlindMessageSentInFunction)
 		{
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 
 			BlindFallbackHandler fallbackHandler;
 			framework.SetFallbackHandler(&fallbackHandler, &BlindFallbackHandler::Handle);
 
 			// Create an actor and let it die but remember its address.
-			xlang::Address lastGaspAddress;
+			clang::Address lastGaspAddress;
 
 			{
-				xlang::ActorRef actor(framework.CreateActor<LastGasp>(receiver.GetAddress()));
+				clang::ActorRef actor(framework.CreateActor<LastGasp>(receiver.GetAddress()));
 				lastGaspAddress = actor.GetAddress();
 			}
 
@@ -1538,12 +1538,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			receiver.Wait();
 
 			// Send a message to the stale address.
-			framework.Send(xlang::u32(42), receiver.GetAddress(), lastGaspAddress);
+			framework.Send(clang::u32(42), receiver.GetAddress(), lastGaspAddress);
 
 			// Check that the undelivered message was handled by the registered fallback handler.
 			CHECK_TRUE(fallbackHandler.mData != 0);    // Blind fallback handler failed");
 			CHECK_TRUE(fallbackHandler.mValue == 42);    // Blind fallback handler failed");
-			CHECK_TRUE(fallbackHandler.mSize == sizeof(xlang::u32));    // Blind fallback handler failed");
+			CHECK_TRUE(fallbackHandler.mSize == sizeof(clang::u32));    // Blind fallback handler failed");
 			CHECK_TRUE(fallbackHandler.mAddress == receiver.GetAddress());    // Blind fallback handler failed");
 		}
 
@@ -1552,12 +1552,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_FEATURETESTSUITE)
 			typedef Replier<IntVectorMessage> IntVectorReplier;
 			typedef Catcher<IntVectorMessage> IntVectorCatcher;
 
-			xlang::Framework framework;
-			xlang::Receiver receiver;
+			clang::Framework framework;
+			clang::Receiver receiver;
 			IntVectorCatcher catcher;
 
 			receiver.RegisterHandler(&catcher, &IntVectorCatcher::Catch);
-			xlang::ActorRef replier(framework.CreateActor<IntVectorReplier>());
+			clang::ActorRef replier(framework.CreateActor<IntVectorReplier>());
 
 			IntVectorMessage message;
 			message.a = (0);

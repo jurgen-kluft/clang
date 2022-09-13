@@ -2,9 +2,9 @@
 // This sample shows how to register message handlers in an actor class.
 //
 
-#include "xlang/x_Framework.h"
-#include "xlang/x_Receiver.h"
-#include "xlang/x_Actor.h"
+#include "clang/c_Framework.h"
+#include "clang/c_Receiver.h"
+#include "clang/c_Actor.h"
 
 
 // Placement new/delete
@@ -26,7 +26,7 @@ struct MessageIntValue
 
 
 // An example actor with two different handlers for the same message type.
-class ExampleActor : public xlang::Actor
+class ExampleActor : public clang::Actor
 {
 public:
 
@@ -38,7 +38,7 @@ public:
 
 private:
 
-	inline void HandlerOne(const MessageIntValue &message, const xlang::Address from)
+	inline void HandlerOne(const MessageIntValue &message, const clang::Address from)
     {
         printf("Handler ONE received message with value '%d'\n", message.mValue);
         
@@ -49,7 +49,7 @@ private:
         Send(message, from);
     }
 
-	inline void HandlerTwo(const MessageIntValue &message, const xlang::Address from)
+	inline void HandlerTwo(const MessageIntValue &message, const clang::Address from)
     {
         printf("Handler TWO received message with value '%d'\n", message.mValue);
 
@@ -65,7 +65,7 @@ class Catcher
 {
 public:
 
-	inline void Catch(const MessageIntValue &message, const xlang::Address from)
+	inline void Catch(const MessageIntValue &message, const clang::Address from)
 	{
 		mMessage = message;
 	}
@@ -75,10 +75,10 @@ public:
 
 int main()
 {
-    xlang::Framework framework;
-    xlang::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
+    clang::Framework framework;
+    clang::ActorRef exampleActor(framework.CreateActor<ExampleActor>());
 
-    xlang::Receiver receiver;
+    clang::Receiver receiver;
 	Catcher catcher;
 	receiver.RegisterHandler(&catcher, &Catcher::Catch);
 

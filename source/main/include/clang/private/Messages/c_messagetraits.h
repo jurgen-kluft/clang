@@ -1,11 +1,11 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGETRAITS_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGETRAITS_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -13,7 +13,7 @@ namespace xlang
 		///
 		/// The MessageTraits template can be specialized for individual message types
 		/// in order to label the types with their string names.
-		/// By storing the name of the message type in every sent message, xlang is
+		/// By storing the name of the message type in every sent message, clang is
 		/// able to match the type with the types expected by message handlers
 		/// registered in the receiving actor.
 		///
@@ -21,13 +21,13 @@ namespace xlang
 		/// The null pointer is a reserved value and implies that the type has no explicit name.
 		/// Types with null names are matched by means of dynamic_cast, which
 		/// relies on RTTI (Runtime Type Information - the automatic storing of a
-		/// type identifier in every class). By default xlang uses RTTI exclusively.
+		/// type identifier in every class). By default clang uses RTTI exclusively.
 		///
 		/// The availability of RTTI is a compilation option, usually on by default
 		/// and disabled by means of an optional compiler flag. It introduces a small
 		/// size overhead into every class due to the need to store a hidden identifier to
 		/// identify the class's type. Note that this overhead is applied to all classes
-		/// and not just messages within xlang. The overhead is not normally a problem,
+		/// and not just messages within clang. The overhead is not normally a problem,
 		/// however in applications with tightly constrained memory requirements (such as
 		/// embedded environments and games consoles) it is undesirable.
 		///
@@ -68,7 +68,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_MESSAGES_MESSAGETRAITS_H

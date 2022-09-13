@@ -1,14 +1,14 @@
-#include "xlang/private/Directory/x_Directory.h"
-#include "xlang/private/Threading/x_Mutex.h"
+#include "clang/private/Directory/c_Directory.h"
+#include "clang/private/Threading/c_Mutex.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
 		Mutex Directory::smMutex;
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 

@@ -8,9 +8,9 @@
 
 #include <stdio.h>
 
-#include "xlang/x_actor.h"
-#include "xlang/x_framework.h"
-#include "xlang/x_receiver.h"
+#include "clang/c_actor.h"
+#include "clang/c_framework.h"
+#include "clang/c_receiver.h"
 
 
 // A trivial message type.

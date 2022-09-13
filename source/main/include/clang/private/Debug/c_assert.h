@@ -1,12 +1,12 @@
 #ifndef __XLANG_PRIVATE_DEBUG_ASSERT_H
 #define __XLANG_PRIVATE_DEBUG_ASSERT_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xbase/x_debug.h"
-#include "xlang/x_Defines.h"
+#include "cbase/c_debug.h"
+#include "clang/c_Defines.h"
 
 #if XLANG_ENABLE_ASSERTS
 
@@ -19,11 +19,11 @@
 #endif // XLANG_ASSERT_MSG
 
 #ifndef XLANG_FAIL
-#define XLANG_FAIL()                           xlang::detail::Fail(__FILE__, __LINE__)
+#define XLANG_FAIL()                           clang::detail::Fail(__FILE__, __LINE__)
 #endif // XLANG_FAIL
 
 #ifndef XLANG_FAIL_MSG
-#define XLANG_FAIL_MSG(msg)                    xlang::detail::Fail(__FILE__, __LINE__, msg)
+#define XLANG_FAIL_MSG(msg)                    clang::detail::Fail(__FILE__, __LINE__, msg)
 #endif // XLANG_ASSERT
 
 #else
@@ -48,7 +48,7 @@
 
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -75,7 +75,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_DEBUG_ASSERT_H

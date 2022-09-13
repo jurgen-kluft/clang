@@ -1,20 +1,20 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGESENDER_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGESENDER_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/Directory/x_Directory.h"
-#include "xlang/private/Messages/x_IMessage.h"
-#include "xlang/private/Messages/x_MessageCreator.h"
-#include "xlang/private/Threading/x_Lock.h"
+#include "clang/private/Directory/c_Directory.h"
+#include "clang/private/Messages/c_IMessage.h"
+#include "clang/private/Messages/c_MessageCreator.h"
+#include "clang/private/Threading/c_Lock.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_Address.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	class Framework;
 
@@ -99,7 +99,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_MESSAGES_MESSAGESENDER_H

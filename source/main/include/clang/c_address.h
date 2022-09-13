@@ -1,17 +1,17 @@
 #ifndef __XLANG_ADDRESS_H
 #define __XLANG_ADDRESS_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Threading/x_Mutex.h"
-#include "xlang/private/Threading/x_Lock.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Threading/c_Mutex.h"
+#include "clang/private/Threading/c_Lock.h"
 
-#include "xlang/x_Defines.h"
+#include "clang/c_Defines.h"
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -22,12 +22,12 @@ namespace xlang
 	/**
 	\brief The unique address of an entity that can send or receive messages.
 
-	Addresses are the unique 'names' of entities that can receive messages in xlang.
+	Addresses are the unique 'names' of entities that can receive messages in clang.
 	Knowing an entity's address is enough to be able to send it a message, and no other
 	special access or permissions are required.
 
 	The types of entities that have addresses, and therefore can receive messages, in
-	xlang are \ref Actor "actors" and \ref Receiver "receivers". Both of these types
+	clang are \ref Actor "actors" and \ref Receiver "receivers". Both of these types
 	of entities are assigned automatically-generated unique addresses on construction.
 
 	Addresses can be copied and assigned, allowing the addresses of actors and receivers
@@ -45,7 +45,7 @@ namespace xlang
 	then no code outside that actor can access the child actors or send them messages,
 	unless the actor publicly exposes their addresses.
 
-	\note The maximum numbers of actor and receiver addresses in xlang are limited
+	\note The maximum numbers of actor and receiver addresses in clang are limited
 	by the \ref XLANG_MAX_ACTORS and \ref XLANG_MAX_RECEIVERS defines, which can
 	both be overridden in user projects via project-level definitions.
 	*/
@@ -62,12 +62,12 @@ namespace xlang
 		The null address is guaranteed not to be equal to the address of any actual entity.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef actor(framework.CreateActor<Actor>());
+		clang::Framework framework;
+		clang::ActorRef actor(framework.CreateActor<Actor>());
 
 		assert(actor.GetAddress() != Address::Null(), "Created actor has null address!");
 		\endcode
@@ -106,13 +106,13 @@ namespace xlang
 		Addresses can be assigned. The new address is equal to the original and identifies the same entity.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef actor(framework.CreateActor<Actor>());
-		xlang::Address address(actor.GetAddress());
+		clang::Framework framework;
+		clang::ActorRef actor(framework.CreateActor<Actor>());
+		clang::Address address(actor.GetAddress());
 		\endcode
 
 		\param other The existing address to be copied.
@@ -127,14 +127,14 @@ namespace xlang
 		Addresses can be assigned. The new address is equal to the original and identifies the same entity.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef actor(framework.CreateActor<Actor>());
+		clang::Framework framework;
+		clang::ActorRef actor(framework.CreateActor<Actor>());
 
-		xlang::Address address;
+		clang::Address address;
 		address = actor.GetAddress();
 		\endcode
 
@@ -151,12 +151,12 @@ namespace xlang
 		\brief Gets the unique value of the address as an unsigned integer.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef actor(framework.CreateActor<Actor>());
+		clang::Framework framework;
+		clang::ActorRef actor(framework.CreateActor<Actor>());
 
 		printf("Actor has address %d\n", actor.GetAddress().AsInteger());
 		\endcode
@@ -198,15 +198,15 @@ namespace xlang
 		This allows addresses to be sorted, for example in containers.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef actorOne(framework.CreateActor<Actor>());
-		xlang::ActorRef actorTwo(framework.CreateActor<Actor>());
+		clang::Framework framework;
+		clang::ActorRef actorOne(framework.CreateActor<Actor>());
+		clang::ActorRef actorTwo(framework.CreateActor<Actor>());
 
-		std::set<xlang::Address> addresses;
+		std::set<clang::Address> addresses;
 		addresses.insert(actorOne.GetAddress());
 		addresses.insert(actorTwo.GetAddress());
 		\endcode
@@ -271,7 +271,7 @@ namespace xlang
 	};
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_ADDRESS_H

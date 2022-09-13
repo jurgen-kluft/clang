@@ -9,10 +9,10 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "xlang/x_actor.h"
-#include "xlang/x_address.h"
-#include "xlang/x_framework.h"
-#include "xlang/x_receiver.h"
+#include "clang/c_actor.h"
+#include "clang/c_address.h"
+#include "clang/c_framework.h"
+#include "clang/c_receiver.h"
 
 
 // A custom message type containing a string.

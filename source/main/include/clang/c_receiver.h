@@ -1,24 +1,24 @@
 #ifndef __XLANG_RECEIVER_H
 #define __XLANG_RECEIVER_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Containers/x_IntrusiveList.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Handlers/x_ReceiverHandler.h"
-#include "xlang/private/Handlers/x_IReceiverHandler.h"
-#include "xlang/private/Handlers/x_ReceiverHandlerCast.h"
-#include "xlang/private/Messages/x_IMessage.h"
-#include "xlang/private/Messages/x_MessageTraits.h"
-#include "xlang/private/Threading/x_Lock.h"
-#include "xlang/private/Threading/x_Monitor.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Containers/c_IntrusiveList.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Handlers/c_ReceiverHandler.h"
+#include "clang/private/Handlers/c_IReceiverHandler.h"
+#include "clang/private/Handlers/c_ReceiverHandlerCast.h"
+#include "clang/private/Messages/c_IMessage.h"
+#include "clang/private/Messages/c_MessageTraits.h"
+#include "clang/private/Threading/c_Lock.h"
+#include "clang/private/Threading/c_Monitor.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_Address.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
 
 
 namespace UnitTests
@@ -27,7 +27,7 @@ namespace UnitTests
 }
 
 
-namespace xlang
+namespace clang
 {
 
 
@@ -121,7 +121,7 @@ namespace xlang
 		{
 		public:
 
-			inline void Catch(const Message &message, const xlang::Address from)
+			inline void Catch(const Message &message, const clang::Address from)
 			{
 				mMessage = message;
 			}
@@ -129,7 +129,7 @@ namespace xlang
 			Message mMessage;
 		};
 
-		xlang::Receiver receiver;
+		clang::Receiver receiver;
 		Catcher catcher;
 
 		receiver.RegisterHandler(&catcher, &Catcher::Catch);
@@ -310,7 +310,7 @@ namespace xlang
 		/// \note This method is "private" and is not intended for use in user code.
 		inline void TailPush(detail::IMessage *const message);
 
-		Address mAddress;                           ///< Unique xlang address, or 'name', of the receiver.
+		Address mAddress;                           ///< Unique clang address, or 'name', of the receiver.
 		MessageHandlerList mMessageHandlers;        ///< List of registered message handlers.
 		mutable detail::Monitor mMonitor;           ///< Synchronizes access to the message handlers.
 		u32 mMessagesReceived;                 ///< Indicates that a message was received.
@@ -466,7 +466,7 @@ namespace xlang
 	}
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_RECEIVER_H

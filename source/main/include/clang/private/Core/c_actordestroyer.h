@@ -1,7 +1,7 @@
 #ifndef __XLANG_PRIVATE_CORE_ACTORDESTROYER_H
 #define __XLANG_PRIVATE_CORE_ACTORDESTROYER_H
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -16,7 +16,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_CORE_ACTORDESTROYER_H

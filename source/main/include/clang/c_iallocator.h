@@ -1,33 +1,33 @@
 #ifndef __XLANG_IALLOCATOR_H
 #define __XLANG_IALLOCATOR_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_BasicTypes.h"
+#include "clang/private/c_BasicTypes.h"
 
 
-namespace xlang
+namespace clang
 {
 	/**
 	\brief Interface describing a general-purpose memory allocator.
 
-	This interface class defines the interface expected of allocators used by xlang.
+	This interface class defines the interface expected of allocators used by clang.
 	In particular, it characterizes the type of allocator that can be assigned as
-	xlang's internal allocator with \ref AllocatorManager::SetAllocator.
+	clang's internal allocator with \ref AllocatorManager::SetAllocator.
 
 	By implementing the IAllocator interface on a custom allocator implementation
 	(or wrapping an existing allocator in a custom wrapper that implements IAllocator),
-	users can provide a custom allocator to be used by xlang. When set via
+	users can provide a custom allocator to be used by clang. When set via
 	\ref AllocatorManager::SetAllocator, then the allocator replaces the \ref
-	DefaultAllocator that is used within xlang by default.
+	DefaultAllocator that is used within clang by default.
 
 	By replacing the default allocator, users can control, cache, or optimize the
-	allocation of memory within xlang. xlang guarantees that all of its internal
+	allocation of memory within clang. clang guarantees that all of its internal
 	heap allocations are allocated via the allocator set with
 	\ref AllocatorManager::SetAllocator, as long as the allocator is set before
-	any xlang objects are constructed.
+	any clang objects are constructed.
 
 	\see <a href="http://www.theron-library.com/index.php?t=page&p=CustomAllocator">Using a custom allocator</a>
 	*/
@@ -76,7 +76,7 @@ namespace xlang
 	};
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_IALLOCATOR_H

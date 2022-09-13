@@ -1,16 +1,16 @@
-#include "xlang/private/Core/x_ActorCore.h"
-#include "xlang/private/Directory/x_ActorDirectory.h"
-#include "xlang/private/Directory/x_ReceiverDirectory.h"
-#include "xlang/private/Messages/x_IMessage.h"
-#include "xlang/private/Messages/x_MessageSender.h"
-#include "xlang/private/Threading/x_Mutex.h"
-#include "xlang/private/Threading/x_Lock.h"
+#include "clang/private/Core/c_ActorCore.h"
+#include "clang/private/Directory/c_ActorDirectory.h"
+#include "clang/private/Directory/c_ReceiverDirectory.h"
+#include "clang/private/Messages/c_IMessage.h"
+#include "clang/private/Messages/c_MessageSender.h"
+#include "clang/private/Threading/c_Mutex.h"
+#include "clang/private/Threading/c_Lock.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_Framework.h"
+#include "clang/c_Address.h"
+#include "clang/c_Framework.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -95,5 +95,5 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 

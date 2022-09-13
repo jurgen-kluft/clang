@@ -1,15 +1,15 @@
-#include "xlang/private/Core/x_ActorCore.h"
-#include "xlang/private/Core/x_ActorDestroyer.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Directory/x_ActorDirectory.h"
-#include "xlang/private/Directory/x_Directory.h"
-#include "xlang/private/Threading/x_Lock.h"
+#include "clang/private/Core/c_ActorCore.h"
+#include "clang/private/Core/c_ActorDestroyer.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Directory/c_ActorDirectory.h"
+#include "clang/private/Directory/c_Directory.h"
+#include "clang/private/Threading/c_Lock.h"
 
-#include "xlang/x_Actor.h"
-#include "xlang/x_AllocatorManager.h"
+#include "clang/c_Actor.h"
+#include "clang/c_AllocatorManager.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -39,5 +39,5 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 

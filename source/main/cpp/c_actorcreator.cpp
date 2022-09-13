@@ -1,6 +1,6 @@
-#include "xlang/private/Core/x_ActorCreator.h"
+#include "clang/private/Core/c_ActorCreator.h"
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -9,5 +9,5 @@ namespace xlang
 		ActorCore *ActorCreator::smCoreAddress = 0;
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 

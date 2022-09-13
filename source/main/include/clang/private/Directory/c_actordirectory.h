@@ -1,16 +1,16 @@
 #ifndef __XLANG_PRIVATE_DIRECTORY_ACTORDIRECTORY_H
 #define __XLANG_PRIVATE_DIRECTORY_ACTORDIRECTORY_H
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Core/x_ActorCore.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/PagedPool/x_PagedPool.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Core/c_ActorCore.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/PagedPool/c_PagedPool.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_Address.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	class Framework;
 	class Actor;
@@ -92,7 +92,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_DIRECTORY_ACTORDIRECTORY_H

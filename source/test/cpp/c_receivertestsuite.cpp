@@ -3,16 +3,16 @@
 
 #include "xbase\x_allocator.h"
 
-#include "xlang\private\x_BasicTypes.h"
+#include "clang\private\x_BasicTypes.h"
 
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_Message.h"
+#include "clang\private\Messages\x_IMessage.h"
+#include "clang\private\Messages\x_Message.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\x_Register.h"
+#include "clang\x_Address.h"
+#include "clang\x_AllocatorManager.h"
+#include "clang\x_Framework.h"
+#include "clang\x_Receiver.h"
+#include "clang\x_Register.h"
 
 #include "xunittest\xunittest.h"
 
@@ -24,16 +24,16 @@ class MockMessage
 {
 public:
 
-	inline explicit MockMessage(const xlang::u32 value) : mValue(value)
+	inline explicit MockMessage(const clang::u32 value) : mValue(value)
 	{
 	}
 
-	inline const xlang::u32 &Value() const
+	inline const clang::u32 &Value() const
 	{
 		return mValue;
 	}
 
-	inline xlang::u32 &Value()
+	inline clang::u32 &Value()
 	{
 		return mValue;
 	}
@@ -45,7 +45,7 @@ public:
 
 	XCORE_CLASS_PLACEMENT_NEW_DELETE
 private:
-	xlang::u32 mValue;
+	clang::u32 mValue;
 };
 
 
@@ -57,29 +57,29 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
         UNITTEST_FIXTURE_TEARDOWN() {}
 
 		template <class ValueType>
-		inline static xlang::detail::IMessage *CreateMessage(const ValueType &value, const xlang::Address &from)
+		inline static clang::detail::IMessage *CreateMessage(const ValueType &value, const clang::Address &from)
 		{
-			typedef xlang::detail::Message<ValueType> MessageType;
+			typedef clang::detail::Message<ValueType> MessageType;
 
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
-			xlang::detail::IMessage *const message = MessageType::Initialize(memory, value, from);
+			clang::detail::IMessage *const message = MessageType::Initialize(memory, value, from);
 
 			return message;
 		}
 
-		inline static void DestroyMessage(xlang::detail::IMessage *const message)
+		inline static void DestroyMessage(clang::detail::IMessage *const message)
 		{
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 			allocator.Free(message->GetBlock());
 		}
 
 
-		class ResponderActor : public xlang::Actor
+		class ResponderActor : public clang::Actor
 		{
 		public:
 
@@ -91,7 +91,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 			XCORE_CLASS_PLACEMENT_NEW_DELETE
 		private:
 
-			inline void Handler(const MockMessage &value, const xlang::Address from)
+			inline void Handler(const MockMessage &value, const clang::Address from)
 			{
 				Send(value, from);
 			}
@@ -118,12 +118,12 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 				return mValue;
 			}
 
-			inline xlang::Address &From()
+			inline clang::Address &From()
 			{
 				return mFrom;
 			}
 
-			inline void Handle(const MockMessage &message, const xlang::Address from)
+			inline void Handle(const MockMessage &message, const clang::Address from)
 			{
 				mValue = message;
 				mFrom = from;
@@ -132,25 +132,25 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 		private:
 
 			MockMessage mValue;
-			xlang::Address mFrom;
+			clang::Address mFrom;
 		};
 
 		UNITTEST_TEST(TestConstruction)
 		{
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 		}
 
 		UNITTEST_TEST(TestRegistration)
 		{
 			Listener listener;
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			receiver.RegisterHandler(&listener, &Listener::Handle);
 		}
 
 		UNITTEST_TEST(TestDeregistration)
 		{
 			Listener listener;
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			receiver.RegisterHandler(&listener, &Listener::Handle);
 			receiver.DeregisterHandler(&listener, &Listener::Handle);
 		}
@@ -158,13 +158,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 		UNITTEST_TEST(TestPush)
 		{
 			Listener listener(MockMessage(1));
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			receiver.RegisterHandler(&listener, &Listener::Handle);
 
 			const MockMessage value(2);
-			xlang::Address fromAddress;
+			clang::Address fromAddress;
 
-			xlang::detail::IMessage *const message = CreateMessage(value, fromAddress);
+			clang::detail::IMessage *const message = CreateMessage(value, fromAddress);
 			CHECK_TRUE(message != 0);    // Failed to construct message");
 
 			receiver.Push(message);
@@ -176,15 +176,15 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 
 		UNITTEST_TEST(TestPushWithoutRegistration)
 		{
-			typedef xlang::detail::Message<MockMessage> MessageType;
+			typedef clang::detail::Message<MockMessage> MessageType;
 
 			Listener listener(MockMessage(1));
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			const MockMessage value(2);
-			xlang::Address fromAddress;
+			clang::Address fromAddress;
 
-			xlang::detail::IMessage *const message = CreateMessage(value, fromAddress);
+			clang::detail::IMessage *const message = CreateMessage(value, fromAddress);
 			CHECK_TRUE(message != 0);    // Failed to construct message");
 
 			receiver.Push(message);
@@ -193,18 +193,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 
 		UNITTEST_TEST(TestPushAfterDeregistration)
 		{
-			typedef xlang::detail::Message<MockMessage> MessageType;
+			typedef clang::detail::Message<MockMessage> MessageType;
 
 			Listener listener(MockMessage(1));
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			receiver.RegisterHandler(&listener, &Listener::Handle);
 			receiver.DeregisterHandler(&listener, &Listener::Handle);
 
 			const MockMessage value(2);
-			xlang::Address fromAddress;
+			clang::Address fromAddress;
 
-			xlang::detail::IMessage *const message = CreateMessage(value, fromAddress);
+			clang::detail::IMessage *const message = CreateMessage(value, fromAddress);
 			CHECK_TRUE(message != 0);    // Failed to construct message");
 
 			receiver.Push(message);
@@ -214,10 +214,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 		UNITTEST_TEST(TestWait)
 		{
 			// Create a responder actor.
-			xlang::Framework framework;
-			xlang::ActorRef responder(framework.CreateActor<ResponderActor>());
+			clang::Framework framework;
+			clang::ActorRef responder(framework.CreateActor<ResponderActor>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			// Push a test message to the responder actor, using the
 			// address of the receiver as the from address.
@@ -231,10 +231,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 		UNITTEST_TEST(TestMultipleWaits)
 		{
 			// Create a responder actor.
-			xlang::Framework framework;
-			xlang::ActorRef responder(framework.CreateActor<ResponderActor>());
+			clang::Framework framework;
+			clang::ActorRef responder(framework.CreateActor<ResponderActor>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			// Push 5 messages to the responder actor, using the
 			// address of the receiver as the from address.
@@ -256,10 +256,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 		UNITTEST_TEST(TestWaitFencing)
 		{
 			// Create a responder actor.
-			xlang::Framework framework;
-			xlang::ActorRef responder(framework.CreateActor<ResponderActor>());
+			clang::Framework framework;
+			clang::ActorRef responder(framework.CreateActor<ResponderActor>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			// Push 5 messages to the responder actor, using the
 			// address of the receiver as the from address.
@@ -285,10 +285,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 		UNITTEST_TEST(TestCount)
 		{
 			// Create a responder actor.
-			xlang::Framework framework;
-			xlang::ActorRef responder(framework.CreateActor<ResponderActor>());
+			clang::Framework framework;
+			clang::ActorRef responder(framework.CreateActor<ResponderActor>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			// Check initial count value.
 			CHECK_TRUE(receiver.Count() == 0);    // Receiver::Count failed");
@@ -299,7 +299,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 			responder.Push(value, receiver.GetAddress());
 
 			// Busy-wait until the count becomes non-zero
-			xlang::u32 count = 0;
+			clang::u32 count = 0;
 			while (count == 0)
 			{
 				count = receiver.Count();
@@ -318,10 +318,10 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 		UNITTEST_TEST(TestReset)
 		{
 			// Create a responder actor.
-			xlang::Framework framework;
-			xlang::ActorRef responder(framework.CreateActor<ResponderActor>());
+			clang::Framework framework;
+			clang::ActorRef responder(framework.CreateActor<ResponderActor>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			// Check initial count value.
 			CHECK_TRUE(receiver.Count() == 0);    // Receiver::Count failed");
@@ -338,7 +338,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_RECEIVERTESTSUITE)
 			responder.Push(value, receiver.GetAddress());
 
 			// Busy-wait until the count becomes non-zero
-			xlang::u32 count = 0;
+			clang::u32 count = 0;
 			while (count == 0)
 			{
 				count = receiver.Count();

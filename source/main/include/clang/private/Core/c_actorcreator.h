@@ -1,21 +1,21 @@
 #ifndef __XLANG_PRIVATE_CORE_ACTORCREATOR_H
 #define __XLANG_PRIVATE_CORE_ACTORCREATOR_H
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Core/x_ActorAlignment.h"
-#include "xlang/private/Core/x_ActorCore.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Directory/x_ActorDirectory.h"
-#include "xlang/private/Directory/x_Directory.h"
-#include "xlang/private/Threading/x_Lock.h"
-#include "xlang/private/Threading/x_Mutex.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Core/c_ActorAlignment.h"
+#include "clang/private/Core/c_ActorCore.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Directory/c_ActorDirectory.h"
+#include "clang/private/Directory/c_Directory.h"
+#include "clang/private/Threading/c_Lock.h"
+#include "clang/private/Threading/c_Mutex.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_Address.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	class Framework;
 
@@ -31,7 +31,7 @@ namespace xlang
 		{
 		public:
 
-			friend class xlang::Framework;
+			friend class clang::Framework;
 
 			/// Gets the remembered actor address.
 			inline static Address GetAddress();
@@ -151,7 +151,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_CORE_ACTORCREATOR_H

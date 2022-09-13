@@ -1,32 +1,32 @@
 #ifndef __XLANG_FRAMEWORK_H
 #define __XLANG_FRAMEWORK_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/x_Actor.h"
-#include "xlang/x_ActorRef.h"
-#include "xlang/x_Address.h"
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
-#include "xlang/x_Receiver.h"
+#include "clang/c_Actor.h"
+#include "clang/c_ActorRef.h"
+#include "clang/c_Address.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
+#include "clang/c_Receiver.h"
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Core/x_ActorConstructor.h"
-#include "xlang/private/Core/x_ActorCore.h"
-#include "xlang/private/Core/x_ActorCreator.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Handlers/x_BlindFallbackHandler.h"
-#include "xlang/private/Handlers/x_DefaultFallbackHandler.h"
-#include "xlang/private/Handlers/x_FallbackHandler.h"
-#include "xlang/private/Handlers/x_IFallbackHandler.h"
-#include "xlang/private/Messages/x_IMessage.h"
-#include "xlang/private/Messages/x_MessageSender.h"
-#include "xlang/private/Threading/x_Mutex.h"
-#include "xlang/private/ThreadPool/x_ThreadPool.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Core/c_ActorConstructor.h"
+#include "clang/private/Core/c_ActorCore.h"
+#include "clang/private/Core/c_ActorCreator.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Handlers/c_BlindFallbackHandler.h"
+#include "clang/private/Handlers/c_DefaultFallbackHandler.h"
+#include "clang/private/Handlers/c_FallbackHandler.h"
+#include "clang/private/Handlers/c_IFallbackHandler.h"
+#include "clang/private/Messages/c_IMessage.h"
+#include "clang/private/Messages/c_MessageSender.h"
+#include "clang/private/Threading/c_Mutex.h"
+#include "clang/private/ThreadPool/c_ThreadPool.h"
 
-namespace xlang
+namespace clang
 {
 	/**
 	\brief Manager class that hosts, manages, and executes actors.
@@ -36,12 +36,12 @@ namespace xlang
 	the \ref CreateActor method of the instantiated framework. For example:
 
 	\code
-	class MyActor : public xlang::Actor
+	class MyActor : public clang::Actor
 	{
 	};
 
-	xlang::Framework framework;
-	xlang::ActorRef myActor(framework.CreateActor<MyActor>());
+	clang::Framework framework;
+	clang::ActorRef myActor(framework.CreateActor<MyActor>());
 	\endcode
 
 	Internally, each framework contains a pool of worker threads which are used
@@ -59,7 +59,7 @@ namespace xlang
 
 	The worker threads are created and synchronized using underlying threading
 	objects. Different implementations of these threading objects are possible,
-	allowing xlang to be used in environments with different threading primitives.
+	allowing clang to be used in environments with different threading primitives.
 	Currently, implementations based on Win32 threads and Boost threads are
 	provided. Users can use the \ref XLANG_USE_BOOST_THREADS define to enable
 	or disable the use of Boost threads.
@@ -162,15 +162,15 @@ namespace xlang
 		in other frameworks.
 
 		\code
-		class MyActor : public xlang::Actor
+		class MyActor : public clang::Actor
 		{
 		};
 
-		xlang::Framework frameworkOne;
-		xlang::ActorRef actorOne(frameworkOne.CreateActor<MyActor>());
+		clang::Framework frameworkOne;
+		clang::ActorRef actorOne(frameworkOne.CreateActor<MyActor>());
 
-		xlang::Framework frameworkTwo;
-		xlang::ActorRef actorTwo(frameworkTwo.CreateActor<MyActor>());
+		clang::Framework frameworkTwo;
+		clang::ActorRef actorTwo(frameworkTwo.CreateActor<MyActor>());
 		\endcode
 		*/
 		explicit Framework(const u32 numThreads);
@@ -199,12 +199,12 @@ namespace xlang
 		\brief Creates an \ref Actor within the framework.
 
 		\code
-		class MyActor : public xlang::Actor
+		class MyActor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef myActor = framework.CreateActor<MyActor>();
+		clang::Framework framework;
+		clang::ActorRef myActor = framework.CreateActor<MyActor>();
 		\endcode
 
 		The maximum number of actors that can be created in an application (across all
@@ -233,7 +233,7 @@ namespace xlang
 		user-defined actor classes to be provided with user-defined parameters on construction.
 
 		\code
-		class MyActor : public xlang::Actor
+		class MyActor : public clang::Actor
 		{
 		public:
 
@@ -248,9 +248,9 @@ namespace xlang
 			int mMember;
 		};
 
-		xlang::Framework framework;
+		clang::Framework framework;
 		MyActor::Parameters params(5);
-		xlang::ActorRef myActor = framework.CreateActor<MyActor>(params);
+		clang::ActorRef myActor = framework.CreateActor<MyActor>(params);
 		\endcode
 
 		The maximum number of actors that can be created in an application (across all
@@ -277,13 +277,13 @@ namespace xlang
 		\brief Sends a message to the entity (typically an actor) at the given address.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::Receiver receiver;
-		xlang::ActorRef actor(framework.CreateActor<Actor>());
+		clang::Framework framework;
+		clang::Receiver receiver;
+		clang::ActorRef actor(framework.CreateActor<Actor>());
 
 		framework.Send(std::string("Hello"), receiver.GetAddress(), actor.GetAddress());
 		\endcode
@@ -495,13 +495,13 @@ namespace xlang
 		{
 		public:
 
-			inline void Handle(const xlang::Address from)
+			inline void Handle(const clang::Address from)
 			{
 				printf("Caught undelivered or unhandled message sent from address '%d'\n", from.AsInteger());
 			}
 		};
 
-		xlang::Framework framework;
+		clang::Framework framework;
 		Handler handler;
 		framework.SetFallbackHandler(&handler, &Handler::Handle);
 		\endcode
@@ -546,13 +546,13 @@ namespace xlang
 		{
 		public:
 
-			inline void Handle(const void *const data, const xlang::u32 size, const xlang::Address from)
+			inline void Handle(const void *const data, const clang::u32 size, const clang::Address from)
 			{
 				printf("Caught undelivered or unhandled message of size %d sent from address '%d'\n", size, from.AsInteger());
 			}
 		};
 
-		xlang::Framework framework;
+		clang::Framework framework;
 		Handler handler;
 		framework.SetFallbackHandler(&handler, &Handler::Handle);
 		\endcode
@@ -808,7 +808,7 @@ namespace xlang
 	}
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_FRAMEWORK_H

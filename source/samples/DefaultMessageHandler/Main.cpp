@@ -1,9 +1,9 @@
 //
 // This sample shows how to register a default handler for messages of unhandled types.
 //
-#include "xlang/x_Actor.h"
-#include "xlang/x_Framework.h"
-#include "xlang/x_Receiver.h"
+#include "clang/c_Actor.h"
+#include "clang/c_Framework.h"
+#include "clang/c_Receiver.h"
 
 
 // Placement new/delete
@@ -12,7 +12,7 @@ void	operator delete(void* mem, void*)							{ }
 
 
 // A simple actor with a default message handler.
-class SimpleActor : public xlang::Actor
+class SimpleActor : public clang::Actor
 {
 public:
 	inline SimpleActor()
@@ -45,7 +45,7 @@ public:
 private:
 
 	// Handler for messages of type MessageA.
-	inline void MessageAHandler(const MessageA &message, const xlang::Address from)
+	inline void MessageAHandler(const MessageA &message, const clang::Address from)
 	{
 		printf("MessageAHandler received message of type MessageA\n");
 		Send(message, from);
@@ -57,7 +57,7 @@ private:
 	// Note that unlike a conventional handler, the default handler
 	// only accepts a 'from' address and not a message value. That's
 	// because the type of the message isn't known to us.
-	inline void DefaultHandler(const xlang::Address from)
+	inline void DefaultHandler(const clang::Address from)
 	{
 		printf("DefaultHandler received unknown message from address '%d'\n", from.AsInteger());
 
@@ -70,14 +70,14 @@ private:
 
 int main()
 {
-	xlang::Framework framework;
-	xlang::ActorRef actor(framework.CreateActor<SimpleActor>());
+	clang::Framework framework;
+	clang::ActorRef actor(framework.CreateActor<SimpleActor>());
 
-	xlang::Receiver receiver;
+	clang::Receiver receiver;
 
 	// Push a message of type MessageA to the actor.
 	// The message type is handled by the actor and will be returned.
-	xlang::Address fromAddress(receiver.GetAddress());
+	clang::Address fromAddress(receiver.GetAddress());
 	if (!actor.Push(SimpleActor::MessageA(), fromAddress))
 	{
 		printf("Failed to push message of type MessageA\n");

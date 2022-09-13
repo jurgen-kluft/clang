@@ -1,14 +1,14 @@
 #define TESTS_TESTSUITES_ACTORTESTSUITE
 #ifdef TESTS_TESTSUITES_ACTORTESTSUITE
 
-#include "xlang\private\x_BasicTypes.h"
-#include "xlang\private\Threading\x_Mutex.h"
+#include "clang\private\x_BasicTypes.h"
+#include "clang\private\Threading\x_Mutex.h"
 
-#include "xlang\x_Register.h"
-#include "xlang\x_Framework.h"
-#include "xlang\x_Actor.h"
-#include "xlang\x_Receiver.h"
-#include "xlang\private\Handlers\x_messagehandler.h"
+#include "clang\x_Register.h"
+#include "clang\x_Framework.h"
+#include "clang\x_Actor.h"
+#include "clang\x_Receiver.h"
+#include "clang\private\Handlers\x_messagehandler.h"
 
 #include "xunittest\xunittest.h"
 
@@ -16,10 +16,10 @@
 inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
-#define XHANDLER(ActorType, MessageType) xlang::detail::MessageHandler<ActorType, MessageType>
-#define XHANDLER_ARRAY(size, name) xcore::xbyte name[size * xlang::SizeOfMessageHandler];
+#define XHANDLER(ActorType, MessageType) clang::detail::MessageHandler<ActorType, MessageType>
+#define XHANDLER_ARRAY(size, name) xcore::xbyte name[size * clang::SizeOfMessageHandler];
 
-class ActorHandlerConstructor : public xlang::Actor
+class ActorHandlerConstructor : public clang::Actor
 {
 public:
 
@@ -36,7 +36,7 @@ public:
 
 private:
 
-	inline void Handler(const int &message, const xlang::Address from)
+	inline void Handler(const int &message, const clang::Address from)
 	{
 		Send(message, from);
 	}
@@ -44,7 +44,7 @@ private:
 	XHANDLER_ARRAY(10, handlerArray);
 };
 
-class OneHandlerActor : public xlang::Actor
+class OneHandlerActor : public clang::Actor
 {
 public:
 
@@ -59,12 +59,12 @@ public:
 
 private:
 
-	inline void Handler(const Message &/*message*/, const xlang::Address /*from*/)
+	inline void Handler(const Message &/*message*/, const clang::Address /*from*/)
 	{
 	}
 };
 
-class TwoHandlerActor : public xlang::Actor
+class TwoHandlerActor : public clang::Actor
 {
 public:
 
@@ -84,16 +84,16 @@ public:
 
 private:
 
-	inline void HandlerOne(const MessageOne &/*message*/, const xlang::Address /*from*/)
+	inline void HandlerOne(const MessageOne &/*message*/, const clang::Address /*from*/)
 	{
 	}
 
-	inline void HandlerTwo(const MessageTwo &/*message*/, const xlang::Address /*from*/)
+	inline void HandlerTwo(const MessageTwo &/*message*/, const clang::Address /*from*/)
 	{
 	}
 };
 
-class ResponderActor : public xlang::Actor
+class ResponderActor : public clang::Actor
 {
 public:
 
@@ -104,7 +104,7 @@ public:
 
 private:
 
-	inline void Handler(const int &value, const xlang::Address from)
+	inline void Handler(const int &value, const clang::Address from)
 	{
 		Send(value, from);
 	}
@@ -145,16 +145,16 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 				return result;
 			}
 
-			inline xlang::Address From()
+			inline clang::Address From()
 			{
 				mMutex.Lock();
-				xlang::Address result(mFrom);
+				clang::Address result(mFrom);
 				mMutex.Unlock();
 
 				return result;
 			}
 
-			inline void Handle(const int &value, const xlang::Address from)
+			inline void Handle(const int &value, const clang::Address from)
 			{
 				mMutex.Lock();
 				mValue = value;
@@ -164,29 +164,29 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 
 		private:
 
-			xlang::detail::Mutex mMutex;
+			clang::detail::Mutex mMutex;
 			int mValue;
-			xlang::Address mFrom;
+			clang::Address mFrom;
 		};
 
 		UNITTEST_TEST(TestCreateActorWithOneHandler)
 		{
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<OneHandlerActor>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<OneHandlerActor>());
 		}
 
 		UNITTEST_TEST(TestCreateActorWithTwoHandlers)
 		{
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<TwoHandlerActor>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<TwoHandlerActor>());
 		}
 
 		UNITTEST_TEST(TestExecuteOneHandler)
 		{
-			xlang::Framework framework;
-			xlang::ActorRef actor(framework.CreateActor<OneHandlerActor>());
+			clang::Framework framework;
+			clang::ActorRef actor(framework.CreateActor<OneHandlerActor>());
 
-			xlang::Address here;
+			clang::Address here;
 			OneHandlerActor::Message message;
 			actor.Push(message, here);
 		}
@@ -194,14 +194,14 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 		UNITTEST_TEST(TestSendMessage)
 		{
 			// Create a responder actor.
-			xlang::Framework framework;
-			xlang::ActorRef responder(framework.CreateActor<ResponderActor>());
+			clang::Framework framework;
+			clang::ActorRef responder(framework.CreateActor<ResponderActor>());
 
 			// Create a listener to collect messages.
 			Listener listener(0);
 
 			// Create a receiver and register a handler method on the listener.
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			receiver.RegisterHandler(&listener, &Listener::Handle);
 
 			// Push a test message to the responder actor, using the
@@ -226,22 +226,22 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 		UNITTEST_TEST(TestSwamping)
 		{
 			// Create a responder actor.
-			xlang::Framework framework;
-			xlang::ActorRef responder(framework.CreateActor<ResponderActor>());
+			clang::Framework framework;
+			clang::ActorRef responder(framework.CreateActor<ResponderActor>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 
 			// Push 5 messages to the responder actor, using the
 			// address of the receiver as the from address.
 			// After each send, wait for a return message.
 
-			const xlang::u32 NUM_MESSAGES = 1000;
-			for (xlang::u32 count = 0; count < NUM_MESSAGES; ++count)
+			const clang::u32 NUM_MESSAGES = 1000;
+			for (clang::u32 count = 0; count < NUM_MESSAGES; ++count)
 			{
 				responder.Push(1, receiver.GetAddress());
 			}
 
-			for (xlang::u32 count = 0; count < NUM_MESSAGES; ++count)
+			for (clang::u32 count = 0; count < NUM_MESSAGES; ++count)
 			{
 				receiver.Wait();
 			}
@@ -250,11 +250,11 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_ACTORTESTSUITE)
 		// Tests that it's possible to register handlers in an actor constructor.
 		UNITTEST_TEST(TestRegisterInConstructor)
 		{
-			xlang::Framework framework;
+			clang::Framework framework;
 
-			xlang::ActorRef actor(framework.CreateActor<ActorHandlerConstructor>());
+			clang::ActorRef actor(framework.CreateActor<ActorHandlerConstructor>());
 
-			xlang::Receiver receiver;
+			clang::Receiver receiver;
 			actor.Push(5, receiver.GetAddress());
 
 			receiver.Wait();

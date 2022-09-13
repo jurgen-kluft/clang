@@ -30,9 +30,9 @@
 #include <vector>
 #include <assert.h>
 
-#include "xlang/x_Framework.h"
-#include "xlang/x_Receiver.h"
-#include "xlang/x_Actor.h"
+#include "clang/c_Framework.h"
+#include "clang/c_Receiver.h"
+#include "clang/c_Actor.h"
 
 
 
@@ -109,7 +109,7 @@ typedef EnvelopeMessage<IntegerVector> IntegerVectorEnvelope;
 
 
 // A simple actor that catches messages and prints out their contents.
-class Catcher : public xlang::Actor
+class Catcher : public clang::Actor
 {
 public:
 
@@ -120,7 +120,7 @@ public:
 
 private:
 
-    inline void Handler(const IntegerVectorEnvelope &envelope, const xlang::Address from)
+    inline void Handler(const IntegerVectorEnvelope &envelope, const clang::Address from)
     {
         assert(envelope.Valid());
         const IntegerVector &contents(envelope.Object());
@@ -145,8 +145,8 @@ private:
 
 int main()
 {
-    xlang::Framework framework;
-    xlang::ActorRef actor(framework.CreateActor<Catcher>());
+    clang::Framework framework;
+    clang::ActorRef actor(framework.CreateActor<Catcher>());
 
     // Create an envelope message and fill its owned vector with some values.
     IntegerVectorEnvelope envelope;
@@ -156,7 +156,7 @@ int main()
 
     // Send the message to the catcher, passing the address of a local receiver
     // as the 'from' address.
-    xlang::Receiver receiver;
+    clang::Receiver receiver;
     framework.Send(envelope, receiver.GetAddress(), actor.GetAddress());
 
     // Note that the envelope owned by the sender no longer contains the 'letter';

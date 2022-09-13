@@ -1,10 +1,10 @@
 #define TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE
 #ifdef TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE
 
-#include "xlang\private\x_BasicTypes.h"
+#include "clang\private\x_BasicTypes.h"
 
-#include "xlang\x_Align.h"
-#include "xlang\x_DefaultAllocator.h"
+#include "clang\x_Align.h"
+#include "clang\x_DefaultAllocator.h"
 
 #include "xunittest\xunittest.h"
 
@@ -21,39 +21,39 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		struct Item
 		{
-			inline Item(const xlang::u32 a, const xlang::u32 b, const xlang::u32 c) 
+			inline Item(const clang::u32 a, const clang::u32 b, const clang::u32 c) 
 				: mA(a)
 				, mB(b)
 				, mC(c)
 			{
 			}
-			xlang::u32 mA;
-			xlang::u32 mB;
-			xlang::u32 mC;
+			clang::u32 mA;
+			clang::u32 mB;
+			clang::u32 mC;
 		};
 
 		struct ItemTwo
 		{
-			inline ItemTwo(const xlang::u32 a, const xlang::u32 b) 
+			inline ItemTwo(const clang::u32 a, const clang::u32 b) 
 				: mA(a)
 				, mB(b)
 			{
 			}
 
-			xlang::u32 mA;
-			xlang::u32 mB;
+			clang::u32 mA;
+			clang::u32 mB;
 		};
 
 
 
 		UNITTEST_TEST(TestConstruct)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 		}
 
 		UNITTEST_TEST(TestAllocate)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.Allocate(sizeof(Item)));
 
@@ -65,7 +65,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestUseAllocatedBlock)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.Allocate(sizeof(Item)));
 
@@ -83,7 +83,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateMultiple)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block0(allocator.Allocate(sizeof(Item)));
 			void *const block1(allocator.Allocate(sizeof(Item)));
@@ -94,8 +94,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 			CHECK_TRUE(XLANG_ALIGNED(block0, 4));    // Allocated block isn't aligned");
 			CHECK_TRUE(XLANG_ALIGNED(block1, 4));    // Allocated block isn't aligned");
 
-			xlang::u8 *const bytes0(reinterpret_cast<xlang::u8 *>(block0));
-			xlang::u8 *const bytes1(reinterpret_cast<xlang::u8 *>(block1));
+			clang::u8 *const bytes0(reinterpret_cast<clang::u8 *>(block0));
+			clang::u8 *const bytes1(reinterpret_cast<clang::u8 *>(block1));
 
 			CHECK_TRUE(bytes0 + sizeof(Item) <= bytes1 || bytes1 + sizeof(Item) <= bytes0);    // Allocate returned overlapping blocks");
 
@@ -105,7 +105,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateMultipleDifferentSizes)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block0(allocator.Allocate(sizeof(Item)));
 			void *const block1(allocator.Allocate(sizeof(ItemTwo)));
@@ -116,8 +116,8 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 			CHECK_TRUE(XLANG_ALIGNED(block0, 4));    // Allocated block isn't aligned");
 			CHECK_TRUE(XLANG_ALIGNED(block1, 4));    // Allocated block isn't aligned");
 
-			xlang::u8 *const bytes0(reinterpret_cast<xlang::u8 *>(block0));
-			xlang::u8 *const bytes1(reinterpret_cast<xlang::u8 *>(block1));
+			clang::u8 *const bytes0(reinterpret_cast<clang::u8 *>(block0));
+			clang::u8 *const bytes1(reinterpret_cast<clang::u8 *>(block1));
 
 			CHECK_TRUE(bytes0 + sizeof(Item) <= bytes1 || bytes1 + sizeof(ItemTwo) <= bytes0);    // Allocate returned overlapping blocks");
 
@@ -127,7 +127,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestFreeOutOfOrder)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block0(allocator.Allocate(sizeof(Item)));
 			void *const block1(allocator.Allocate(sizeof(Item)));
@@ -138,7 +138,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestUseMultipleAllocatedBlocks)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block0(allocator.Allocate(sizeof(Item)));
 			void *const block1(allocator.Allocate(sizeof(Item)));
@@ -166,7 +166,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateAligned4)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.AllocateAligned(sizeof(Item), 4));
 			CHECK_TRUE(XLANG_ALIGNED(block, 4));    // Allocated block isn't aligned");
@@ -176,7 +176,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateAligned8)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.AllocateAligned(sizeof(Item), 8));
 			CHECK_TRUE(XLANG_ALIGNED(block, 8));    // Allocated block isn't aligned");
@@ -186,7 +186,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateAligned16)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.AllocateAligned(sizeof(Item), 16));
 			CHECK_TRUE(XLANG_ALIGNED(block, 16));    // Allocated block isn't aligned");
@@ -196,7 +196,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateAligned32)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.AllocateAligned(sizeof(Item), 32));
 			CHECK_TRUE(XLANG_ALIGNED(block, 32));    // Allocated block isn't aligned");
@@ -206,7 +206,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateAligned64)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.AllocateAligned(sizeof(Item), 64));
 			CHECK_TRUE(XLANG_ALIGNED(block, 64));    // Allocated block isn't aligned");
@@ -216,7 +216,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateAligned128)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block(allocator.AllocateAligned(sizeof(Item), 128));
 			CHECK_TRUE(XLANG_ALIGNED(block, 128));    // Allocated block isn't aligned");
@@ -226,7 +226,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestAllocateMultipleAligned)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block0(allocator.AllocateAligned(sizeof(Item), 4));
 			void *const block1(allocator.AllocateAligned(sizeof(Item), 8));
@@ -252,7 +252,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestGetBytesAllocated)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block0(allocator.AllocateAligned(sizeof(Item), 4));
 			void *const block1(allocator.AllocateAligned(sizeof(Item), 128));
@@ -275,7 +275,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)
 
 		UNITTEST_TEST(TestGetPeakBytesAllocated)
 		{
-			xlang::DefaultAllocator allocator;
+			clang::DefaultAllocator allocator;
 
 			void *const block0(allocator.AllocateAligned(sizeof(Item), 4));
 			void *const block1(allocator.AllocateAligned(sizeof(Item), 128));

@@ -1,38 +1,38 @@
 #ifndef __XLANG_PRIVATE_ALLOCATORS_DEFAULTALLOCATOR_H
 #define __XLANG_PRIVATE_ALLOCATORS_DEFAULTALLOCATOR_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
 /**
 \file DefaultAllocator.h
-The allocator used within xlang by default.
+The allocator used within clang by default.
 */
 
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Threading/x_Lock.h"
-#include "xlang/private/Threading/x_Mutex.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Threading/c_Lock.h"
+#include "clang/private/Threading/c_Mutex.h"
 
-#include "xlang/x_Align.h"
-#include "xlang/x_Defines.h"
-#include "xlang/x_IAllocator.h"
+#include "clang/c_Align.h"
+#include "clang/c_Defines.h"
+#include "clang/c_IAllocator.h"
 
 
-namespace xlang
+namespace clang
 {
 
 
 	/**
 	\brief A simple general purpose memory allocator used by default.
 
-	This is the allocator implementation used by default within xlang.
+	This is the allocator implementation used by default within clang.
 	It is a simple wrapper around global new and delete, adding alignment and
 	some simple, optional, allocation checking.
 
-	The DefaultAllocator is used by xlang for its internal allocations, unless it
+	The DefaultAllocator is used by clang for its internal allocations, unless it
 	is replaced by a custom allocator via \ref AllocatorManager::SetAllocator.
 	The DefaultAllocator may also be used for allocations within user application code,
 	if desired, in which case it can be accessed via \ref AllocatorManager::GetAllocator.
@@ -90,7 +90,7 @@ namespace xlang
 		/**
 		\brief Allocates a block of contiguous memory.
 
-		\ref Allocate is called by xlang for its internal allocations, unless the
+		\ref Allocate is called by clang for its internal allocations, unless the
 		DefaultAllocator is replaced by a custom allocator via \ref AllocatorManager::SetAllocator.
 		The DefaultAllocator may also be used for allocations within user application code,
 		if desired, in which case it can be accessed via \ref AllocatorManager::GetAllocator.
@@ -149,7 +149,7 @@ namespace xlang
 		/**
 		\brief Frees a previously allocated block of contiguous memory.
 
-		\ref Free is called by xlang for its internal allocations, unless the
+		\ref Free is called by clang for its internal allocations, unless the
 		DefaultAllocator is replaced by a custom allocator via \ref AllocatorManager::SetAllocator.
 		The DefaultAllocator may also be used for allocations within user application code,
 		if desired, in which case it can be accessed via \ref AllocatorManager::GetAllocator.
@@ -167,8 +167,8 @@ namespace xlang
 		\ref Allocate or \ref AllocateAligned, but not freed in calls to \ref Free.
 
 		\code
-		xlang::IAllocator *const allocator = xlang::AllocatorManager::Instance().GetAllocator();
-		xlang::DefaultAllocator *const defaultAllocator = dynamic_cast<xlang::DefaultAllocator *>(allocator);
+		clang::IAllocator *const allocator = clang::AllocatorManager::Instance().GetAllocator();
+		clang::DefaultAllocator *const defaultAllocator = dynamic_cast<clang::DefaultAllocator *>(allocator);
 
 		if (defaultAllocator)
 		{
@@ -195,8 +195,8 @@ namespace xlang
 		\ref Allocate or \ref AllocateAligned, but not freed in calls to \ref Free.
 
 		\code
-		xlang::IAllocator *const allocator = xlang::AllocatorManager::Instance().GetAllocator();
-		xlang::DefaultAllocator *const defaultAllocator = dynamic_cast<xlang::DefaultAllocator *>(allocator);
+		clang::IAllocator *const allocator = clang::AllocatorManager::Instance().GetAllocator();
+		clang::DefaultAllocator *const defaultAllocator = dynamic_cast<clang::DefaultAllocator *>(allocator);
 
 		if (defaultAllocator)
 		{
@@ -251,7 +251,7 @@ namespace xlang
 
 #if XLANG_ENABLE_DEFAULTALLOCATOR_CHECKS
 		// Memory leak detection.
-		// Failures likely indicate xlang bugs, unless the allocator is used by user code.
+		// Failures likely indicate clang bugs, unless the allocator is used by user code.
 		if (mBytesAllocated > 0)
 		{
 			XLANG_FAIL_MSG("DefaultAllocator detected memory leaks");
@@ -415,7 +415,7 @@ namespace xlang
 	}
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_ALLOCATORS_DEFAULTALLOCATOR_H

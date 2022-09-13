@@ -1,20 +1,20 @@
 #ifndef __XLANG_ACTORREF_H
 #define __XLANG_ACTORREF_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Messages/x_MessageSender.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Messages/c_MessageSender.h"
 
-#include "xlang/x_Actor.h"
-#include "xlang/x_Address.h"
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
-#include "xlang/x_IAllocator.h"
+#include "clang/c_Actor.h"
+#include "clang/c_Address.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
+#include "clang/c_IAllocator.h"
 
-namespace xlang
+namespace clang
 {
 	/**
 	\brief Used to reference an actor in user code.
@@ -63,12 +63,12 @@ namespace xlang
 		not to be equal to any non-null actor reference.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef actor(framework.CreateActor<Actor>());
+		clang::Framework framework;
+		clang::ActorRef actor(framework.CreateActor<Actor>());
 
 		assert(actor != ActorRef::Null(), "Failed to create actor!");
 		\endcode
@@ -84,7 +84,7 @@ namespace xlang
 		Constructs a null actor reference, referencing no actor.
 
 		\code
-		xlang::ActorRef actor;
+		clang::ActorRef actor;
 		assert(actor == ActorRef::Null(), "Expected default ActorRef to be null");
 		\endcode
 		*/
@@ -97,13 +97,13 @@ namespace xlang
 		the same actor as the first.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
-		xlang::Framework framework;
-		xlang::ActorRef actorOne(framework.CreateActor<Actor>());
-		xlang::ActorRef actorTwo(actorOne);
+		clang::Framework framework;
+		clang::ActorRef actorOne(framework.CreateActor<Actor>());
+		clang::ActorRef actorTwo(actorOne);
 
 		assert(actorOne == actorTwo, "Expected actor references to be equal");
 		\endcode
@@ -158,17 +158,17 @@ namespace xlang
 		of the Framework object that owned it.
 
 		\code
-		class Actor : public xlang::Actor
+		class Actor : public clang::Actor
 		{
 		};
 
 		int main()
 		{
 			// Framework constructed.
-			xlang::Framework framework;
+			clang::Framework framework;
 
 			// Actor created and referenced by ActorRef.
-			xlang::ActorRef actor(framework.CreateActor<Actor>());
+			clang::ActorRef actor(framework.CreateActor<Actor>());
 
 			// Actor used
 			// ...
@@ -353,7 +353,7 @@ namespace xlang
 	}
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_ACTORREF_H

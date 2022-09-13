@@ -1,7 +1,7 @@
 #define TESTS_TESTSUITES_LISTTESTSUITE
 #ifdef TESTS_TESTSUITES_LISTTESTSUITE
 
-#include "xlang\private\Containers\x_List.h"
+#include "clang\private\Containers\x_List.h"
 
 #include "xunittest\xunittest.h"
 
@@ -35,13 +35,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestInitialize)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 		}
 
 		/// Unit test method.
 		UNITTEST_TEST(TestInsert)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(5);
 			list.Insert(item);
@@ -50,7 +50,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestRemoveOnlyItem)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(5);
 			list.Insert(item);
@@ -60,7 +60,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestRemoveFrontItem)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem itemOne(5);
 			MockItem itemTwo(6);
@@ -72,7 +72,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestRemoveBackItem)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem itemOne(5);
 			MockItem itemTwo(6);
@@ -84,7 +84,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestRemoveMiddleItem)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem itemOne(5);
 			MockItem itemTwo(6);
@@ -98,7 +98,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestContains)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(5);
 			list.Insert(item);
@@ -108,7 +108,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestContainsNegative)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(5);
 			list.Insert(item);
@@ -119,7 +119,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestDuplicateItems)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(6);
 			list.Insert(item);
@@ -138,7 +138,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestContainsAfterRemove)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem itemOne(5);
 			MockItem itemTwo(6);
@@ -152,7 +152,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestTemporarilyEmpty)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem itemOne(5);
 			MockItem itemTwo(6);
@@ -169,7 +169,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestSizeInitially)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			CHECK_TRUE(list.Size() == 0);   // Size not initially zero");
 		}
@@ -177,7 +177,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestSizeAfterInsert)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(6);
 			list.Insert(item);
@@ -188,7 +188,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestSizeAfterInsertRemove)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(6);
 			list.Insert(item);
@@ -200,7 +200,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestSizeAfterInsertContains)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(6);
 			list.Insert(item);
@@ -212,7 +212,7 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_LISTTESTSUITE)
 		/// Unit test method.
 		UNITTEST_TEST(TestSizeAfterInsertInsert)
 		{
-			xlang::detail::List<MockItem> list;
+			clang::detail::List<MockItem> list;
 
 			MockItem item(6);
 			list.Insert(item);

@@ -1,10 +1,10 @@
 #ifndef __XLANG_PRIVATE_THREADING_WIN32_THREAD_H
 #define __XLANG_PRIVATE_THREADING_WIN32_THREAD_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
-#include "xbase/x_allocator.h"
+#include "cbase/c_allocator.h"
 
 #ifdef _MSC_VER
 #pragma warning(push,0)
@@ -17,10 +17,10 @@
 #pragma warning(pop)
 #endif //_MSC_VER
 
-#include "xlang/x_Defines.h"
-#include "xlang/private/Debug/x_Assert.h"
+#include "clang/c_Defines.h"
+#include "clang/private/Debug/c_Assert.h"
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -70,7 +70,7 @@ namespace xlang
 			};
 
 			/// Thread entry point adapter function.
-			/// Wraps a call to a standard xlang-style thread entry point in a Win32-style
+			/// Wraps a call to a standard clang-style thread entry point in a Win32-style
 			/// static thread entry point function signature.
 			/// \param pData A pointer to a ThreadData structure containing an entry point
 			/// function and a context pointer.
@@ -149,7 +149,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_THREADING_WIN32_THREAD_H

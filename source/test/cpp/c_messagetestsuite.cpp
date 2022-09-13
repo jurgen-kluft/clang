@@ -1,12 +1,12 @@
 #define TESTS_TESTSUITES_MESSAGETESTSUITE
 #ifdef TESTS_TESTSUITES_MESSAGETESTSUITE
 
-#include "xlang\private\Messages\x_IMessage.h"
-#include "xlang\private\Messages\x_Message.h"
+#include "clang\private\Messages\x_IMessage.h"
+#include "clang\private\Messages\x_Message.h"
 
-#include "xlang\x_Address.h"
-#include "xlang\x_AllocatorManager.h"
-#include "xlang\x_Register.h"
+#include "clang\x_Address.h"
+#include "clang\x_AllocatorManager.h"
+#include "clang\x_Register.h"
 
 #include "xunittest\xunittest.h"
 
@@ -44,28 +44,28 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGETESTSUITE)
 		
 		UNITTEST_TEST(TestGetSize)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
-			const xlang::u32 messageSize(MessageType::GetSize());
+			typedef clang::detail::Message<MessageValue> MessageType;
+			const clang::u32 messageSize(MessageType::GetSize());
 			CHECK_TRUE(messageSize >= 4);    // Message::GetSize() returned invalid size");
 		}
 
 		UNITTEST_TEST(TestGetAlignment)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			typedef clang::detail::Message<MessageValue> MessageType;
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 			CHECK_TRUE(messageAlignment >= 4);    // Message::TestGetAlignment() returned alignment less than 4");
 			CHECK_TRUE((messageAlignment % 4) == 0);    // Message::TestGetAlignment() returned non-power-of-two");
 		}
 
 		UNITTEST_TEST(TestConstruction)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
+			typedef clang::detail::Message<MessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
@@ -79,13 +79,13 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGETESTSUITE)
 
 		UNITTEST_TEST(TestValue)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
+			typedef clang::detail::Message<MessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
@@ -103,38 +103,38 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGETESTSUITE)
 
 		UNITTEST_TEST(TestIMessage)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
+			typedef clang::detail::Message<MessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
 			MessageValue value;
 			MessageType *const message = MessageType::Initialize(memory, value, here);
 
-			//CHECK_TRUE(dynamic_cast<xlang::detail::IMessage *>(message) != 0);    // Failed to cast message to IMessage");
+			//CHECK_TRUE(dynamic_cast<clang::detail::IMessage *>(message) != 0);    // Failed to cast message to IMessage");
 
 			allocator.Free(memory);
 		}
 
 		UNITTEST_TEST(TestFrom)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
+			typedef clang::detail::Message<MessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
 			MessageValue value;
-			xlang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
+			clang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
 
 			CHECK_TRUE(message->From() == here);    // Message from address incorrect");
 
@@ -143,18 +143,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGETESTSUITE)
 
 		UNITTEST_TEST(TestGetBlock)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
+			typedef clang::detail::Message<MessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
 			MessageValue value;
-			xlang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
+			clang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
 
 			CHECK_TRUE(message->GetBlock() == memory);    // Message block address incorrect");
 
@@ -163,18 +163,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGETESTSUITE)
 
 		UNITTEST_TEST(TestGetBlockSize)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
+			typedef clang::detail::Message<MessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
 			MessageValue value;
-			xlang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
+			clang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
 
 			CHECK_TRUE(message->GetBlockSize() == messageSize);    // Message block size incorrect");
 
@@ -183,18 +183,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGETESTSUITE)
 
 		UNITTEST_TEST(TestTypeNameUnregistered)
 		{
-			typedef xlang::detail::Message<MessageValue> MessageType;
+			typedef clang::detail::Message<MessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
 			MessageValue value;
-			xlang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
+			clang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
 
 			CHECK_TRUE(message->TypeId() >= 0);    // Unregistered message type has non-zero type name");
 
@@ -203,18 +203,18 @@ UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_MESSAGETESTSUITE)
 
 		UNITTEST_TEST(TestTypeNameRegistered)
 		{
-			typedef xlang::detail::Message<NamedMessageValue> MessageType;
+			typedef clang::detail::Message<NamedMessageValue> MessageType;
 
-			xlang::Address here;
-			xlang::IAllocator &allocator(*xlang::AllocatorManager::Instance().GetAllocator());
+			clang::Address here;
+			clang::IAllocator &allocator(*clang::AllocatorManager::Instance().GetAllocator());
 
-			const xlang::u32 messageSize(MessageType::GetSize());
-			const xlang::u32 messageAlignment(MessageType::GetAlignment());
+			const clang::u32 messageSize(MessageType::GetSize());
+			const clang::u32 messageAlignment(MessageType::GetAlignment());
 
 			void *const memory = allocator.AllocateAligned(messageSize, messageAlignment);
 
 			NamedMessageValue value;
-			xlang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
+			clang::detail::IMessage *const message = MessageType::Initialize(memory, value, here);
 
 			CHECK_TRUE(message->TypeId() >= 0);    // Registered message type has zero type name");
 

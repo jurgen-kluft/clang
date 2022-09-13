@@ -1,16 +1,16 @@
 #ifndef __XLANG_PRIVATE_DIRECTORY_RECEIVERDIRECTORY_H
 #define __XLANG_PRIVATE_DIRECTORY_RECEIVERDIRECTORY_H
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/PagedPool/x_PagedPool.h"
-#include "xlang/private/Threading/x_Mutex.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/PagedPool/c_PagedPool.h"
+#include "clang/private/Threading/c_Mutex.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_Address.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	class Receiver;
 
@@ -72,7 +72,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_DIRECTORY_RECEIVERDIRECTORY_H

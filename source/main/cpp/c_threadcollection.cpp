@@ -1,12 +1,12 @@
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Threading/x_Lock.h"
-#include "xlang/private/ThreadPool/x_ThreadCollection.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Threading/c_Lock.h"
+#include "clang/private/ThreadPool/c_ThreadCollection.h"
 
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -173,5 +173,5 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 

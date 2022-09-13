@@ -1,29 +1,29 @@
 #ifndef __XLANG_PRIVATE_THREADPOOL_THREADPOOL_H
 #define __XLANG_PRIVATE_THREADPOOL_THREADPOOL_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Containers/x_IntrusiveQueue.h"
-#include "xlang/private/Core/x_ActorCore.h"
-#include "xlang/private/Core/x_ActorDestroyer.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Directory/x_Directory.h"
-#include "xlang/private/Messages/x_IMessage.h"
-#include "xlang/private/Messages/x_MessageCreator.h"
-#include "xlang/private/Threading/x_Lock.h"
-#include "xlang/private/Threading/x_Thread.h"
-#include "xlang/private/Threading/x_Monitor.h"
-#include "xlang/private/ThreadPool/x_ThreadCollection.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Containers/c_IntrusiveQueue.h"
+#include "clang/private/Core/c_ActorCore.h"
+#include "clang/private/Core/c_ActorDestroyer.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Directory/c_Directory.h"
+#include "clang/private/Messages/c_IMessage.h"
+#include "clang/private/Messages/c_MessageCreator.h"
+#include "clang/private/Threading/c_Lock.h"
+#include "clang/private/Threading/c_Thread.h"
+#include "clang/private/Threading/c_Monitor.h"
+#include "clang/private/ThreadPool/c_ThreadCollection.h"
 
-#include "xlang/x_Align.h"
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_Align.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -366,7 +366,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_THREADPOOL_THREADPOOL_H

@@ -8,11 +8,11 @@
 
 #include <stdio.h>
 
-#include "xlang/x_actor.h"
-#include "xlang/x_actorref.h"
-#include "xlang/x_address.h"
-#include "xlang/x_framework.h"
-#include "xlang/x_receiver.h"
+#include "clang/c_actor.h"
+#include "clang/c_actorref.h"
+#include "clang/c_address.h"
+#include "clang/c_framework.h"
+#include "clang/c_receiver.h"
 
 
 class SimpleActor : public Theron::Actor

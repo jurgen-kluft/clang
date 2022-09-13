@@ -1,16 +1,16 @@
 #ifndef __XLANG_ALIGN_H
 #define __XLANG_ALIGN_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Core/x_ActorAlignment.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Messages/x_MessageAlignment.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Core/c_ActorAlignment.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Messages/c_MessageAlignment.h"
 
-#include "xlang/x_Defines.h"
+#include "clang/c_Defines.h"
 
 
 /**
@@ -21,11 +21,11 @@ Alignment markup for actor and message types.
 
 #ifndef XLANG_ALIGN_ACTOR
 /**
-\brief Informs xlang of the alignment requirements of an actor type.
-Use of this macro is optional. Using it, users can notify xlang of any
+\brief Informs clang of the alignment requirements of an actor type.
+Use of this macro is optional. Using it, users can notify clang of any
 specialized memory alignment requirements of their custom actor classes.
 If the memory alignment of an actor type is specified using this macro,
-xlang will request correctly aligned memory when allocating instances
+clang will request correctly aligned memory when allocating instances
 of that actor type in \ref Framework::CreateActor. If not, then a default
 alignment of four bytes will be used.
 
@@ -33,7 +33,7 @@ alignment of four bytes will be used.
 namespace MyNamespace
 {
 
-class MyActor : public xlang::Actor
+class MyActor : public clang::Actor
 {
 };
 
@@ -50,13 +50,13 @@ immediately after their declaration, as we'd often prefer.
 
 \note Specifying the alignment requirements of an actor type is not enough,
 by itself, to guarantee correct alignment of actor allocations. Users must also
-ensure that any custom allocator provided via \ref xlang::AllocatorManager::SetAllocator
+ensure that any custom allocator provided via \ref clang::AllocatorManager::SetAllocator
 supports aligned allocations. The DefaultAllocator, used by default, supports alignment.
 
 \see <a href="http://www.theron-library.com/index.php?t=page&p=AligningActors">Aligning actors</a>
 */
 #define XLANG_ALIGN_ACTOR(ActorType, alignment)                            \
-	namespace xlang                                                            \
+	namespace clang                                                            \
 {                                                                           \
 	namespace detail                                                            \
 {                                                                           \
@@ -72,11 +72,11 @@ struct ActorAlignment<ActorType>                                            \
 
 #ifndef XLANG_ALIGN_MESSAGE
 /**
-\brief Informs xlang of the alignment requirements of a message type.
-Use of this macro is optional. Using it, users can notify xlang of any
+\brief Informs clang of the alignment requirements of a message type.
+Use of this macro is optional. Using it, users can notify clang of any
 specialized memory alignment requirements of their custom message classes.
 If the memory alignment of a message type is specified using this macro,
-xlang will request correctly aligned memory when allocating instances
+clang will request correctly aligned memory when allocating instances
 of that message type internally (ie. when sending messages). If not, then
 a default alignment of four bytes will be used.
 
@@ -101,13 +101,13 @@ immediately after their declaration, as we'd often prefer.
 
 \note Specifying the alignment requirements of an actor type is not enough,
 by itself, to guarantee correct alignment of actor allocations. Users must also
-ensure that any custom allocator provided via \ref xlang::AllocatorManager::SetAllocator
+ensure that any custom allocator provided via \ref clang::AllocatorManager::SetAllocator
 supports aligned allocations. The DefaultAllocator, used by default, supports alignment.
 
 \see <a href="http://www.theron-library.com/index.php?t=page&p=AligningMessages">Aligning messages</a>
 */
 #define XLANG_ALIGN_MESSAGE(MessageType, alignment)                        \
-	namespace xlang                                                       \
+	namespace clang                                                       \
 	{                                                                      \
 		namespace detail                                                   \
 		{                                                                  \
@@ -157,7 +157,7 @@ differ on whether the alignment decoration comes before or after the
 type definition.
 
 The XLANG_PREALIGN and XLANG_POSTALIGN macros don't actually affect
-xlang at all, because xlang never allocates user message types on the
+clang at all, because clang never allocates user message types on the
 stack. They are provided only for user convenience. Users with
 types that require alignment can use these macros to cause those types
 to be aligned correctly when used on the stack in their own code. Many
@@ -166,12 +166,12 @@ mechanism, and if so they can ignore XLANG_PREALIGN and XLANG_POSTALIGN.
 
 In any event users with aligned actor and message types should remember
 to also use the \ref XLANG_ALIGN_ACTOR and \ref XLANG_ALIGN_MESSAGE
-macros, which do affect xlang and are important for ensuring that
-actor and message objects allocated within xlang are correctly aligned.
+macros, which do affect clang and are important for ensuring that
+actor and message objects allocated within clang are correctly aligned.
 
 This macro can be overridden, for example with a custom implementation for
 a different compiler, by defining it in a local header included in user
-code before any xlang headers.
+code before any clang headers.
 
 \note You may need to disable warning C4324 in Visual C++ builds when using this macro.
 \note If you use this macro, you should also use \ref XLANG_POSTALIGN for portability.
@@ -219,7 +219,7 @@ compilers use the same syntax.
 
 This macro can be overridden, for example with a custom implementation for
 a different compiler, by defining it in a local header included in user
-code before any xlang headers.
+code before any clang headers.
 */
 #define XLANG_ALIGNOF(type) __alignof(type)
 #endif
@@ -231,7 +231,7 @@ code before any xlang headers.
 \brief Aligns the given pointer to the given alignment, in bytes, increasing its value if necessary.
 \note Alignment values are expected to be powers of two.
 */
-#define XLANG_ALIGN(p, align) xlang::detail::AlignPointer(p, align)
+#define XLANG_ALIGN(p, align) clang::detail::AlignPointer(p, align)
 #endif // XLANG_ALIGN
 
 
@@ -244,7 +244,7 @@ code before any xlang headers.
 #endif // XLANG_ALIGNED
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -259,7 +259,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_ALIGN_H

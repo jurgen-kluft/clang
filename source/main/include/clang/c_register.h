@@ -1,11 +1,11 @@
 #ifndef __XLANG_REGISTER_H
 #define __XLANG_REGISTER_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/Messages/x_MessageTraits.h"
+#include "clang/private/Messages/c_MessageTraits.h"
 
 #define XLANG_NO_REGISTER_MESSAGE
 #ifndef XLANG_NO_REGISTER_MESSAGE
@@ -13,10 +13,10 @@
 /**
 \brief Message type registration macro.
 
-Registers message types for use within xlang.
+Registers message types for use within clang.
 
-Registration of message types is optional in xlang. Registering the message
-types used in an application causes xlang to use hand-rolled Runtime Type
+Registration of message types is optional in clang. Registering the message
+types used in an application causes clang to use hand-rolled Runtime Type
 Information (RTTI) explicity stored with each message type, instead of the
 built-in C++ RTTI. Doing so allows the built-in C++ RTTI to be turned off,
 resulting in a memory storage saving in all types, not just message types.
@@ -54,7 +54,7 @@ if you specifically need to turn the built-in C++ RTTI system off.
 \see <a href="http://www.theron-library.com/index.php?t=page&p=RegisteringMessages">Registering messages</a>
 */
 #define XLANG_REGISTER_MESSAGE(MessageType)											\
-namespace xlang																		\
+namespace clang																		\
 {																					\
 	namespace detail																\
 	{																				\

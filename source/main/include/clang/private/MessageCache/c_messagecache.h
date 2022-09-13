@@ -1,21 +1,21 @@
 #ifndef __XLANG_PRIVATE_MESSAGECACHE_MESSAGECACHE_H
 #define __XLANG_PRIVATE_MESSAGECACHE_MESSAGECACHE_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/x_BasicTypes.h"
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/MessageCache/x_Pool.h"
-#include "xlang/private/Threading/x_Lock.h"
-#include "xlang/private/Threading/x_Mutex.h"
+#include "clang/private/c_BasicTypes.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/MessageCache/c_Pool.h"
+#include "clang/private/Threading/c_Lock.h"
+#include "clang/private/Threading/c_Mutex.h"
 
-#include "xlang/x_AllocatorManager.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_AllocatorManager.h"
+#include "clang/c_Defines.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -84,7 +84,7 @@ namespace xlang
 		inline MessageCache::~MessageCache()
 		{
 			// Check that the pools were all emptied when the cache became unreferenced.
-			// If these asserts fail it probably means a xlang object (either an actor
+			// If these asserts fail it probably means a clang object (either an actor
 			// or a receiver) wasn't destructed prior to the application ending.
 			for (u32 index = 0; index < MAX_POOLS; ++index)
 			{
@@ -185,7 +185,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_MESSAGECACHE_MESSAGECACHE_H

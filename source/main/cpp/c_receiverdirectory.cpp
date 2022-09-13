@@ -1,10 +1,10 @@
-#include "xlang/private/Directory/x_ReceiverDirectory.h"
-#include "xlang/private/Debug/x_Assert.h"
+#include "clang/private/Directory/c_ReceiverDirectory.h"
+#include "clang/private/Debug/c_Assert.h"
 
-#include "xlang/x_Receiver.h"
+#include "clang/c_Receiver.h"
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -71,6 +71,6 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 

@@ -1,14 +1,14 @@
 #ifndef __XLANG_PRIVATE_HANDLERS_DEFAULTHANDLER_H
 #define __XLANG_PRIVATE_HANDLERS_DEFAULTHANDLER_H
 
-#include "xlang/private/Debug/x_Assert.h"
-#include "xlang/private/Messages/x_IMessage.h"
-#include "xlang/private/Handlers/x_IDefaultHandler.h"
+#include "clang/private/Debug/c_Assert.h"
+#include "clang/private/Messages/c_IMessage.h"
+#include "clang/private/Handlers/c_IDefaultHandler.h"
 
-#include "xlang/x_Address.h"
-#include "xlang/x_Defines.h"
+#include "clang/c_Address.h"
+#include "clang/c_Defines.h"
 
-namespace xlang
+namespace clang
 {
 	class Actor;
 
@@ -62,7 +62,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #endif // __XLANG_PRIVATE_HANDLERS_DEFAULTHANDLER_H

@@ -1,4 +1,4 @@
-#include "xlang/private/ThreadPool/x_ThreadPool.h"
+#include "clang/private/ThreadPool/c_ThreadPool.h"
 
 #ifdef _MSC_VER
 #pragma warning(push)
@@ -6,7 +6,7 @@
 #endif //_MSC_VER
 
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -202,7 +202,7 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 
 #ifdef _MSC_VER

@@ -1,34 +1,34 @@
 #ifndef __XLANG_ALLOCATORMANAGER_H
 #define __XLANG_ALLOCATORMANAGER_H
-#include "xbase/x_target.h"
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xlang/private/Debug/x_Assert.h"
+#include "clang/private/Debug/c_Assert.h"
 
-#include "xlang/x_DefaultAllocator.h"
-#include "xlang/x_Defines.h"
-#include "xlang/x_IAllocator.h"
+#include "clang/c_DefaultAllocator.h"
+#include "clang/c_Defines.h"
+#include "clang/c_IAllocator.h"
 
 
-namespace xlang
+namespace clang
 {
 	/**
-	\brief Singleton class that manages allocators for use by xlang.
+	\brief Singleton class that manages allocators for use by clang.
 
 	This class is a singleton, and its single instance can be accessed using the
 	static \ref Instance method on the class.
 
 	Non-static \ref SetAllocator and \ref GetAllocator methods on the singleton instance
-	allow the allocator used by xlang to be set and retreived. Setting the allocator
+	allow the allocator used by clang to be set and retreived. Setting the allocator
 	replaces the \ref DefaultAllocator, which is used if no custom allocator is explicitly
 	set. The \ref GetAllocator method returns a pointer to the currently set allocator,
 	which is either the allocator set previously using \ref SetAllocator or the \ref
 	DefaultAllocator, if none has been set.
 
 	\code
-	class MyAllocator : public xlang::IAllocator
+	class MyAllocator : public clang::IAllocator
 	{
 	public:
 						MyAllocator();
@@ -40,12 +40,12 @@ namespace xlang
 	};
 
 	MyAllocator allocator;
-	xlang::AllocatorManager::Instance().SetAllocator(&allocator);
+	clang::AllocatorManager::Instance().SetAllocator(&allocator);
 	\endcode
 
 	\note The \ref SetAllocator method can be called at most once, at application start.
 	If the \ref DefaultAllocator is replaced with a custom allocator then it must be
-	replaced at application start, before any xlang objects (\ref Framework "frameworks",
+	replaced at application start, before any clang objects (\ref Framework "frameworks",
 	\ref Actor "actors" or \ref Receiver "receivers") are constructed. \ref GetAllocator
 	can be called any number of times, both before and after a call to \ref SetAllocator.
 
@@ -67,7 +67,7 @@ namespace xlang
 		\brief Sets the allocator used for internal allocations, replacing the default allocator.
 
 		Calling this method allows applications to provide custom allocators and hence to control
-		how and where memory is allocated by xlang. This is useful, for example, in embedded systems
+		how and where memory is allocated by clang. This is useful, for example, in embedded systems
 		where memory is scarce or of different available types. The allocator provided to this method
 		must implement IAllocator and can be a wrapper around another existing allocator implementation.
 		The provided allocator is used for all internal heap allocations, including the allocation of
@@ -76,10 +76,10 @@ namespace xlang
 
 		\code
 		MyAllocator allocator;
-		xlang::AllocatorManager::Instance().SetAllocator(&allocator);
+		clang::AllocatorManager::Instance().SetAllocator(&allocator);
 		\endcode
 
-		\note This method should be called once at most, and before any other xlang activity.
+		\note This method should be called once at most, and before any other clang activity.
 
 		\see GetAllocator
 		*/
@@ -94,11 +94,11 @@ namespace xlang
 		}
 
 		/**
-		\brief Gets a pointer to the general allocator currently in use by xlang.
+		\brief Gets a pointer to the general allocator currently in use by clang.
 
 		\code
-		xlang::IAllocator *const allocator = xlang::AllocatorManager::Instance().GetAllocator();
-		xlang::DefaultAllocator *const defaultAllocator = dynamic_cast<xlang::DefaultAllocator *>(allocator);
+		clang::IAllocator *const allocator = clang::AllocatorManager::Instance().GetAllocator();
+		clang::DefaultAllocator *const defaultAllocator = dynamic_cast<clang::DefaultAllocator *>(allocator);
 
 		if (defaultAllocator)
 		{
@@ -132,7 +132,7 @@ namespace xlang
 	};
 
 
-} // namespace xlang
+} // namespace clang
 
 
 #endif // XLANG_ALLOCATORMANAGER_H

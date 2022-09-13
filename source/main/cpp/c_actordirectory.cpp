@@ -1,14 +1,14 @@
-#include "xlang/private/Directory/x_ActorDirectory.h"
-#include "xlang/private/Debug/x_Assert.h"
+#include "clang/private/Directory/c_ActorDirectory.h"
+#include "clang/private/Debug/c_Assert.h"
 
-#include "xlang/x_Actor.h"
-#include "xlang/x_Framework.h"
+#include "clang/c_Actor.h"
+#include "clang/c_Framework.h"
 
 // Placement new/delete
 inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
-namespace xlang
+namespace clang
 {
 	namespace detail
 	{
@@ -68,6 +68,6 @@ namespace xlang
 
 
 	} // namespace detail
-} // namespace xlang
+} // namespace clang
 
 

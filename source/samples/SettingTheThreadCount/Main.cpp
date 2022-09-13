@@ -15,9 +15,9 @@
 
 #include <stdio.h>
 
-#include "xlang/x_actor.h"
-#include "xlang/x_actorref.h"
-#include "xlang/x_framework.h"
+#include "clang/c_actor.h"
+#include "clang/c_actorref.h"
+#include "clang/c_framework.h"
 
 
 int main()
