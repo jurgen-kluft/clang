@@ -1,7 +1,7 @@
 #define TESTS_TESTSUITES_RECEIVERTESTSUITE
 #ifdef TESTS_TESTSUITES_RECEIVERTESTSUITE
 
-#include "xbase\x_allocator.h"
+#include "cbase\x_allocator.h"
 
 #include "clang\private\x_BasicTypes.h"
 
@@ -14,10 +14,10 @@
 #include "clang\x_Receiver.h"
 #include "clang\x_Register.h"
 
-#include "xunittest\xunittest.h"
+#include "cunittest\cunittest.h"
 
 // Placement new/delete
-inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
 class MockMessage

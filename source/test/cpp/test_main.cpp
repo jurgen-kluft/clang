@@ -1,91 +1,115 @@
-#include "xbase\x_base.h"
-#include "xbase\x_console.h"
-#include "xbase\x_allocator.h"
+#include "cbase/c_base.h"
+#include "cbase/c_allocator.h"
+#include "cbase/c_console.h"
+#include "cbase/c_context.h"
 
-#include "xunittest\xunittest.h"
+#include "cunittest\cunittest.h"
 
-UNITTEST_SUITE_LIST(xLangUnitTest);
-
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_POOLTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_LISTTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_ACTORTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_ACTORREFTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_THREADCOLLECTIONTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_RECEIVERTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_MESSAGETESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_MESSAGECACHETESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_FRAMEWORKTESTSUITE);
-UNITTEST_SUITE_DECLARE(xLangUnitTest, TESTS_TESTSUITES_FEATURETESTSUITE);
+UNITTEST_SUITE_LIST(cUnitTest);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_POOLTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_LISTTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_ACTORTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_ACTORREFTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_THREADCOLLECTIONTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_RECEIVERTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_MESSAGETESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_MESSAGECACHETESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_FRAMEWORKTESTSUITE);
+UNITTEST_SUITE_DECLARE(cUnitTest, TESTS_TESTSUITES_FEATURETESTSUITE);
 
 namespace ncore
 {
-	class UnitTestAllocator : public UnitTest::Allocator
-	{
-		xcore::x_iallocator*	mAllocator;
-	public:
-						UnitTestAllocator(xcore::x_iallocator* allocator)	{ mAllocator = allocator; }
-		virtual void*	Allocate(size_t size)								{ return mAllocator->allocate(size, 4); }
-		virtual void	Deallocate(void* ptr)								{ mAllocator->deallocate(ptr); }
-	};
+    // Our own assert handler
+    class UnitTestAssertHandler : public ncore::asserthandler_t
+    {
+    public:
+        UnitTestAssertHandler() { NumberOfAsserts = 0; }
 
-	class TestAllocator : public x_iallocator
-	{
-		x_iallocator*		mAllocator;
-	public:
-							TestAllocator(x_iallocator* allocator) : mAllocator(allocator) { }
+        virtual bool handle_assert(u32& flags, const char* fileName, s32 lineNumber, const char* exprString, const char* messageString)
+        {
+            UnitTest::reportAssert(exprString, fileName, lineNumber);
+            NumberOfAsserts++;
+            return false;
+        }
 
-		virtual const char*	name() const										{ return "xbase unittest test heap allocator"; }
+        ncore::s32 NumberOfAsserts;
+    };
 
-		virtual void*		allocate(xsize_t size, u32 alignment)
-		{
-			UnitTest::IncNumAllocations();
-			return mAllocator->allocate(size, alignment);
-		}
+    class UnitTestAllocator : public UnitTest::TestAllocator
+    {
+    public:
+        ncore::alloc_t* mAllocator;
+        int             mNumAllocations;
 
-		virtual void*		reallocate(void* mem, xsize_t size, u32 alignment)
-		{
-			if (mem==NULL)
-				return allocate(size, alignment);
-			else 
-				return mAllocator->reallocate(mem, size, alignment);
-		}
+        UnitTestAllocator(ncore::alloc_t* allocator)
+            : mAllocator(allocator)
+            , mNumAllocations(0)
+        {
+        }
 
-		virtual void		deallocate(void* mem)
-		{
-			UnitTest::DecNumAllocations();
-			mAllocator->deallocate(mem);
-		}
+        virtual void* Allocate(unsigned int size, unsigned int alignment)
+        {
+            mNumAllocations++;
+            return mAllocator->allocate(size, alignment);
+        }
+        virtual unsigned int Deallocate(void* ptr)
+        {
+            --mNumAllocations;
+            return mAllocator->deallocate(ptr);
+        }
+    };
 
-		virtual void		release()
-		{
-			mAllocator->release();
-			mAllocator = NULL;
-		}
-	};
-}
+    class TestAllocator : public alloc_t
+    {
+        UnitTest::TestAllocator* mAllocator;
 
-xcore::x_iallocator* gTestAllocator = NULL;
+    public:
+        TestAllocator(UnitTestAllocator* allocator)
+            : mAllocator(allocator)
+        {
+        }
 
-bool gRunUnitTest(UnitTest::TestReporter& reporter)
+        virtual void* v_allocate(u32 size, u32 alignment) { return mAllocator->Allocate(size, alignment); }
+
+        virtual u32 v_deallocate(void* mem) { return mAllocator->Deallocate(mem); }
+
+        virtual void v_release()
+        {
+            // Do nothing
+        }
+    };
+} // namespace ncore
+
+bool gRunUnitTest(UnitTest::TestReporter& reporter, UnitTest::TestContext& context)
 {
-	xcore::x_iallocator* systemAllocator = xcore::gCreateSystemAllocator();
-	xcore::UnitTestAllocator unittestAllocator( systemAllocator );
-	UnitTest::SetAllocator(&unittestAllocator);
+    cbase::init();
 
-	xcore::xconsole::addDefault();
+#ifdef TARGET_DEBUG
+    ncore::UnitTestAssertHandler assertHandler;
+    ncore::context_t::set_assert_handler(&assertHandler);
+#endif
+    ncore::console->write("Configuration: ");
+    ncore::console->setColor(ncore::console_t::YELLOW);
+    ncore::console->writeLine(TARGET_FULL_DESCR_STR);
+    ncore::console->setColor(ncore::console_t::NORMAL);
 
-	xcore::TestAllocator testAllocator(systemAllocator);
-	gTestAllocator = &testAllocator;
+    ncore::alloc_t*          systemAllocator = ncore::context_t::system_alloc();
+    ncore::UnitTestAllocator unittestAllocator(systemAllocator);
+    context.mAllocator = &unittestAllocator;
 
-	xbase::x_Init();
-	int r = UNITTEST_SUITE_RUN(reporter, xLangUnitTest);
-	xbase::x_Exit();
+    ncore::TestAllocator testAllocator(&unittestAllocator);
+    ncore::context_t::set_system_alloc(&testAllocator);
 
-	gTestAllocator->release();
+    int r = UNITTEST_SUITE_RUN(context, reporter, cUnitTest);
+    if (unittestAllocator.mNumAllocations != 0)
+    {
+        reporter.reportFailure(__FILE__, __LINE__, "cunittest", "memory leaks detected!");
+        r = -1;
+    }
 
-	UnitTest::SetAllocator(NULL);
+    ncore::context_t::set_system_alloc(systemAllocator);
 
-	return r==0;
+    cbase::exit();
+    return r == 0;
 }
-

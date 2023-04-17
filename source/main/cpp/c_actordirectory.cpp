@@ -5,7 +5,7 @@
 #include "clang/c_Framework.h"
 
 // Placement new/delete
-inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
 namespace clang

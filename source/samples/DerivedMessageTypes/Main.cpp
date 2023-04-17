@@ -7,7 +7,7 @@
 #include "clang/c_Receiver.h"
 
 // Placement new/delete
-void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 void	operator delete(void* mem, void* )							{ }
 
 

@@ -8,10 +8,10 @@
 #include "clang\x_AllocatorManager.h"
 #include "clang\x_Register.h"
 
-#include "xunittest\xunittest.h"
+#include "cunittest\cunittest.h"
 
 // Placement new/delete
-inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
 struct MessageValue

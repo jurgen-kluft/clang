@@ -10,14 +10,14 @@
 #include "clang\x_Receiver.h"
 #include "clang\private\Handlers\x_messagehandler.h"
 
-#include "xunittest\xunittest.h"
+#include "cunittest\cunittest.h"
 
 // Placement new/delete
-inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
 #define XHANDLER(ActorType, MessageType) clang::detail::MessageHandler<ActorType, MessageType>
-#define XHANDLER_ARRAY(size, name) xcore::xbyte name[size * clang::SizeOfMessageHandler];
+#define XHANDLER_ARRAY(size, name) ncore::xbyte name[size * clang::SizeOfMessageHandler];
 
 class ActorHandlerConstructor : public clang::Actor
 {

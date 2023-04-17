@@ -6,10 +6,10 @@
 #include "clang\x_Align.h"
 #include "clang\x_DefaultAllocator.h"
 
-#include "xunittest\xunittest.h"
+#include "cunittest\cunittest.h"
 
 // Placement new/delete
-inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
 UNITTEST_SUITE_BEGIN(TESTS_TESTSUITES_DEFAULTALLOCATORTESTSUITE)

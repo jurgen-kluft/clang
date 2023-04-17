@@ -16,9 +16,9 @@ namespace clang
 		class type2intgeneric
 		{
 		protected:
-			static const xcore::s32 next()
+			static const ncore::s32 next()
 			{
-				static xcore::s32 id = 1;
+				static ncore::s32 id = 1;
 				return id++;
 			}
 		};
@@ -26,9 +26,9 @@ namespace clang
 		template <typename T>
 		struct type2int : public type2intgeneric
 		{
-			static const xcore::s32 value() 
+			static const ncore::s32 value() 
 			{
-				static const xcore::s32 id = next();
+				static const ncore::s32 id = next();
 				return id;
 			}
 		};

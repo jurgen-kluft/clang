@@ -4,10 +4,10 @@
 #include "clang\x_Framework.h"
 #include "clang\x_register.h"
 
-#include "xunittest\xunittest.h"
+#include "cunittest\cunittest.h"
 
 // Placement new/delete
-inline void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+inline void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 inline void	operator delete(void* mem, void* )							{ }
 
 class IntMessage

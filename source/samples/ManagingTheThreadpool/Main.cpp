@@ -31,7 +31,7 @@ static const int REQUESTS_PER_ACTOR = 100000;
 static const int REQUEST_BATCH_SIZE = 50;
 
 // Placement new/delete
-void*	operator new(xcore::xsize_t num_bytes, void* mem)			{ return mem; }
+void*	operator new(ncore::xsize_t num_bytes, void* mem)			{ return mem; }
 void	operator delete(void* mem, void* )							{ }
 
 // Does some processing in response to messages, and then sends back the result.

@@ -7,18 +7,18 @@
 
 namespace clang
 {
-	using xcore::xbyte;
-	using xcore::s8;
-	using xcore::u8;
-	using xcore::s16;
-	using xcore::u16;
-	using xcore::s32;
-	using xcore::u32;
-	using xcore::s64;
-	using xcore::u64;
+	using ncore::xbyte;
+	using ncore::s8;
+	using ncore::u8;
+	using ncore::s16;
+	using ncore::u16;
+	using ncore::s32;
+	using ncore::u32;
+	using ncore::s64;
+	using ncore::u64;
 
-	using xcore::f32;
-	using xcore::f64;
+	using ncore::f32;
+	using ncore::f64;
 }
 
 
