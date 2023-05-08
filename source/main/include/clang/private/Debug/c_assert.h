@@ -1,11 +1,11 @@
 #ifndef __XLANG_PRIVATE_DEBUG_ASSERT_H
 #define __XLANG_PRIVATE_DEBUG_ASSERT_H
-#include "cbase/c_target.h"
+#include "ccore/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "cbase/c_debug.h"
+#include "ccore/c_debug.h"
 #include "clang/c_Defines.h"
 
 #if XLANG_ENABLE_ASSERTS

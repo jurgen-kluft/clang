@@ -1,6 +1,6 @@
 #ifndef __XLANG_PRIVATE_MESSAGES_MESSAGE_H
 #define __XLANG_PRIVATE_MESSAGES_MESSAGE_H
-#include "cbase/c_target.h"
+#include "ccore/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
