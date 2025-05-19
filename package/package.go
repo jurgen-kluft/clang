@@ -1,10 +1,10 @@
 package clang
 
 import (
-	"github.com/jurgen-kluft/cbase/package"
+	cbase "github.com/jurgen-kluft/cbase/package"
 	"github.com/jurgen-kluft/ccode/denv"
-	"github.com/jurgen-kluft/centry/package"
-	"github.com/jurgen-kluft/cunittest/package"
+	centry "github.com/jurgen-kluft/centry/package"
+	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
 // GetPackage returns the package object of 'clang'
@@ -21,13 +21,13 @@ func GetPackage() *denv.Package {
 	mainpkg.AddPackage(basepkg)
 
 	// 'clang' library
-	mainlib := denv.SetupDefaultCppLibProject("clang", "github.com\\jurgen-kluft\\clang")
-	mainlib.Dependencies = append(mainlib.Dependencies, basepkg.GetMainLib())
+	mainlib := denv.SetupCppLibProject("clang", "github.com\\jurgen-kluft\\clang")
+	mainlib.AddDependencies(basepkg.GetMainLib()...)
 
 	// 'clang' unittest project
 	maintest := denv.SetupDefaultCppTestProject("clang_test", "github.com\\jurgen-kluft\\clang")
-	maintest.Dependencies = append(maintest.Dependencies, unittestpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, entrypkg.GetMainLib())
+	maintest.AddDependencies(unittestpkg.GetMainLib()...)
+	maintest.AddDependencies(entrypkg.GetMainLib()...)
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddMainLib(mainlib)
