@@ -3,35 +3,42 @@ package clang
 import (
 	cbase "github.com/jurgen-kluft/cbase/package"
 	"github.com/jurgen-kluft/ccode/denv"
-	centry "github.com/jurgen-kluft/centry/package"
 	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
-// GetPackage returns the package object of 'clang'
+const (
+	repo_path = "github.com\\jurgen-kluft"
+	repo_name = "clang"
+)
+
 func GetPackage() *denv.Package {
-	// Dependencies
-	unittestpkg := cunittest.GetPackage()
-	entrypkg := centry.GetPackage()
-	basepkg := cbase.GetPackage()
+	name := repo_name
 
-	// The main (clang) package
-	mainpkg := denv.NewPackage("github.com\\jurgen-kluft", "clang")
-	mainpkg.AddPackage(unittestpkg)
-	mainpkg.AddPackage(entrypkg)
-	mainpkg.AddPackage(basepkg)
+	// dependencies
+	cunittestpkg := cunittest.GetPackage()
+	cbasepkg := cbase.GetPackage()
 
-	// 'clang' library
-	mainlib := denv.SetupCppLibProject(mainpkg, "clang")
-	mainlib.AddDependencies(basepkg.GetMainLib()...)
+	// main package
+	mainpkg := denv.NewPackage(repo_path, repo_name)
+	mainpkg.AddPackage(cunittestpkg)
+	mainpkg.AddPackage(cbasepkg)
 
-	// 'clang' unittest project
-	maintest := denv.SetupCppTestProject(mainpkg, "clang_test")
-	maintest.AddDependencies(unittestpkg.GetMainLib()...)
-	maintest.AddDependencies(entrypkg.GetMainLib()...)
-	maintest.AddDependency(mainlib)
+	// main library
+	mainlib := denv.SetupCppLibProject(mainpkg, name)
+	mainlib.AddDependencies(cbasepkg.GetMainLib()...)
+
+	// test library
+	testlib := denv.SetupCppTestLibProject(mainpkg, name)
+	testlib.AddDependencies(cbasepkg.GetTestLib()...)
+	testlib.AddDependencies(cunittestpkg.GetTestLib()...)
+
+	// unittest project
+	maintest := denv.SetupCppTestProject(mainpkg, name)
+	maintest.AddDependencies(cunittestpkg.GetMainLib()...)
+	maintest.AddDependency(testlib)
 
 	mainpkg.AddMainLib(mainlib)
+	mainpkg.AddTestLib(testlib)
 	mainpkg.AddUnittest(maintest)
-
 	return mainpkg
 }
