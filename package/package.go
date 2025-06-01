@@ -15,20 +15,20 @@ func GetPackage() *denv.Package {
 	basepkg := cbase.GetPackage()
 
 	// The main (clang) package
-	mainpkg := denv.NewPackage("clang")
+	mainpkg := denv.NewPackage("github.com\\jurgen-kluft", "clang")
 	mainpkg.AddPackage(unittestpkg)
 	mainpkg.AddPackage(entrypkg)
 	mainpkg.AddPackage(basepkg)
 
 	// 'clang' library
-	mainlib := denv.SetupCppLibProject("clang", "github.com\\jurgen-kluft\\clang")
+	mainlib := denv.SetupCppLibProject(mainpkg, "clang")
 	mainlib.AddDependencies(basepkg.GetMainLib()...)
 
 	// 'clang' unittest project
-	maintest := denv.SetupDefaultCppTestProject("clang_test", "github.com\\jurgen-kluft\\clang")
+	maintest := denv.SetupCppTestProject(mainpkg, "clang_test")
 	maintest.AddDependencies(unittestpkg.GetMainLib()...)
 	maintest.AddDependencies(entrypkg.GetMainLib()...)
-	maintest.Dependencies = append(maintest.Dependencies, mainlib)
+	maintest.AddDependency(mainlib)
 
 	mainpkg.AddMainLib(mainlib)
 	mainpkg.AddUnittest(maintest)
